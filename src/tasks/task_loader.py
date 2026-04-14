@@ -74,7 +74,7 @@ class TaskLoader:
         
         self.loaded = False
     
-    def load(self, dataset_file: str = "dual_process_dataset.json") -> bool:
+    def load(self, dataset_file: str = "bibm_dataset.json") -> bool:
         """
         Load the dataset.
 
@@ -315,15 +315,26 @@ class TaskLoader:
             novel_tasks = raw_data.get("novel_conflict_tasks", [])
             count = 0
 
+            # Build set of already-loaded task IDs to avoid duplicates
+            # (novel tasks may already be embedded in bibm_dataset.json)
+            existing_ids = {t.id for t in self.dataset["conflict_tasks"]}
+
             for item in novel_tasks:
+                task_id = item.get("id", "")
+                if task_id in existing_ids:
+                    continue  # skip — already present in the loaded dataset
                 task = self._parse_task(item, TaskType.CONFLICT)
                 # Store intuitive_answer and explanation in metadata
                 task.metadata["intuitive_answer"] = item.get("intuitive_answer", "")
                 task.metadata["explanation"] = item.get("explanation", "")
                 self.dataset["conflict_tasks"].append(task)
+                existing_ids.add(task_id)
                 count += 1
 
-            print(f"Loaded {count} novel conflict tasks from {file_path}")
+            if count > 0:
+                print(f"Loaded {count} novel conflict tasks from {file_path}")
+            else:
+                print(f"Novel conflict tasks already present in dataset (skipped {len(novel_tasks)} duplicates).")
             return True
 
         except Exception as e:
