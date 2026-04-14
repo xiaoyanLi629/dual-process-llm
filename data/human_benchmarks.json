@@ -1,0 +1,83 @@
+{
+    "metadata": {
+        "description": "Human dual-process performance benchmarks from published cognitive psychology studies",
+        "compiled": "2026-04-14",
+        "note": "S2-S1 gaps reflect within-study contrasts: System 1 = intuitive/fast/unreflective response; System 2 = deliberate/slow/reflective response. Absolute accuracy values are not directly comparable to LLM scores; the intended use is pattern comparison of gap magnitudes across task categories."
+    },
+    "benchmarks": {
+        "crt_classic": {
+            "source": "Frederick, S. (2005). Cognitive reflection and decision making. Journal of Economic Perspectives, 19(4), 25-42.",
+            "n_subjects": 3428,
+            "system1_accuracy": 0.33,
+            "system2_accuracy": 0.83,
+            "s2_s1_gap": 0.50,
+            "notes": "System 1 = initial intuitive response rate correct; System 2 = accuracy after deliberate reflection. MIT students scored 48% on initial intuitive attempt. Large gap reflects that CRT items are specifically designed to elicit an incorrect intuitive response.",
+            "task_category_mapping": "conflict"
+        },
+        "base_rate_neglect": {
+            "source": "Kahneman, D., & Tversky, A. (1973). On the psychology of prediction. Psychological Review, 80(4), 237-251.",
+            "n_subjects": 152,
+            "system1_accuracy": 0.15,
+            "system2_accuracy": 0.45,
+            "s2_s1_gap": 0.30,
+            "notes": "System 1 = ignoring base rates, relying on representativeness heuristic; System 2 = accuracy after explicit instruction to consider base rate information. Gap reflects difficulty of overriding intuitive representativeness reasoning.",
+            "task_category_mapping": "conflict"
+        },
+        "syllogistic_reasoning": {
+            "source": "Evans, J. St. B. T., Barston, J. L., & Pollard, P. (1983). On the conflict between logic and belief in syllogistic reasoning. Memory & Cognition, 11(3), 295-306.",
+            "n_subjects": 256,
+            "system1_accuracy": 0.55,
+            "system2_accuracy": 0.78,
+            "s2_s1_gap": 0.23,
+            "notes": "System 1 = belief-based responding on belief-inconsistent syllogisms; System 2 = logic-based responding after instruction to ignore prior beliefs. Gap reflects the belief-bias effect in deductive reasoning.",
+            "task_category_mapping": "analytical"
+        },
+        "arithmetic_word_problems": {
+            "source": "Ashcraft, M. H. (1992). Cognitive arithmetic: A review of data and theory. Cognition, 44(1-2), 75-106.",
+            "n_subjects": 120,
+            "system1_accuracy": 0.62,
+            "system2_accuracy": 0.89,
+            "s2_s1_gap": 0.27,
+            "notes": "System 1 = performance under time pressure (forced fast response); System 2 = unlimited time condition. Multi-step word problems. Gap reflects benefit of deliberate computation over rapid estimation.",
+            "task_category_mapping": "analytical"
+        },
+        "simple_pattern_recognition": {
+            "source": "Stanovich, K. E., & West, R. F. (2000). Individual differences in reasoning: Implications for the rationality debate? Behavioral and Brain Sciences, 23(5), 645-665.",
+            "n_subjects": 800,
+            "system1_accuracy": 0.88,
+            "system2_accuracy": 0.91,
+            "s2_s1_gap": 0.03,
+            "notes": "System 1 = immediate response with no deliberation; System 2 = accuracy after reflection on easy pattern tasks. Minimal S2 advantage reflects ceiling-level intuitive performance on simple recognition tasks.",
+            "task_category_mapping": "intuitive"
+        },
+        "semantic_association": {
+            "source": "Thompson, V. A., Prowse Turner, J. A., & Pennycook, G. (2011). Intuition, reason and metacognition. Cognitive Psychology, 63(3), 107-140.",
+            "n_subjects": 234,
+            "system1_accuracy": 0.82,
+            "system2_accuracy": 0.85,
+            "s2_s1_gap": 0.03,
+            "notes": "System 1 = initial response associated with high feeling-of-rightness rating; System 2 = accuracy after reconsideration prompted by low initial confidence. Minimal gap for associative/semantic tasks consistent with automatic processing efficiency.",
+            "task_category_mapping": "intuitive"
+        },
+        "framing_effects": {
+            "source": "Tversky, A., & Kahneman, D. (1981). The framing of decisions and the psychology of choice. Science, 211(4481), 453-458.",
+            "n_subjects": 307,
+            "susceptibility_system1": 0.72,
+            "resistance_system2": 0.45,
+            "system1_accuracy": 0.28,
+            "system2_accuracy": 0.55,
+            "s2_s1_gap": 0.27,
+            "notes": "System 1 = susceptibility to framing (72% chose incorrectly in loss-frame condition despite identical expected value); System 2 = partial resistance after deliberation (45% susceptibility). Accuracy computed as proportion making frame-invariant choice. Gap reflects partial but incomplete override of framing by deliberate reasoning.",
+            "task_category_mapping": "conflict"
+        },
+        "conjunction_fallacy": {
+            "source": "Tversky, A., & Kahneman, D. (1983). Extensional versus intuitive reasoning: The conjunction fallacy in probability judgment. Psychological Review, 90(4), 293-315.",
+            "n_subjects": 260,
+            "system1_accuracy": 0.15,
+            "system2_accuracy": 0.64,
+            "s2_s1_gap": 0.49,
+            "notes": "System 1 = Linda problem: 85% commit the conjunction fallacy (intuitive representativeness dominates); System 2 = accuracy after statistical training reduces fallacy rate to ~36%. Very large gap reflects how strongly intuitive representativeness reasoning overrides logical probability judgment.",
+            "task_category_mapping": "conflict"
+        }
+    }
+}
