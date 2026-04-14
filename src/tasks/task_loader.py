@@ -148,11 +148,23 @@ class TaskLoader:
         
         # Process the correct answer
         correct_answer = item.get("correct_answer", item.get("answer", ""))
-        
-        # If the answer is an index, convert it to the corresponding option letter
-        if isinstance(correct_answer, int) and options:
-            if 0 <= correct_answer < len(options):
-                correct_answer = chr(65 + correct_answer)
+
+        # If the answer is a numeric index (int or str digit), convert to option letter.
+        # Handles both 0-indexed (PIQA, TruthfulQA) and 1-indexed (SIQA, WinoGrande).
+        if options:
+            idx = None
+            if isinstance(correct_answer, int):
+                idx = correct_answer
+            elif isinstance(correct_answer, str) and correct_answer.strip().isdigit():
+                idx = int(correct_answer.strip())
+
+            if idx is not None:
+                # 0-indexed: idx in [0, len(options))
+                if 0 <= idx < len(options):
+                    correct_answer = chr(65 + idx)
+                # 1-indexed: idx in [1, len(options)]
+                elif 1 <= idx <= len(options):
+                    correct_answer = chr(65 + idx - 1)
         
         return Task(
             id=item.get("id", ""),
