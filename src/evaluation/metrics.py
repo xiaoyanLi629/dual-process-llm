@@ -273,6 +273,55 @@ class MetricsCalculator:
             "interpretation": interpretation
         }
     
+    def compute_token_efficiency_ratio(self, accuracy: float, avg_tokens: float) -> float:
+        """
+        Compute Token Efficiency Ratio (TER).
+
+        TER = accuracy / (avg_tokens / 100)
+
+        Replaces wall-clock response time as the effort metric.
+        Higher TER means more accuracy per token of computation.
+
+        Args:
+            accuracy: Proportion correct (0–1).
+            avg_tokens: Mean tokens consumed per response.
+
+        Returns:
+            float: Token Efficiency Ratio. Returns 0.0 if avg_tokens is 0.
+        """
+        if avg_tokens == 0:
+            return 0.0
+        return accuracy / (avg_tokens / 100)
+
+    def compute_marginal_accuracy_gain(
+        self,
+        s1_acc: float,
+        s2_acc: float,
+        s1_tokens: float,
+        s2_tokens: float,
+    ) -> float:
+        """
+        Compute Marginal Accuracy Gain (MAG).
+
+        MAG = (s2_accuracy - s1_accuracy) / (s2_tokens - s1_tokens)
+
+        Can be computed per task category to show where extra token
+        expenditure yields the greatest accuracy return.
+
+        Args:
+            s1_acc: System 1 accuracy (0–1).
+            s2_acc: System 2 accuracy (0–1).
+            s1_tokens: Mean tokens used by System 1.
+            s2_tokens: Mean tokens used by System 2.
+
+        Returns:
+            float: Marginal Accuracy Gain. Returns 0.0 if token counts are equal.
+        """
+        token_diff = s2_tokens - s1_tokens
+        if token_diff == 0:
+            return 0.0
+        return (s2_acc - s1_acc) / token_diff
+
     def aggregate_results(self, results: List[Dict]) -> ExperimentMetrics:
         """
         Aggregate experiment results.

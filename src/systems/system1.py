@@ -56,7 +56,7 @@ class System1:
 
         Args:
             model_name: LLM model to use.
-            temperature: Generation temperature (relatively high to simulate non-deterministic intuition).
+            temperature: Generation temperature (relatively high to simulate less consistent, intuitive responses).
             max_tokens: Maximum output token count (limited to simulate fast response).
             strategy: Implementation strategy ("model_diff", "param_diff", "prompt_diff").
         """

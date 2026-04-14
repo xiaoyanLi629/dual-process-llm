@@ -130,7 +130,7 @@ Prompting & Zero-shot & Chain-of-thought \\
 
 \textbf{Model Selection.} We used GPT-4o-mini for System~1 and GPT-4o for System~2, reflecting the resource asymmetry in human cognition: System~1 operates with minimal cognitive resources, whereas System~2 requires substantial working memory~\cite{Kahneman2011}.
 
-\textbf{Temperature.} High temperature (0.9) introduces response variability, simulating the probabilistic nature of intuitive judgments. Low temperature (0.2) produces consistent, deterministic outputs characteristic of analytical reasoning.
+\textbf{Temperature.} High temperature (0.9) introduces response variability, simulating the probabilistic nature of intuitive judgments. Low temperature (0.2) produces more consistent outputs characteristic of analytical reasoning; note that LLM outputs remain stochastic at any positive temperature and are not truly deterministic.
 
 \textbf{Prompting Strategy.} Zero-shot prompting for System~1 simulates automatic, unreflective processing. Chain-of-thought prompting for System~2 explicitly elicits step-by-step reasoning~\cite{Wei2022}.
 
