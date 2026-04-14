@@ -33,18 +33,18 @@ class MetricsCalculator:
     """
     
     def __init__(self):
-        """InitializeMetrics Calculator"""
+        """Initialize the Metrics Calculator."""
         self.results_cache: Dict[str, List] = {}
     
     def calculate_accuracy(self, predictions: List[bool]) -> float:
         """
-        CalculateAccuracy
-        
+        Calculate accuracy.
+
         Args:
-            predictions: PredictioncorrectWithwhetherList
-            
+            predictions: List of booleans indicating whether each prediction is correct.
+
         Returns:
-            float: Accuracy
+            float: Accuracy value.
         """
         if not predictions:
             return 0.0
@@ -54,14 +54,14 @@ class MetricsCalculator:
                                     confidences: List[float],
                                     correct: List[bool]) -> Dict[str, float]:
         """
-        CalculateConfidenceCorrelationmetric
-        
+        Calculate confidence-related metrics.
+
         Args:
-            confidences: ConfidenceList
-            correct: correctWithwhetherList
-            
+            confidences: List of confidence values.
+            correct: List of booleans indicating whether each prediction is correct.
+
         Returns:
-            Dict: Confidencemetric
+            Dict: Confidence metrics.
         """
         if not confidences or not correct:
             return {
@@ -80,14 +80,14 @@ class MetricsCalculator:
         # Expected Calibration Error (ECE)
         ece = self._calculate_ece(confidences, correct)
         
-        # Overconfidencerate：highConfidencebuterror
+        # Overconfidence rate: high confidence but incorrect
         high_conf_mask = confidences > 0.7
         if high_conf_mask.sum() > 0:
             overconfidence_rate = 1 - np.mean(correct[high_conf_mask])
         else:
             overconfidence_rate = 0.0
         
-        # underconfidence rate：lowConfidencebutcorrect
+        # Underconfidence rate: low confidence but correct
         low_conf_mask = confidences < 0.3
         if low_conf_mask.sum() > 0:
             underconfidence_rate = np.mean(correct[low_conf_mask])
@@ -104,15 +104,15 @@ class MetricsCalculator:
     def _calculate_ece(self, confidences: np.ndarray, 
                        correct: np.ndarray, n_bins: int = 10) -> float:
         """
-        CalculateExpected Calibration Error
-        
+        Calculate Expected Calibration Error (ECE).
+
         Args:
-            confidences: ConfidenceArray
-            correct: correctWithwhetherArray
-            n_bins: binCount
-            
+            confidences: Array of confidence values.
+            correct: Array of booleans indicating whether each prediction is correct.
+            n_bins: Number of bins.
+
         Returns:
-            float: ECEvalue
+            float: ECE value.
         """
         bin_boundaries = np.linspace(0, 1, n_bins + 1)
         ece = 0.0
@@ -133,15 +133,15 @@ class MetricsCalculator:
                                           api_calls: List[int],
                                           reasoning_steps: List[int]) -> Dict[str, float]:
         """
-        Calculatecognitive effort metric
-        
+        Calculate cognitive effort metrics.
+
         Args:
-            tokens_used: TokenUsingamountList
-            api_calls: APIcalltimesnumberList
-            reasoning_steps: InferencestepnumberList
-            
+            tokens_used: List of token usage counts.
+            api_calls: List of API call counts.
+            reasoning_steps: List of reasoning step counts.
+
         Returns:
-            Dict: cognitive effort metric
+            Dict: Cognitive effort metrics.
         """
         return {
             "avg_tokens_used": float(np.mean(tokens_used)) if tokens_used else 0.0,
@@ -154,13 +154,13 @@ class MetricsCalculator:
     def calculate_response_time_metrics(self, 
                                        response_times: List[float]) -> Dict[str, float]:
         """
-        CalculateResponseTimemetric
-        
+        Calculate response time metrics.
+
         Args:
-            response_times: ResponseTimeList（milliseconds）
-            
+            response_times: List of response times (in milliseconds).
+
         Returns:
-            Dict: ResponseTimemetric
+            Dict: Response time metrics.
         """
         if not response_times:
             return {
@@ -185,14 +185,14 @@ class MetricsCalculator:
                        system1_results: Dict[str, Any],
                        system2_results: Dict[str, Any]) -> Dict[str, Any]:
         """
-        compareSystem 1andSystem 2performance
-        
+        Compare System 1 and System 2 performance.
+
         Args:
-            system1_results: System 1Result
-            system2_results: System 2Result
-            
+            system1_results: System 1 results.
+            system2_results: System 2 results.
+
         Returns:
-            Dict: compareResult
+            Dict: Comparison result.
         """
         comparison = {
             "accuracy_diff": system2_results.get("accuracy", 0) - system1_results.get("accuracy", 0),
@@ -211,14 +211,14 @@ class MetricsCalculator:
             )
         }
         
-        # StatisticsSignificancetest
+        # Statistical significance test
         if "raw_accuracies" in system1_results and "raw_accuracies" in system2_results:
             s1_acc = system1_results["raw_accuracies"]
             s2_acc = system2_results["raw_accuracies"]
             
             if len(s1_acc) > 1 and len(s2_acc) > 1:
                 # McNemar's test for paired data
-                # OrUsingttest
+                # Or use t-test
                 t_stat, p_value = stats.ttest_ind(s1_acc, s2_acc)
                 comparison["statistical_test"] = {
                     "test": "independent_t_test",
@@ -233,14 +233,14 @@ class MetricsCalculator:
                              group1: List[float], 
                              group2: List[float]) -> Dict[str, float]:
         """
-        CalculateEffect Size（Cohen's d）
-        
+        Calculate effect size (Cohen's d).
+
         Args:
-            group1: Group1Data
-            group2: Group2Data
-            
+            group1: Group 1 data.
+            group2: Group 2 data.
+
         Returns:
-            Dict: Effect Sizemetric
+            Dict: Effect size metrics.
         """
         if not group1 or not group2:
             return {"cohens_d": 0.0, "interpretation": "N/A"}
@@ -257,7 +257,7 @@ class MetricsCalculator:
         else:
             cohens_d = (np.mean(g1) - np.mean(g2)) / pooled_std
         
-        # explanationEffect Size
+        # Interpret effect size
         abs_d = abs(cohens_d)
         if abs_d < 0.2:
             interpretation = "negligible"
@@ -275,13 +275,13 @@ class MetricsCalculator:
     
     def aggregate_results(self, results: List[Dict]) -> ExperimentMetrics:
         """
-        Aggregateexperiment results
-        
+        Aggregate experiment results.
+
         Args:
-            results: singleexperiment resultsList
-            
+            results: List of individual experiment results.
+
         Returns:
-            ExperimentMetrics: Aggregateaftermetric
+            ExperimentMetrics: Aggregated metrics.
         """
         if not results:
             return ExperimentMetrics(

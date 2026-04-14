@@ -48,22 +48,22 @@ class Task:
 
 class TaskLoader:
     """
-    Task Loader
-    
-    Responsible forLoadandmanage experiment tasksData
+    Task Loader.
+
+    Responsible for loading and managing experiment task data.
     """
     
     def __init__(self, data_dir: str = None):
         """
-        InitializeTask Loader
-        
+        Initialize the Task Loader.
+
         Args:
-            data_dir: DataDirectoryPath
+            data_dir: Path to the data directory.
         """
         if data_dir is None:
-            # Data is in data_idea1/ folder at the same level as the project folder
-            project_root = Path(__file__).parent.parent.parent.parent  # LLM-Cognition/
-            data_dir = project_root / "data_idea1" / "processed"
+            # Data is in data/ folder within the project
+            project_root = Path(__file__).parent.parent.parent  # idea1_dual_process/
+            data_dir = project_root / "data" / "processed"
         self.data_dir = Path(data_dir)
         
         self.dataset: Dict[str, List[Task]] = {
@@ -76,13 +76,13 @@ class TaskLoader:
     
     def load(self, dataset_file: str = "dual_process_dataset.json") -> bool:
         """
-        LoadDataset
-        
+        Load the dataset.
+
         Args:
-            dataset_file: DatasetFilename
-            
+            dataset_file: Dataset filename.
+
         Returns:
-            bool: IswhetherLoadSuccess
+            bool: Whether loading succeeded.
         """
         dataset_path = self.data_dir / dataset_file
         
@@ -94,17 +94,17 @@ class TaskLoader:
             with open(dataset_path, "r", encoding="utf-8") as f:
                 raw_data = json.load(f)
             
-            # ParseSystem 1task
+            # Parse System 1 tasks
             for item in raw_data.get("system1_tasks", []):
                 task = self._parse_task(item, TaskType.SYSTEM1)
                 self.dataset["system1_tasks"].append(task)
             
-            # ParseSystem 2task
+            # Parse System 2 tasks
             for item in raw_data.get("system2_tasks", []):
                 task = self._parse_task(item, TaskType.SYSTEM2)
                 self.dataset["system2_tasks"].append(task)
             
-            # Parseconflicttask
+            # Parse conflict tasks
             for item in raw_data.get("conflict_tasks", []):
                 task = self._parse_task(item, TaskType.CONFLICT)
                 self.dataset["conflict_tasks"].append(task)
@@ -123,33 +123,33 @@ class TaskLoader:
     
     def _parse_task(self, item: Dict, task_type: TaskType) -> Task:
         """
-        Parsesingle task
-        
+        Parse a single task item.
+
         Args:
-            item: OriginaltaskData
-            task_type: taskType
-            
+            item: Raw task data.
+            task_type: Task type.
+
         Returns:
-            Task: ParseaftertaskObject
+            Task: Parsed task object.
         """
-        # constructquestiontext
+        # Build the question text
         question = item.get("question", "")
         context = item.get("context", "")
         
-        # IfHasContext，AddToquestionin
+        # If context exists, prepend it to the question
         if context:
             question = f"Context: {context}\n\nQuestion: {question}"
         
-        # IfHasOption，AddToquestionin
+        # If options exist, append them to the question
         options = item.get("options", [])
         if options:
             options_text = "\n".join([f"{chr(65+i)}. {opt}" for i, opt in enumerate(options)])
             question = f"{question}\n\nOptions:\n{options_text}"
         
-        # Processcorrectanswer
+        # Process the correct answer
         correct_answer = item.get("correct_answer", item.get("answer", ""))
         
-        # IfanswerIsIndex，ConvertForOptionletter
+        # If the answer is an index, convert it to the corresponding option letter
         if isinstance(correct_answer, int) and options:
             if 0 <= correct_answer < len(options):
                 correct_answer = chr(65 + correct_answer)
@@ -173,59 +173,59 @@ class TaskLoader:
                   shuffle: bool = False,
                   source_filter: str = None) -> List[Task]:
         """
-        GetspecifyClasstask category
-        
+        Get tasks from a specified category.
+
         Args:
-            task_category: taskClasscategory ("system1_tasks", "system2_tasks", "conflict_tasks")
-            n: ReturnstaskCount（NonerepresentAll）
-            shuffle: IswhetherStochasticshuffle
-            source_filter: DatasourceFilterloader
-            
+            task_category: Task category ("system1_tasks", "system2_tasks", "conflict_tasks").
+            n: Number of tasks to return (None returns all).
+            shuffle: Whether to randomly shuffle.
+            source_filter: Data source filter.
+
         Returns:
-            List[Task]: taskList
+            List[Task]: List of tasks.
         """
         if not self.loaded:
             self.load()
         
         tasks = self.dataset.get(task_category, [])
         
-        # applyDatasourceFilter
+        # Apply data source filter
         if source_filter:
             tasks = [t for t in tasks if t.source == source_filter]
         
-        # Stochasticshuffle
+        # Randomly shuffle
         if shuffle:
             tasks = tasks.copy()
             random.shuffle(tasks)
         
-        # LimitCount
+        # Limit count
         if n is not None:
             tasks = tasks[:n]
         
         return tasks
     
     def get_system1_tasks(self, n: int = None, **kwargs) -> List[Task]:
-        """GetSystem 1task"""
+        """Get System 1 tasks."""
         return self.get_tasks("system1_tasks", n=n, **kwargs)
     
     def get_system2_tasks(self, n: int = None, **kwargs) -> List[Task]:
-        """GetSystem 2task"""
+        """Get System 2 tasks."""
         return self.get_tasks("system2_tasks", n=n, **kwargs)
     
     def get_conflict_tasks(self, n: int = None, **kwargs) -> List[Task]:
-        """Getconflicttask"""
+        """Get conflict tasks."""
         return self.get_tasks("conflict_tasks", n=n, **kwargs)
     
     def get_mixed_tasks(self, n_per_category: int = 100, shuffle: bool = True) -> List[Task]:
         """
-        Getmixedtaskset
-        
+        Get a mixed task set.
+
         Args:
-            n_per_category: EachClasstask categoryCount
-            shuffle: IswhetherStochasticshuffle
-            
+            n_per_category: Number of tasks per category.
+            shuffle: Whether to randomly shuffle.
+
         Returns:
-            List[Task]: mixedtaskList
+            List[Task]: Mixed task list.
         """
         tasks = []
         tasks.extend(self.get_system1_tasks(n=n_per_category))
@@ -239,14 +239,14 @@ class TaskLoader:
     
     def iterate_tasks(self, task_category: str, batch_size: int = 10) -> Iterator[List[Task]]:
         """
-        Iterationtask（Used forlarge-scaleexperiment）
-        
+        Iterate over tasks in batches (for large-scale experiments).
+
         Args:
-            task_category: taskClasscategory
-            batch_size: batchtimesSize
-            
+            task_category: Task category.
+            batch_size: Batch size.
+
         Yields:
-            List[Task]: taskbatchtimes
+            List[Task]: A batch of tasks.
         """
         tasks = self.get_tasks(task_category)
         
@@ -255,10 +255,10 @@ class TaskLoader:
     
     def get_statistics(self) -> Dict[str, Any]:
         """
-        GetDatasetStatisticsInfo
-        
+        Get dataset statistics.
+
         Returns:
-            Dict: StatisticsInfo
+            Dict: Statistical information.
         """
         if not self.loaded:
             self.load()
@@ -286,13 +286,13 @@ class TaskLoader:
     
     def get_task_by_id(self, task_id: str) -> Optional[Task]:
         """
-        According toIDGettask
-        
+        Get a task by its ID.
+
         Args:
-            task_id: taskID
-            
+            task_id: Task ID.
+
         Returns:
-            Optional[Task]: taskObject
+            Optional[Task]: Task object, or None if not found.
         """
         if not self.loaded:
             self.load()

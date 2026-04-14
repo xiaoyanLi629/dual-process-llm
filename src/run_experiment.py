@@ -28,7 +28,7 @@ from scipy import stats
 from tqdm import tqdm
 
 # Add project root to path for api_config access
-project_root = Path(__file__).parent.parent.parent
+project_root = Path(__file__).parent.parent
 sys.path.append(str(project_root))
 
 from evaluation.experiment_runner import ExperimentRunner
@@ -753,13 +753,13 @@ class PaperExperimentRunner:
         
         # Set publication style
         plt.rcParams.update({
-            'font.size': 12,
+            'font.size': 14,
             'font.family': 'serif',
-            'axes.labelsize': 14,
-            'axes.titlesize': 16,
-            'xtick.labelsize': 12,
-            'ytick.labelsize': 12,
-            'legend.fontsize': 11,
+            'axes.labelsize': 16,
+            'axes.titlesize': 18,
+            'xtick.labelsize': 14,
+            'ytick.labelsize': 14,
+            'legend.fontsize': 13,
             'figure.figsize': (10, 8),
             'figure.dpi': 300,
             'savefig.dpi': 300,

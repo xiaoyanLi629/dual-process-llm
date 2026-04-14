@@ -1,9 +1,10 @@
 """
 ACT-R Cognitive Architecture Buffers
-ImplementACT-Rcognitive architecture buffer modules
 
-ACT-R (Adaptive Control of Thought-Rational) is a cognitive architecture，
-Contains multiple modules and buffers to simulate human cognitive processes。
+Implements the ACT-R cognitive architecture buffer modules.
+
+ACT-R (Adaptive Control of Thought-Rational) is a cognitive architecture
+containing multiple modules and buffers to simulate human cognitive processes.
 """
 
 import sys
@@ -13,7 +14,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 
 # Add project root to path for api_config access
-sys.path.append(str(Path(__file__).parent.parent.parent.parent))
+sys.path.append(str(Path(__file__).parent.parent.parent))
 from api_config import get_openai_client, get_model_config
 
 
@@ -23,23 +24,23 @@ class BufferContent:
     content: str
     timestamp: datetime = field(default_factory=datetime.now)
     metadata: Dict[str, Any] = field(default_factory=dict)
-    activation: float = 1.0  # ACT-RActivation level
+    activation: float = 1.0  # ACT-R activation level
 
 
 class SensoryBuffer:
     """
-    Sensory Buffer (Sensory Buffer)
-    
-    Responsible forreceiveandpreliminaryProcessInputInfo，SimilarhumanClasssensoryMemory。
-    InACT-Rin，thisIsInfoentercognitiveSystementry。
+    Sensory Buffer.
+
+    Receives and preprocesses input information, similar to human sensory memory.
+    In ACT-R, this is the entry point for information entering the cognitive system.
     """
     
     def __init__(self, capacity: int = 7):
         """
-        InitializeSensory Buffer
-        
+        Initialize the Sensory Buffer.
+
         Args:
-            capacity: BufferCapacity（Default7，conform toMiller's Law）
+            capacity: Buffer capacity (default 7, following Miller's Law).
         """
         self.capacity = capacity
         self.buffer: List[BufferContent] = []
@@ -47,14 +48,14 @@ class SensoryBuffer:
     
     def receive(self, input_text: str, input_type: str = "text") -> BufferContent:
         """
-        receiveInputInfo
-        
+        Receive input information.
+
         Args:
-            input_text: Inputtext
-            input_type: InputType（text, image, audioetc）
-            
+            input_text: Input text.
+            input_type: Input type (text, image, audio, etc.).
+
         Returns:
-            BufferContent: ProcessafterBuffercontent
+            BufferContent: Processed buffer content.
         """
         content = BufferContent(
             content=input_text,
@@ -65,9 +66,9 @@ class SensoryBuffer:
             }
         )
         
-        # maintainCapacityLimit
+        # Maintain capacity limit
         if len(self.buffer) >= self.capacity:
-            self.buffer.pop(0)  # RemovemostOlditem
+            self.buffer.pop(0)  # Remove the oldest item
         
         self.buffer.append(content)
         
@@ -80,29 +81,29 @@ class SensoryBuffer:
         return content
     
     def get_current(self) -> Optional[BufferContent]:
-        """GetCurrent（latest）Buffercontent"""
+        """Get the current (latest) buffer content."""
         return self.buffer[-1] if self.buffer else None
     
     def clear(self):
-        """ClearBuffer"""
+        """Clear the buffer."""
         self.buffer = []
 
 
 class GoalBuffer:
     """
-    Goal Buffer (Goal Buffer)
-    
-    Responsible formaintainCurrentcognitivetargetandtaskStatus。
-    InSystem 2in，thisModulehelpdecomposecomplexquestion andtrack solving progressdegree。
+    Goal Buffer.
+
+    Maintains the current cognitive goal and task status.
+    In System 2, this module helps decompose complex questions and track solving progress.
     """
     
     def __init__(self, model_name: str = "gpt-4o", temperature: float = 0.3):
         """
-        InitializeGoal Buffer
-        
+        Initialize the Goal Buffer.
+
         Args:
-            model_name: UsingLLMModel
-            temperature: Generatetemperature
+            model_name: LLM model to use.
+            temperature: Generation temperature.
         """
         self.client = get_openai_client()
         self.model_config = get_model_config(model_name, temperature)
@@ -112,13 +113,13 @@ class GoalBuffer:
     
     def analyze_goal(self, question: str) -> Dict[str, Any]:
         """
-        Analysisquestion andsetcognitivetarget
-        
+        Analyze the question and set the cognitive goal.
+
         Args:
-            question: Inputquestion
-            
+            question: Input question.
+
         Returns:
-            Dict: targetAnalysisResult
+            Dict: Goal analysis result.
         """
         system_prompt = """You are the Goal Buffer in an ACT-R cognitive architecture.
 Your role is to analyze problems and identify cognitive goals.
@@ -176,11 +177,11 @@ Respond in JSON format with keys: core_question, reasoning_type, cognitive_traps
             return error_result
     
     def get_current_goal(self) -> Optional[Dict]:
-        """GetCurrenttarget"""
+        """Get the current goal."""
         return self.current_goal
     
     def complete_goal(self):
-        """markerCurrenttargetForComplete"""
+        """Mark the current goal as complete."""
         if self.current_goal:
             self.current_goal["status"] = "completed"
             if self.goal_stack:
@@ -189,19 +190,19 @@ Respond in JSON format with keys: core_question, reasoning_type, cognitive_traps
 
 class DeclarativeModule:
     """
-    Declarative MemoryModule (Declarative Module)
-    
-    Responsible forStoreandRetrievefactknowledge。InSystem 2in，thisModuleprovide
-    solvequestionallneed backgroundknowledgeandCorrelationExperience。
+    Declarative Memory Module.
+
+    Stores and retrieves factual knowledge. In System 2, this module provides
+    all the background knowledge and relevant experience needed to solve a question.
     """
     
     def __init__(self, model_name: str = "gpt-4o", temperature: float = 0.2):
         """
-        InitializeDeclarative MemoryModule
-        
+        Initialize the Declarative Memory Module.
+
         Args:
-            model_name: UsingLLMModel
-            temperature: Generatetemperature
+            model_name: LLM model to use.
+            temperature: Generation temperature.
         """
         self.client = get_openai_client()
         self.model_config = get_model_config(model_name, temperature)
@@ -210,14 +211,14 @@ class DeclarativeModule:
     
     def retrieve_knowledge(self, question: str, goal_analysis: Dict) -> Dict[str, Any]:
         """
-        According toquestionandtargetRetrieveCorrelationknowledge
-        
+        Retrieve relevant knowledge based on the question and goal analysis.
+
         Args:
-            question: Inputquestion
-            goal_analysis: targetAnalysisResult
-            
+            question: Input question.
+            goal_analysis: Goal analysis result.
+
         Returns:
-            Dict: RetrieveToCorrelationknowledge
+            Dict: Retrieved relevant knowledge.
         """
         system_prompt = """You are the Declarative Module in an ACT-R cognitive architecture.
 Your role is to retrieve relevant knowledge for problem-solving.
@@ -271,7 +272,7 @@ Goal Analysis:
             }
     
     def store_knowledge(self, knowledge: Dict):
-        """StorenewknowledgeToknowledgelibrary"""
+        """Store new knowledge in the knowledge base."""
         self.knowledge_base.append({
             "knowledge": knowledge,
             "timestamp": datetime.now().isoformat(),
@@ -281,19 +282,19 @@ Goal Analysis:
 
 class ProductionSystem:
     """
-    Production System (Production System)
-    
-    Responsible forExecutecognitiveoperationandGenerateResponse。thisIsACT-Rin"Execute"Module，
-    According toCurrentStatusandRulegenerate actionFor。
+    Production System.
+
+    Executes cognitive operations and generates responses. This is the "execution"
+    module in ACT-R, generating actions according to the current state and rules.
     """
     
     def __init__(self, model_name: str = "gpt-4o", temperature: float = 0.3):
         """
-        InitializeProduction System
-        
+        Initialize the Production System.
+
         Args:
-            model_name: UsingLLMModel
-            temperature: Generatetemperature
+            model_name: LLM model to use.
+            temperature: Generation temperature.
         """
         self.client = get_openai_client()
         self.model_config = get_model_config(model_name, temperature)
@@ -303,16 +304,16 @@ class ProductionSystem:
     def execute(self, question: str, goal_analysis: Dict = None, 
                 knowledge: Dict = None, mode: str = "analytical") -> Dict[str, Any]:
         """
-        Executecognitiveoperate andGenerateResponse
-        
+        Execute a cognitive operation and generate a response.
+
         Args:
-            question: Inputquestion
-            goal_analysis: targetAnalysisResult（Optional）
-            knowledge: RetrieveToknowledge（Optional）
-            mode: Executepattern ("intuitive" or "analytical")
-            
+            question: Input question.
+            goal_analysis: Goal analysis result (optional).
+            knowledge: Retrieved knowledge (optional).
+            mode: Execution mode ("intuitive" or "analytical").
+
         Returns:
-            Dict: ExecuteResult
+            Dict: Execution result.
         """
         if mode == "intuitive":
             return self._execute_intuitive(question)
@@ -320,7 +321,7 @@ class ProductionSystem:
             return self._execute_analytical(question, goal_analysis, knowledge)
     
     def _execute_intuitive(self, question: str) -> Dict[str, Any]:
-        """IntuitivepatternExecute（System 1style）"""
+        """Execute in intuitive mode (System 1 style)."""
         system_prompt = """Answer immediately with your first instinct.
 Give a brief, direct answer without extensive reasoning.
 Format: {"answer": "your answer", "confidence": 0.0-1.0}"""
@@ -356,7 +357,7 @@ Format: {"answer": "your answer", "confidence": 0.0-1.0}"""
     
     def _execute_analytical(self, question: str, goal_analysis: Dict = None,
                            knowledge: Dict = None) -> Dict[str, Any]:
-        """AnalysispatternExecute（System 2style）"""
+        """Execute in analytical mode (System 2 style)."""
         system_prompt = """You are the Production System in an ACT-R cognitive architecture.
 Use the provided goal analysis and knowledge to solve the problem step by step.
 
@@ -416,24 +417,24 @@ Format your response as JSON with keys: reasoning_steps, answer, confidence, exp
 
 class RetrievalBuffer:
     """
-    Retrieval Buffer (Retrieval Buffer)
-    
-    workForDeclarative MemoryandOtherModulebetweenInterface，
-    temporary storageRetrieveToInfoprovideOtherModuleUsing。
+    Retrieval Buffer.
+
+    Acts as an interface between the Declarative Memory and other modules,
+    temporarily storing retrieved information for use by other modules.
     """
     
     def __init__(self, capacity: int = 5):
         """
-        InitializeRetrieval Buffer
-        
+        Initialize the Retrieval Buffer.
+
         Args:
-            capacity: BufferCapacity
+            capacity: Buffer capacity.
         """
         self.capacity = capacity
         self.buffer: List[BufferContent] = []
     
     def store(self, content: Any, source: str = "declarative"):
-        """StoreRetrieveTocontent"""
+        """Store retrieved content in the buffer."""
         buffer_content = BufferContent(
             content=str(content),
             metadata={"source": source}
@@ -445,9 +446,9 @@ class RetrievalBuffer:
         self.buffer.append(buffer_content)
     
     def get_all(self) -> List[BufferContent]:
-        """GetallHasBuffercontent"""
+        """Get all buffered content."""
         return self.buffer
     
     def clear(self):
-        """ClearBuffer"""
+        """Clear the buffer."""
         self.buffer = []

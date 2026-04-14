@@ -59,7 +59,7 @@ class ExperimentRunner:
         self.system1 = System1(**self.system1_config)
         self.system2 = System2(**self.system2_config)
         
-        # Initialize evaluatorandMetrics Calculator
+        # Initialize evaluator and metrics calculator
         self.evaluator = DualProcessEvaluator()
         self.metrics_calculator = MetricsCalculator()
         
@@ -67,7 +67,7 @@ class ExperimentRunner:
         figures_dir = self.output_dir / "figures"
         self.visualizer = DualProcessVisualizer(output_dir=figures_dir)
         
-        # InitializeTask Loader
+        # Initialize Task Loader
         self.task_loader = TaskLoader()
         
         # experiment record
@@ -130,29 +130,29 @@ class ExperimentRunner:
             print(f"  - {cat}: {stats['categories'][cat]['count']}")
         print(f"Total tasks: {len(all_tasks)}")
         
-        # runSystem 1
+        # Run System 1
         print("\n--- Running System 1 ---")
         system1_results = self._run_system(
             self.system1, all_tasks, "System1"
         )
         
-        # runSystem 2
+        # Run System 2
         print("\n--- Running System 2 ---")
         system2_results = self._run_system(
             self.system2, all_tasks, "System2"
         )
         
-        # Calculatecomparemetric
+        # Calculate comparison metrics
         comparison = self.metrics_calculator.compare_systems(
             system1_results, system2_results
         )
         
-        # by taskClasscategoryAnalysis
+        # Analyze by task category
         category_analysis = self._analyze_by_category(
             all_tasks, system1_results, system2_results
         )
         
-        # aggregateResult
+        # Aggregate results
         experiment_results = {
             "experiment_name": experiment_name,
             "timestamp": datetime.now().isoformat(),
@@ -182,7 +182,7 @@ class ExperimentRunner:
             "category_analysis": category_analysis
         }
         
-        # SaveResult
+        # Save results
         if save_results:
             self._save_results(experiment_name, experiment_results, 
                              system1_results, system2_results)
@@ -204,15 +204,15 @@ class ExperimentRunner:
                    tasks: List[Task],
                    system_name: str) -> Dict[str, Any]:
         """
-        runsingleSystem
-        
+        Run a single cognitive system.
+
         Args:
-            system: cognitiveSystem
-            tasks: taskList
-            system_name: SystemName
-            
+            system: Cognitive system instance.
+            tasks: List of tasks.
+            system_name: System name.
+
         Returns:
-            Dict: SystemResult
+            Dict: System results.
         """
         responses = []
         
@@ -228,7 +228,7 @@ class ExperimentRunner:
         task_dicts = [task.to_dict() for task in tasks]
         results = self.evaluator.evaluate_batch(task_dicts, responses, system_name)
         
-        # Addcognitive effort metric
+        # Add cognitive effort metrics
         effort_metrics = system.get_cognitive_effort_metrics()
         results.update(effort_metrics)
         
@@ -239,15 +239,15 @@ class ExperimentRunner:
                             system1_results: Dict,
                             system2_results: Dict) -> Dict[str, Any]:
         """
-        by taskClasscategoryAnalysisResult
-        
+        Analyze results by task category.
+
         Args:
-            tasks: taskList
-            system1_results: System 1Result
-            system2_results: System 2Result
-            
+            tasks: List of tasks.
+            system1_results: System 1 results.
+            system2_results: System 2 results.
+
         Returns:
-            Dict: ClasscategoryAnalysisResult
+            Dict: Category analysis results.
         """
         categories = {}
         
@@ -272,7 +272,7 @@ class ExperimentRunner:
             if i < len(s2_results) and s2_results[i].get("is_correct"):
                 categories[category]["system2"]["correct"] += 1
         
-        # CalculateAccuracy
+        # Calculate accuracy
         for category in categories:
             for system in ["system1", "system2"]:
                 total = categories[category][system]["total"]
@@ -378,15 +378,15 @@ class ExperimentRunner:
                           ablation_configs: List[Dict],
                           n_samples: int = 50) -> List[Dict]:
         """
-        Run ablation study
-        
+        Run ablation study.
+
         Args:
-            base_experiment_name: baseexperimentName
-            ablation_configs: ablationConfigurationList
-            n_samples: EachConfigurationSamplenumber
-            
+            base_experiment_name: Base experiment name.
+            ablation_configs: List of ablation configurations.
+            n_samples: Number of samples per configuration.
+
         Returns:
-            List[Dict]: ablationexperiment resultsList
+            List[Dict]: List of ablation experiment results.
         """
         results = []
         
@@ -394,7 +394,7 @@ class ExperimentRunner:
             print(f"\n--- Ablation {i+1}/{len(ablation_configs)} ---")
             print(f"Config: {config}")
             
-            # UpdateSystemConfiguration
+            # Update system configuration
             if "system1" in config:
                 self.system1 = System1(**config["system1"])
             if "system2" in config:
@@ -414,7 +414,7 @@ class ExperimentRunner:
         return results
     
     def reset(self):
-        """ResetexperimentStatus"""
+        """Reset experiment state."""
         self.system1.reset()
         self.system2.reset()
         self.evaluator.reset()

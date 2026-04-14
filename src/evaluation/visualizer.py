@@ -105,10 +105,10 @@ def setup_publication_style():
         'font.weight': 'normal',
         
         # Axes
-        'axes.titlesize': 14,
+        'axes.titlesize': 16,
         'axes.titleweight': 'bold',
         'axes.titlepad': 12,
-        'axes.labelsize': 12,
+        'axes.labelsize': 14,
         'axes.labelweight': 'medium',
         'axes.labelpad': 8,
         'axes.linewidth': 1.0,
@@ -125,8 +125,8 @@ def setup_publication_style():
         'grid.alpha': 0.7,
         
         # Ticks
-        'xtick.labelsize': 10,
-        'ytick.labelsize': 10,
+        'xtick.labelsize': 12,
+        'ytick.labelsize': 12,
         'xtick.major.size': 5,
         'ytick.major.size': 5,
         'xtick.major.width': 1,
@@ -864,19 +864,18 @@ class DualProcessVisualizer:
             
             # Add ECE annotation
             ax.text(0.05, 0.95, f'ECE = {ece:.3f}', transform=ax.transAxes,
-                   fontsize=11, fontweight='bold', va='top',
+                   fontsize=13, fontweight='bold', va='top',
                    bbox=dict(boxstyle='round,pad=0.3', facecolor='white', 
                             edgecolor=color, alpha=0.9))
             
-            ax.set_xlabel('Confidence', fontsize=11, fontweight='medium')
-            ax.set_ylabel('Accuracy', fontsize=11, fontweight='medium')
-            ax.set_title(f'{name}\nCalibration', fontsize=12, fontweight='bold')
+            ax.set_xlabel('Confidence', fontsize=14, fontweight='medium')
+            ax.set_ylabel('Accuracy', fontsize=14, fontweight='medium')
+            ax.set_title(f'{name}\nCalibration', fontsize=14, fontweight='bold')
             ax.set_xlim(0, 1)
             ax.set_ylim(0, 1)
-            ax.legend(loc='lower right', fontsize=9)
+            ax.legend(loc='lower right', fontsize=11)
             ax.set_aspect('equal')
-        
-        plt.suptitle('Confidence Calibration Analysis', fontsize=14, fontweight='bold', y=1.02)
+            ax.tick_params(axis='both', labelsize=12)
         
         if save:
             save_figure(fig, "06_confidence_accuracy_analysis", self.output_dir)

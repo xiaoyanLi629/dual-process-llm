@@ -1,9 +1,8 @@
 """
 Cognitive Reflection Test (CRT) Tasks
-Cognitive Reflection Test Tasks
 
-CRTis a classic task for testing dual process theory，designed to trigger intuitive errors。
-Correct answers require suppressing intuitive responses and engaging in analytical thinking。
+CRT is a classic task for testing dual process theory, designed to trigger intuitive errors.
+Correct answers require suppressing intuitive responses and engaging in analytical thinking.
 """
 
 from typing import Dict, List, Any, Optional
@@ -13,22 +12,22 @@ import re
 
 @dataclass
 class CRTItem:
-    """CRTQuestion data structure"""
+    """CRT question data structure."""
     question: str
-    intuitive_answer: str  # Intuitive（error）answer
-    correct_answer: str    # correctanswer
-    explanation: str       # explanation
+    intuitive_answer: str  # Intuitive (incorrect) answer
+    correct_answer: str    # Correct answer
+    explanation: str       # Explanation
     difficulty: str = "medium"
 
 
 class CRTTask:
     """
-    Cognitive Reflection Test Tasks
-    
-    classicCRTquestions and variants，For testingSystem 1andSystem 2Differential
+    Cognitive Reflection Test Tasks.
+
+    Classic CRT questions and variants for testing the difference between System 1 and System 2.
     """
-    
-    # classicCRTquestion
+
+    # Classic CRT questions
     CLASSIC_CRT = [
         CRTItem(
             question="A bat and a ball cost $1.10 in total. The bat costs $1.00 more than the ball. How much does the ball cost?",
@@ -53,7 +52,7 @@ class CRTTask:
         ),
     ]
     
-    # ExtensionCRTquestion
+    # Extended CRT questions
     EXTENDED_CRT = [
         CRTItem(
             question="A farmer had 15 sheep, and all but 8 died. How many are left?",
@@ -92,7 +91,7 @@ class CRTTask:
         ),
     ]
     
-    # mathInferenceCRTvariant
+    # Math reasoning CRT variants
     MATH_CRT = [
         CRTItem(
             question="A store is having a 25% off sale. If an item originally costs $80, and you have a coupon for an additional 10% off the sale price, what is the final price?",
@@ -111,55 +110,55 @@ class CRTTask:
     ]
     
     def __init__(self):
-        """InitializeCRTtask"""
+        """Initialize CRT task."""
         self.all_items = self.CLASSIC_CRT + self.EXTENDED_CRT + self.MATH_CRT
     
     def get_classic_crt(self) -> List[CRTItem]:
-        """GetclassicCRTquestion"""
+        """Get classic CRT questions."""
         return self.CLASSIC_CRT
     
     def get_all_items(self) -> List[CRTItem]:
-        """GetallHasCRTquestion"""
+        """Get all CRT questions."""
         return self.all_items
     
     def get_by_difficulty(self, difficulty: str) -> List[CRTItem]:
-        """According todifficultyGetquestion"""
+        """Get questions filtered by difficulty."""
         return [item for item in self.all_items if item.difficulty == difficulty]
     
     def evaluate_response(self, item: CRTItem, response: str) -> Dict[str, Any]:
         """
-        EvaluateResponse
-        
+        Evaluate a response.
+
         Args:
-            item: CRTquestion
-            response: ModelResponse
-            
+            item: CRT question.
+            response: Model response.
+
         Returns:
-            Dict: Evaluation result
+            Dict: Evaluation result.
         """
-        # cleanResponsetext
+        # Clean the response text
         response_clean = response.lower().strip()
         correct_clean = item.correct_answer.lower().strip()
         intuitive_clean = item.intuitive_answer.lower().strip()
         
-        # Extractdigit（IfHas）
+        # Extract numbers (if any)
         response_numbers = re.findall(r'\d+\.?\d*', response_clean)
         correct_numbers = re.findall(r'\d+\.?\d*', correct_clean)
         intuitive_numbers = re.findall(r'\d+\.?\d*', intuitive_clean)
         
-        # judgeIswhether correct
+        # Determine whether the answer is correct
         is_correct = False
         is_intuitive = False
         
-        # CheckcompletelyMatch
+        # Check for exact match
         if correct_clean in response_clean:
             is_correct = True
         elif response_numbers and correct_numbers:
-            # CheckdigitMatch
+            # Check numeric match
             if any(rn == cn for rn in response_numbers for cn in correct_numbers):
                 is_correct = True
         
-        # CheckIswhethergiveIntuitiveanswer
+        # Check whether the intuitive answer was given
         if intuitive_clean in response_clean:
             is_intuitive = True
         elif response_numbers and intuitive_numbers:
@@ -177,13 +176,13 @@ class CRTTask:
     
     def format_for_experiment(self, item: CRTItem) -> Dict[str, Any]:
         """
-        FormatForexperimentFormat
-        
+        Format a CRT item for the experiment.
+
         Args:
-            item: CRTquestion
-            
+            item: CRT question.
+
         Returns:
-            Dict: experimentFormatData
+            Dict: Experiment-format data.
         """
         return {
             "id": f"crt_{self.all_items.index(item):03d}",

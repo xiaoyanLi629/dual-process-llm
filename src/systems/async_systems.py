@@ -16,7 +16,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 
 # Add project root to path for api_config access
-sys.path.append(str(Path(__file__).parent.parent.parent.parent))
+sys.path.append(str(Path(__file__).parent.parent.parent))
 from api_config import get_openai_client, get_model_config
 
 

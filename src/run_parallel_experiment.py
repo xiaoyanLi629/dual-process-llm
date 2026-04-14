@@ -384,10 +384,12 @@ class ParallelPaperExperimentRunner:
         matplotlib.use('Agg')
         
         plt.rcParams.update({
-            'font.size': 12,
+            'font.size': 14,
             'font.family': 'serif',
-            'axes.labelsize': 14,
-            'axes.titlesize': 16,
+            'axes.labelsize': 16,
+            'axes.titlesize': 18,
+            'xtick.labelsize': 14,
+            'ytick.labelsize': 14,
             'figure.dpi': 300,
             'savefig.dpi': 300
         })

@@ -1,8 +1,7 @@
 """
-Dual Process Evaluator
 Dual Process Theory Evaluator
 
-EvaluateSystem 1andSystem 2performance on various tasks
+Evaluates System 1 and System 2 performance on various tasks.
 """
 
 import re
@@ -28,19 +27,19 @@ class DualProcessEvaluator:
                          task_type: str = "general",
                          options: List[str] = None) -> Dict[str, Any]:
         """
-        EvaluatesingleResponse
-        
+        Evaluate a single response.
+
         Args:
-            question: question
-            response: ModelResponse
-            correct_answer: correctanswer
-            task_type: taskType
-            options: OptionList（IfIsmultiple choice）
-            
+            question: Question text.
+            response: Model response.
+            correct_answer: Correct answer.
+            task_type: Task type.
+            options: Option list (if multiple choice).
+
         Returns:
-            Dict: Evaluation result
+            Dict: Evaluation result.
         """
-        # ExtractResponseinanswer
+        # Extract the answer from the response
         if hasattr(response, 'answer'):
             answer_text = response.answer
             confidence = getattr(response, 'confidence', 0.5)
@@ -60,7 +59,7 @@ class DualProcessEvaluator:
             tokens_used = 0
             reasoning_steps = 0
         
-        # judgeIswhether correct
+        # Judge whether the answer is correct
         is_correct = self._check_correctness(
             answer_text, correct_answer, options, task_type
         )
@@ -88,16 +87,16 @@ class DualProcessEvaluator:
                           options: List[str] = None,
                           task_type: str = "general") -> bool:
         """
-        CheckResponseIswhether correct
-        
+        Check whether a response is correct.
+
         Args:
-            response: ModelResponse
-            correct_answer: correctanswer
-            options: OptionList
-            task_type: taskType
-            
+            response: Model response.
+            correct_answer: Correct answer.
+            options: Option list.
+            task_type: Task type.
+
         Returns:
-            bool: Iswhether correct
+            bool: Whether the response is correct.
         """
         if response is None or correct_answer is None:
             return False
@@ -105,65 +104,65 @@ class DualProcessEvaluator:
         response_clean = str(response).lower().strip()
         correct_clean = str(correct_answer).lower().strip()
         
-        # directMatch
+        # Direct match
         if correct_clean in response_clean:
             return True
         
-        # multiple choiceMatch
+        # Multiple choice match
         if options is not None:
             return self._check_multiple_choice(response_clean, correct_answer, options)
         
-        # digitMatch
+        # Numeric match
         if self._is_numeric_task(task_type):
             return self._check_numeric(response_clean, correct_clean)
         
-        # fuzzyMatch
+        # Fuzzy match
         return self._fuzzy_match(response_clean, correct_clean)
     
-    def _check_multiple_choice(self, 
-                               response: str, 
+    def _check_multiple_choice(self,
+                               response: str,
                                correct_answer: Any,
                                options: List[str]) -> bool:
-        """Checkmultiple choiceanswer"""
-        # IfcorrectanswerIsIndex
+        """Check a multiple choice answer."""
+        # If the correct answer is an index
         if isinstance(correct_answer, int):
             correct_letter = chr(65 + correct_answer)
             correct_text = options[correct_answer].lower() if correct_answer < len(options) else ""
         else:
             correct_letter = str(correct_answer).upper()
             correct_text = ""
-            # attemptfindToforshouldOptiontext
+            # Attempt to find the corresponding option text
             for i, opt in enumerate(options):
                 if chr(65 + i) == correct_letter:
                     correct_text = opt.lower()
                     break
         
-        # CheckIswhetherContainscorrectOptionletter
+        # Check whether the response contains the correct option letter
         if correct_letter.lower() in response:
-            # ensureIs notOtherOption
+            # Ensure it is not another option
             for i in range(len(options)):
                 letter = chr(65 + i).lower()
                 if letter in response and letter != correct_letter.lower():
-                    # ResponseinHasMultiOption，Needmore preciseMatch
+                    # Response contains multiple options, need more precise matching
                     pass
             return True
         
-        # CheckIswhetherContainscorrectOptiontext
+        # Check whether the response contains the correct option text
         if correct_text and correct_text in response:
             return True
         
         return False
     
     def _check_numeric(self, response: str, correct: str) -> bool:
-        """Checkdigitanswer"""
-        # Extractdigit
+        """Check a numeric answer."""
+        # Extract numbers
         response_nums = re.findall(r'-?\d+\.?\d*', response)
         correct_nums = re.findall(r'-?\d+\.?\d*', correct)
         
         if not response_nums or not correct_nums:
             return False
         
-        # CheckIswhetherHasMatchdigit
+        # Check whether any numbers match
         for rn in response_nums:
             for cn in correct_nums:
                 try:
@@ -175,7 +174,7 @@ class DualProcessEvaluator:
         return False
     
     def _is_numeric_task(self, task_type: str) -> bool:
-        """judgeIswhetherIsdigitClasstask"""
+        """Determine whether the task is a numeric task."""
         numeric_types = [
             "math_reasoning", "arithmetic", "algebra", 
             "word_problem", "calculation", "simple_math"
@@ -183,12 +182,12 @@ class DualProcessEvaluator:
         return task_type.lower() in numeric_types
     
     def _fuzzy_match(self, response: str, correct: str) -> bool:
-        """fuzzyMatch"""
-        # simpleContainsCheck
+        """Fuzzy matching."""
+        # Simple containment check
         if correct in response:
             return True
         
-        # Checkkeywords
+        # Check keyword overlap
         correct_words = set(correct.split())
         response_words = set(response.split())
         
@@ -204,15 +203,15 @@ class DualProcessEvaluator:
                       responses: List[Any],
                       system_name: str = "unknown") -> Dict[str, Any]:
         """
-        BatchEvaluate
-        
+        Evaluate a batch of responses.
+
         Args:
-            tasks: taskList
-            responses: ResponseList
-            system_name: SystemName
-            
+            tasks: List of tasks.
+            responses: List of responses.
+            system_name: System name.
+
         Returns:
-            Dict: BatchEvaluation result
+            Dict: Batch evaluation result.
         """
         if len(tasks) != len(responses):
             raise ValueError("Tasks and responses must have the same length")
@@ -228,7 +227,7 @@ class DualProcessEvaluator:
             )
             results.append(eval_result)
         
-        # AggregateResult
+        # Aggregate results
         correct_count = sum(1 for r in results if r["is_correct"])
         total_count = len(results)
         
@@ -247,10 +246,10 @@ class DualProcessEvaluator:
     
     def get_summary(self) -> Dict[str, Any]:
         """
-        GetEvaluatesummary
-        
+        Get a summary of evaluations.
+
         Returns:
-            Dict: Evaluatesummary
+            Dict: Evaluation summary.
         """
         if not self.evaluation_history:
             return {"total_evaluations": 0}
@@ -266,7 +265,7 @@ class DualProcessEvaluator:
         }
     
     def _get_task_type_breakdown(self) -> Dict[str, Dict]:
-        """Getby taskTypedecomposeStatistics"""
+        """Get statistics broken down by task type."""
         breakdown = {}
         
         for eval_result in self.evaluation_history:
@@ -279,7 +278,7 @@ class DualProcessEvaluator:
             if eval_result["is_correct"]:
                 breakdown[task_type]["correct"] += 1
         
-        # CalculateAccuracy
+        # Calculate accuracy
         for task_type in breakdown:
             total = breakdown[task_type]["total"]
             correct = breakdown[task_type]["correct"]
@@ -288,5 +287,5 @@ class DualProcessEvaluator:
         return breakdown
     
     def reset(self):
-        """ResetEvaluatehistory"""
+        """Reset evaluation history."""
         self.evaluation_history = []

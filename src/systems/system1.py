@@ -1,13 +1,13 @@
 """
 System 1: Fast Intuitive Thinking
-Fast Intuitive Thinking System
 
-System 1 Simulates human fast、automatic、intuitive thinking process。
-Features：
+Simulates the human fast, automatic, intuitive thinking process.
+
+Features:
 - Fast response
 - Low cognitive effort
-- susceptible toTocognitiveBiasinfluence
-- Based onpatternMatchandheuristic
+- Susceptible to cognitive bias
+- Based on pattern matching and heuristics
 """
 
 import sys
@@ -18,14 +18,14 @@ from dataclasses import dataclass, field
 from datetime import datetime
 
 # Add project root to path for api_config access
-sys.path.append(str(Path(__file__).parent.parent.parent.parent))
+sys.path.append(str(Path(__file__).parent.parent.parent))
 from api_config import get_openai_client, get_model_config
 from systems.actr_buffers import SensoryBuffer, ProductionSystem
 
 
 @dataclass
 class System1Response:
-    """System 1 ResponseDatastructure"""
+    """Response data structure for System 1."""
     answer: str
     confidence: float
     response_time_ms: float
@@ -37,13 +37,13 @@ class System1Response:
 class System1:
     """
     System 1: Fast Intuitive Thinking System
-    
-    ImplementPolicy：
-    - Usingsmaller/fasterModel（such asGPT-4o-mini）
-    - hightemperatureArgsincreaseStochastic
-    - LimitOutputLength
-    - Zero-shotHint，notprovideExample
-    - simplifycognitivePath：Input → Sensory Buffer → Production System → Output
+
+    Implementation strategy:
+    - Use a smaller/faster model (e.g., GPT-4o-mini)
+    - Higher temperature to increase stochasticity
+    - Limit output length
+    - Zero-shot prompting, no examples provided
+    - Simplified cognitive path: Input -> Sensory Buffer -> Production System -> Output
     """
     
     def __init__(self, 
@@ -52,27 +52,27 @@ class System1:
                  max_tokens: int = 150,
                  strategy: str = "model_diff"):
         """
-        InitializeSystem 1
-        
+        Initialize System 1.
+
         Args:
-            model_name: UsingLLMModel
-            temperature: Generatetemperature（relativelyhightosimulateIntuitivenotDeterministic）
-            max_tokens: MaximumOutputtokennumber（LimittosimulateFast response）
-            strategy: ImplementPolicy ("model_diff", "param_diff", "prompt_diff")
+            model_name: LLM model to use.
+            temperature: Generation temperature (relatively high to simulate non-deterministic intuition).
+            max_tokens: Maximum output token count (limited to simulate fast response).
+            strategy: Implementation strategy ("model_diff", "param_diff", "prompt_diff").
         """
         self.client = get_openai_client()
         self.strategy = strategy
         
-        # According toPolicyConfigurationModelArgs
+        # Configure model parameters based on selected strategy
         if strategy == "model_diff":
-            # schemeA：UsingsmallerModel
+            # Strategy A: Use a smaller model
             self.model_config = {
                 "model": model_name,
                 "temperature": temperature,
                 "max_tokens": max_tokens
             }
         elif strategy == "param_diff":
-            # schemeB：sameModelDifferentArgs
+            # Strategy B: Same model with different parameters
             self.model_config = {
                 "model": "gpt-4o",
                 "temperature": 1.0,
@@ -80,21 +80,21 @@ class System1:
                 "top_p": 0.3
             }
         else:
-            # schemeC：onlypromptDifferential
+            # Strategy C: Prompt-only differentiation
             self.model_config = {
                 "model": "gpt-4o",
                 "temperature": 0.7,
                 "max_tokens": 100
             }
         
-        # InitializeACT-RComponent
+        # Initialize ACT-R components
         self.sensory_buffer = SensoryBuffer()
         self.production_system = ProductionSystem(
             model_name=self.model_config["model"],
             temperature=self.model_config["temperature"]
         )
         
-        # SystemHint：emphasizefastIntuitiveResponse
+        # System prompt: emphasize fast, intuitive response
         self.system_prompt = """You are simulating System 1 thinking - fast, intuitive, automatic.
 
 Rules:
@@ -106,28 +106,28 @@ Rules:
 
 Respond in JSON format: {"answer": "your answer", "confidence": 0.0-1.0}"""
         
-        # recordProcesshistory
+        # Record processing history
         self.processing_history: List[Dict] = []
         self.total_tokens_used: int = 0
         self.total_api_calls: int = 0
     
     def process(self, question: str, task_type: str = "general") -> System1Response:
         """
-        ProcessInputquestion andGenerateIntuitiveResponse
-        
+        Process an input question and generate an intuitive response.
+
         Args:
-            question: Inputquestion
-            task_type: taskType
-            
+            question: Input question.
+            task_type: Task type.
+
         Returns:
-            System1Response: SystemResponse
+            System1Response: System response.
         """
         start_time = time.time()
         
-        # Step 1: Sensory BufferreceiveInput
+        # Step 1: Sensory Buffer receives input
         self.sensory_buffer.receive(question, input_type="text")
         
-        # Step 2: directThroughProduction SystemGenerateResponse（skipovertargetAnalysisandknowledgeRetrieve）
+        # Step 2: Directly generate response via Production System (skipping goal analysis and knowledge retrieval)
         try:
             response = self.client.chat.completions.create(
                 model=self.model_config["model"],
@@ -173,7 +173,7 @@ Respond in JSON format: {"answer": "your answer", "confidence": 0.0-1.0}"""
                 metadata={"error": str(e)}
             )
         
-        # recordProcesshistory
+        # Record processing history
         self.processing_history.append({
             "question": question,
             "response": system_response.__dict__,
@@ -184,14 +184,14 @@ Respond in JSON format: {"answer": "your answer", "confidence": 0.0-1.0}"""
     
     def process_batch(self, questions: List[str], task_type: str = "general") -> List[System1Response]:
         """
-        BatchProcessquestion
-        
+        Process a batch of questions.
+
         Args:
-            questions: questionList
-            task_type: taskType
-            
+            questions: List of questions.
+            task_type: Task type.
+
         Returns:
-            List[System1Response]: ResponseList
+            List[System1Response]: List of responses.
         """
         responses = []
         for question in questions:
@@ -201,10 +201,10 @@ Respond in JSON format: {"answer": "your answer", "confidence": 0.0-1.0}"""
     
     def get_cognitive_effort_metrics(self) -> Dict[str, Any]:
         """
-        Getcognitive effort metric
-        
+        Get cognitive effort metrics.
+
         Returns:
-            Dict: cognitive effort metric
+            Dict: Cognitive effort metrics.
         """
         if not self.processing_history:
             return {
@@ -212,7 +212,7 @@ Respond in JSON format: {"answer": "your answer", "confidence": 0.0-1.0}"""
                 "total_api_calls": 0,
                 "avg_tokens_per_call": 0,
                 "avg_response_time_ms": 0,
-                "reasoning_steps": 0  # System 1 NoneexplicitInferencestep
+                "reasoning_steps": 0  # System 1 has no explicit reasoning steps
             }
         
         response_times = [h["response"]["response_time_ms"] for h in self.processing_history]
@@ -222,12 +222,12 @@ Respond in JSON format: {"answer": "your answer", "confidence": 0.0-1.0}"""
             "total_api_calls": self.total_api_calls,
             "avg_tokens_per_call": self.total_tokens_used / max(1, self.total_api_calls),
             "avg_response_time_ms": sum(response_times) / len(response_times),
-            "reasoning_steps": 0,  # System 1 NoneexplicitInferencestep
+            "reasoning_steps": 0,  # System 1 has no explicit reasoning steps
             "strategy": self.strategy
         }
     
     def reset(self):
-        """ResetSystemStatus"""
+        """Reset system state."""
         self.sensory_buffer.clear()
         self.processing_history = []
         self.total_tokens_used = 0
@@ -236,18 +236,18 @@ Respond in JSON format: {"answer": "your answer", "confidence": 0.0-1.0}"""
 
 class System1WithHeuristics(System1):
     """
-    withheuristicRuleSystem 1
-    
-    ExtensionbaseSystem 1，Addcommoncognitiveheuristic：
-    - availableheuristic (Availability Heuristic)
-    - representheuristic (Representativeness Heuristic)
-    - anchoring effectshould (Anchoring Effect)
+    System 1 with heuristic rules.
+
+    Extends the base System 1 with common cognitive heuristics:
+    - Availability heuristic
+    - Representativeness heuristic
+    - Anchoring effect
     """
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         
-        # ExtensionSystemHint，Containsheuristictendency
+        # Extend the system prompt to include heuristic tendencies
         self.system_prompt = """You are simulating System 1 thinking with cognitive heuristics.
 
 Behavioral tendencies (simulate these naturally):
@@ -265,10 +265,10 @@ Rules:
 Respond in JSON format: {"answer": "your answer", "confidence": 0.0-1.0, "heuristic_used": "name of heuristic if applicable"}"""
     
     def process(self, question: str, task_type: str = "general") -> System1Response:
-        """Processquestion，Mayaffected byToheuristicBiasinfluence"""
+        """Process a question, potentially subject to heuristic bias."""
         response = super().process(question, task_type)
-        
-        # attemptrecognizecategoryUsingheuristic
+
+        # Attempt to identify which heuristic was applied
         if "heuristic_used" in response.metadata:
             response.metadata["heuristic_detected"] = True
         

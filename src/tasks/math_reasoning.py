@@ -1,8 +1,7 @@
 """
-Math Reasoning Tasks
 Mathematical Reasoning Tasks
 
-For testingSystem 2mathematical analysis ability
+For testing System 2 mathematical analysis ability.
 """
 
 from typing import Dict, List, Any, Optional
@@ -22,30 +21,30 @@ class MathReasoningItem:
 
 class MathReasoningTask:
     """
-    Mathematical Reasoning Tasks
-    
-    Contains multiple mathematical reasoning types：
-    - arithmetic operations (Arithmetic)
-    - algebra problems (Algebra)
-    - word problems (Word Problems)
-    - ProbabilityStatistics (Probability)
+    Mathematical Reasoning Tasks.
+
+    Contains multiple mathematical reasoning types:
+    - Arithmetic operations
+    - Algebra problems
+    - Word problems
+    - Probability and statistics
     """
     
     def __init__(self, task_loader=None):
         """
-        InitializeMathematical Reasoning Tasks
-        
+        Initialize Mathematical Reasoning Tasks.
+
         Args:
-            task_loader: Task Loader（Used forLoadGSM8KetcData）
+            task_loader: Task loader instance (used for loading GSM8K and similar data).
         """
         self.task_loader = task_loader
         self.custom_items: List[MathReasoningItem] = []
         
-        # AddSomeExamplequestion
+        # Add sample questions
         self._add_sample_items()
     
     def _add_sample_items(self):
-        """AddExamplemathInferencequestion"""
+        """Add sample mathematical reasoning questions."""
         self.custom_items = [
             MathReasoningItem(
                 question="A train travels at 60 mph for 2 hours, then at 80 mph for 3 hours. What is the average speed for the entire journey?",
@@ -105,14 +104,14 @@ class MathReasoningTask:
     def get_items(self, math_type: str = None, 
                   difficulty: str = None) -> List[MathReasoningItem]:
         """
-        GetmathInferencequestion
-        
+        Get mathematical reasoning questions.
+
         Args:
-            math_type: mathTypeFilter
-            difficulty: difficultyFilter
-            
+            math_type: Math type filter.
+            difficulty: Difficulty filter.
+
         Returns:
-            List[MathReasoningItem]: questionList
+            List[MathReasoningItem]: List of questions.
         """
         items = self.custom_items.copy()
         
@@ -126,34 +125,34 @@ class MathReasoningTask:
     
     def get_from_dataset(self, n: int = 100) -> List[Dict]:
         """
-        FromDatasetGetmathInferencequestion
-        
+        Get mathematical reasoning questions from the dataset.
+
         Args:
-            n: questionCount
-            
+            n: Number of questions.
+
         Returns:
-            List[Dict]: questionList
+            List[Dict]: List of questions.
         """
         if self.task_loader is None:
             return []
         
-        # FromSystem 2taskinfiltermathInferencequestion
+        # Filter math reasoning questions from System 2 tasks
         tasks = self.task_loader.get_system2_tasks(source_filter="GSM8K")
         return [t.to_dict() for t in tasks[:n]]
     
     def evaluate_response(self, item: MathReasoningItem, 
                          response: str) -> Dict[str, Any]:
         """
-        EvaluateResponse
-        
+        Evaluate a response.
+
         Args:
-            item: mathInferencequestion
-            response: ModelResponse
-            
+            item: Mathematical reasoning question.
+            response: Model response.
+
         Returns:
-            Dict: Evaluation result
+            Dict: Evaluation result.
         """
-        # ExtractResponseindigit
+        # Extract numbers from the response
         response_numbers = re.findall(r'-?\d+\.?\d*', response)
         correct_numbers = re.findall(r'-?\d+\.?\d*', item.correct_answer)
         
@@ -161,15 +160,15 @@ class MathReasoningTask:
         extracted_answer = None
         
         if response_numbers:
-            extracted_answer = response_numbers[-1]  # usuallyLastonedigitIsanswer
+            extracted_answer = response_numbers[-1]  # Usually the last number is the answer
             
-            # CheckIswhetherMatchcorrectanswer
+            # Check whether it matches the correct answer
             for cn in correct_numbers:
                 if float(extracted_answer) == float(cn):
                     is_correct = True
                     break
         
-        # alsoChecktextMatch
+        # Also check for text match
         if not is_correct and item.correct_answer.lower() in response.lower():
             is_correct = True
         
@@ -183,13 +182,13 @@ class MathReasoningTask:
     
     def format_for_experiment(self, item: MathReasoningItem) -> Dict[str, Any]:
         """
-        FormatForexperimentFormat
-        
+        Format a mathematical reasoning item for the experiment.
+
         Args:
-            item: mathInferencequestion
-            
+            item: Mathematical reasoning question.
+
         Returns:
-            Dict: experimentFormatData
+            Dict: Experiment-format data.
         """
         return {
             "id": f"math_{self.custom_items.index(item):03d}",

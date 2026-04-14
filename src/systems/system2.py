@@ -1,13 +1,13 @@
 """
 System 2: Slow Analytical Thinking
-Slow Analytical Thinking System
 
-System 2 Simulates human slow、controlled、analytical thinking process。
-Features：
+Simulates the human slow, controlled, analytical thinking process.
+
+Features:
 - Requires focused attention
 - High cognitive effort
-- capable of logicalInference
-- CaninhibitIntuitiveerror
+- Capable of logical inference
+- Can inhibit intuitive errors
 """
 
 import sys
@@ -18,7 +18,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 
 # Add project root to path for api_config access
-sys.path.append(str(Path(__file__).parent.parent.parent.parent))
+sys.path.append(str(Path(__file__).parent.parent.parent))
 from api_config import get_openai_client, get_model_config
 from systems.actr_buffers import (
     SensoryBuffer, GoalBuffer, DeclarativeModule, 
@@ -28,7 +28,7 @@ from systems.actr_buffers import (
 
 @dataclass
 class System2Response:
-    """System 2 ResponseDatastructure"""
+    """Response data structure for System 2."""
     answer: str
     confidence: float
     response_time_ms: float
@@ -43,15 +43,15 @@ class System2Response:
 class System2:
     """
     System 2: Slow Analytical Thinking System
-    
-    ImplementPolicy：
-    - UsingstrongModel（such asGPT-4o）
-    - lowtemperatureArgsincreaseDeterministic
-    - MultiModulecollaborateProcess
-    - Chain-of-ThoughtInference
-    - completecognitivePath：
-      Input → Sensory Buffer → Goal Buffer → Declarative Module → 
-      Retrieval Buffer → Production System → Output
+
+    Implementation strategy:
+    - Use a larger/stronger model (e.g., GPT-4o)
+    - Lower temperature to increase determinism
+    - Multi-module collaborative processing
+    - Chain-of-thought reasoning
+    - Full cognitive path:
+      Input -> Sensory Buffer -> Goal Buffer -> Declarative Module ->
+      Retrieval Buffer -> Production System -> Output
     """
     
     def __init__(self,
@@ -60,13 +60,13 @@ class System2:
                  max_tokens: int = 2000,
                  use_cot: bool = True):
         """
-        InitializeSystem 2
-        
+        Initialize System 2.
+
         Args:
-            model_name: UsingLLMModel
-            temperature: Generatetemperature（lowertoincreaseDeterministic）
-            max_tokens: MaximumOutputtokennumber
-            use_cot: IswhetherUsingChain-of-Thought
+            model_name: LLM model to use.
+            temperature: Generation temperature (lower to increase determinism).
+            max_tokens: Maximum output token count.
+            use_cot: Whether to use Chain-of-Thought reasoning.
         """
         self.client = get_openai_client()
         self.model_config = {
@@ -76,14 +76,14 @@ class System2:
         }
         self.use_cot = use_cot
         
-        # InitializeACT-RComponent
+        # Initialize ACT-R components
         self.sensory_buffer = SensoryBuffer()
         self.goal_buffer = GoalBuffer(model_name=model_name, temperature=temperature)
         self.declarative_module = DeclarativeModule(model_name=model_name, temperature=temperature)
         self.retrieval_buffer = RetrievalBuffer()
         self.production_system = ProductionSystem(model_name=model_name, temperature=temperature)
         
-        # SystemHint：emphasizeAnalysisThinking
+        # System prompt: emphasize analytical thinking
         self.system_prompt = """You are simulating System 2 thinking - slow, deliberate, analytical.
 
 Process:
@@ -103,42 +103,42 @@ Respond in JSON format:
     "verification": "how you verified the answer"
 }"""
         
-        # recordProcesshistory
+        # Record processing history
         self.processing_history: List[Dict] = []
         self.total_tokens_used: int = 0
         self.total_api_calls: int = 0
     
     def process(self, question: str, task_type: str = "general") -> System2Response:
         """
-        ProcessInputquestion andGenerateAnalysisResponse
-        
+        Process an input question and generate an analytical response.
+
         Args:
-            question: Inputquestion
-            task_type: taskType
-            
+            question: Input question.
+            task_type: Task type.
+
         Returns:
-            System2Response: SystemResponse
+            System2Response: System response.
         """
         start_time = time.time()
         tokens_used = 0
         
-        # Step 1: Sensory BufferreceiveInput
+        # Step 1: Sensory Buffer receives input
         self.sensory_buffer.receive(question, input_type="text")
         
-        # Step 2: Goal BufferAnalysisquestion
+        # Step 2: Goal Buffer analyzes the question
         goal_analysis = self.goal_buffer.analyze_goal(question)
         self.total_api_calls += 1
         
-        # Step 3: Declarative MemoryModuleRetrieveCorrelationknowledge
+        # Step 3: Declarative Memory Module retrieves relevant knowledge
         retrieved_knowledge = self.declarative_module.retrieve_knowledge(question, goal_analysis)
         self.total_api_calls += 1
         
-        # Step 4: StoreToRetrieval Buffer
+        # Step 4: Store retrieved knowledge in Retrieval Buffer
         self.retrieval_buffer.store(retrieved_knowledge, source="declarative")
         
-        # Step 5: Production SystemGeneratefinalResponse
+        # Step 5: Production System generates the final response
         try:
-            # constructcompleteContext
+            # Build the complete context
             context = self._build_context(question, goal_analysis, retrieved_knowledge)
             
             response = self.client.chat.completions.create(
@@ -192,10 +192,10 @@ Respond in JSON format:
                 metadata={"error": str(e)}
             )
         
-        # markertargetComplete
+        # Mark goal as complete
         self.goal_buffer.complete_goal()
         
-        # recordProcesshistory
+        # Record processing history
         self.processing_history.append({
             "question": question,
             "response": {
@@ -213,22 +213,22 @@ Respond in JSON format:
     def _build_context(self, question: str, goal_analysis: Dict, 
                        retrieved_knowledge: Dict) -> str:
         """
-        constructcompleteInferenceContext
-        
+        Build the complete reasoning context.
+
         Args:
-            question: Inputquestion
-            goal_analysis: targetAnalysisResult
-            retrieved_knowledge: RetrieveToknowledge
-            
+            question: Input question.
+            goal_analysis: Goal analysis result.
+            retrieved_knowledge: Retrieved knowledge.
+
         Returns:
-            str: completeContext
+            str: Complete context string.
         """
         context_parts = [
             f"## Question\n{question}",
             f"\n## Goal Analysis\n"
         ]
         
-        # AddtargetAnalysis
+        # Add goal analysis
         if goal_analysis:
             context_parts.append(f"- Core Question: {goal_analysis.get('core_question', 'N/A')}")
             context_parts.append(f"- Reasoning Type: {goal_analysis.get('reasoning_type', 'N/A')}")
@@ -241,7 +241,7 @@ Respond in JSON format:
             if subgoals:
                 context_parts.append(f"- Subgoals: {subgoals}")
         
-        # AddRetrieveToknowledge
+        # Add retrieved knowledge
         context_parts.append(f"\n## Retrieved Knowledge")
         
         if retrieved_knowledge:
@@ -267,14 +267,14 @@ Respond in JSON format:
     
     def process_batch(self, questions: List[str], task_type: str = "general") -> List[System2Response]:
         """
-        BatchProcessquestion
-        
+        Process a batch of questions.
+
         Args:
-            questions: questionList
-            task_type: taskType
-            
+            questions: List of questions.
+            task_type: Task type.
+
         Returns:
-            List[System2Response]: ResponseList
+            List[System2Response]: List of responses.
         """
         responses = []
         for question in questions:
@@ -284,10 +284,10 @@ Respond in JSON format:
     
     def get_cognitive_effort_metrics(self) -> Dict[str, Any]:
         """
-        Getcognitive effort metric
-        
+        Get cognitive effort metrics.
+
         Returns:
-            Dict: cognitive effort metric
+            Dict: Cognitive effort metrics.
         """
         if not self.processing_history:
             return {
@@ -312,7 +312,7 @@ Respond in JSON format:
         }
     
     def reset(self):
-        """ResetSystemStatus"""
+        """Reset system state."""
         self.sensory_buffer.clear()
         self.retrieval_buffer.clear()
         self.processing_history = []
@@ -322,18 +322,18 @@ Respond in JSON format:
 
 class System2WithMetacognition(System2):
     """
-    withMetacognitionabilitySystem 2
-    
-    ExtensionbaseSystem 2，AddMetacognitive Monitoring：
-    - selfMonitorInferenceprocess
-    - detect potentialInerror
-    - adjustConfidence
+    System 2 with metacognitive ability.
+
+    Extends the base System 2 with metacognitive monitoring:
+    - Self-monitor the reasoning process
+    - Detect potential errors
+    - Adjust confidence
     """
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         
-        # ExtensionSystemHint，ContainsMetacognition
+        # Extend the system prompt to include metacognitive monitoring
         self.system_prompt = """You are simulating System 2 thinking with metacognitive monitoring.
 
 Process:
@@ -358,10 +358,10 @@ Respond in JSON format:
 }"""
     
     def process(self, question: str, task_type: str = "general") -> System2Response:
-        """Processquestion，ContainsMetacognitive Monitoring"""
+        """Process a question with metacognitive monitoring."""
         response = super().process(question, task_type)
-        
-        # AddMetacognitionInfoTometadata
+
+        # Add metacognitive information to metadata
         if "metacognitive_notes" in response.metadata:
             response.metadata["metacognition_active"] = True
         

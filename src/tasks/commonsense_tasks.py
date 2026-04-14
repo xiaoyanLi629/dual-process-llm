@@ -1,8 +1,7 @@
 """
 Commonsense Reasoning Tasks
-Commonsense Reasoning Tasks
 
-For testingSystem 1intuitive reasoning ability
+For testing System 1 intuitive reasoning ability.
 """
 
 from typing import Dict, List, Any, Optional
@@ -21,30 +20,30 @@ class CommonsenseItem:
 
 class CommonsenseTask:
     """
-    Commonsense Reasoning Tasks
-    
-    ContainsMultitypes of commonsenseReasoning type：
-    - physical commonsense (Physical)
-    - social commonsense (Social)
-    - Timecommonsense (Temporal)
-    - causal commonsense (Causal)
+    Commonsense Reasoning Tasks.
+
+    Contains multiple commonsense reasoning types:
+    - Physical commonsense
+    - Social commonsense
+    - Temporal commonsense
+    - Causal commonsense
     """
     
     def __init__(self, task_loader=None):
         """
-        InitializeCommonsense Reasoning Tasks
-        
+        Initialize Commonsense Reasoning Tasks.
+
         Args:
-            task_loader: Task Loader
+            task_loader: Task loader instance.
         """
         self.task_loader = task_loader
         self.custom_items: List[CommonsenseItem] = []
         
-        # AddSomeExamplequestion
+        # Add sample questions
         self._add_sample_items()
     
     def _add_sample_items(self):
-        """AddExamplecommonsenseInferencequestion"""
+        """Add sample commonsense reasoning questions."""
         self.custom_items = [
             CommonsenseItem(
                 question="What happens when you drop a glass on a hard floor?",
@@ -111,14 +110,14 @@ class CommonsenseTask:
     def get_items(self, commonsense_type: str = None, 
                   difficulty: str = None) -> List[CommonsenseItem]:
         """
-        GetcommonsenseInferencequestion
-        
+        Get commonsense reasoning questions.
+
         Args:
-            commonsense_type: commonsenseTypeFilter
-            difficulty: difficultyFilter
-            
+            commonsense_type: Commonsense type filter.
+            difficulty: Difficulty filter.
+
         Returns:
-            List[CommonsenseItem]: questionList
+            List[CommonsenseItem]: List of questions.
         """
         items = self.custom_items.copy()
         
@@ -132,19 +131,19 @@ class CommonsenseTask:
     
     def get_from_dataset(self, n: int = 100, source: str = None) -> List[Dict]:
         """
-        FromDatasetGetcommonsenseInferencequestion
-        
+        Get commonsense reasoning questions from the dataset.
+
         Args:
-            n: questionCount
-            source: DatasourceFilter
-            
+            n: Number of questions.
+            source: Data source filter.
+
         Returns:
-            List[Dict]: questionList
+            List[Dict]: List of questions.
         """
         if self.task_loader is None:
             return []
         
-        # FromSystem 1taskinfiltercommonsenseInferencequestion
+        # Filter commonsense reasoning questions from System 1 tasks
         if source:
             tasks = self.task_loader.get_system1_tasks(source_filter=source)
         else:
@@ -155,24 +154,24 @@ class CommonsenseTask:
     def evaluate_response(self, item: CommonsenseItem, 
                          response: str) -> Dict[str, Any]:
         """
-        EvaluateResponse
-        
+        Evaluate a response.
+
         Args:
-            item: commonsenseInferencequestion
-            response: ModelResponse
-            
+            item: Commonsense reasoning question.
+            response: Model response.
+
         Returns:
-            Dict: Evaluation result
+            Dict: Evaluation result.
         """
         response_clean = response.upper().strip()
         
-        # attemptExtractOptionletter
+        # Attempt to extract the option letter
         correct_letter = chr(65 + item.correct_answer)
         
         is_correct = False
         selected_option = None
         
-        # CheckResponseinIswhetherContainscorrectOption
+        # Check whether the response contains the correct option
         for i, opt in enumerate(item.options):
             letter = chr(65 + i)
             if letter in response_clean or opt.lower() in response.lower():
@@ -192,13 +191,13 @@ class CommonsenseTask:
     
     def format_for_experiment(self, item: CommonsenseItem) -> Dict[str, Any]:
         """
-        FormatForexperimentFormat
-        
+        Format a commonsense item for the experiment.
+
         Args:
-            item: commonsenseInferencequestion
-            
+            item: Commonsense reasoning question.
+
         Returns:
-            Dict: experimentFormatData
+            Dict: Experiment-format data.
         """
         options_text = "\n".join([f"{chr(65+i)}. {opt}" for i, opt in enumerate(item.options)])
         

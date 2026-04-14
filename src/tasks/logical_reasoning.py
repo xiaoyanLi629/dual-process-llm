@@ -1,8 +1,7 @@
 """
 Logical Reasoning Tasks
-Logical Reasoning Tasks
 
-For testingSystem 2analytical reasoning ability
+For testing System 2 analytical reasoning ability.
 """
 
 from typing import Dict, List, Any, Optional
@@ -22,30 +21,30 @@ class LogicalReasoningItem:
 
 class LogicalReasoningTask:
     """
-    Logical Reasoning Tasks
-    
-    ContainsMultitypes of logicalReasoning type：
-    - deductiveInference (Deductive)
-    - inductiveInference (Inductive)
-    - causalInference (Causal)
-    - conditionalInference (Conditional)
+    Logical Reasoning Tasks.
+
+    Contains multiple logical reasoning types:
+    - Deductive reasoning
+    - Inductive reasoning
+    - Causal reasoning
+    - Conditional reasoning
     """
     
     def __init__(self, task_loader=None):
         """
-        InitializeLogical Reasoning Tasks
-        
+        Initialize Logical Reasoning Tasks.
+
         Args:
-            task_loader: Task Loader（Used forLoadLogiQAetcData）
+            task_loader: Task loader instance (used for loading LogiQA and similar data).
         """
         self.task_loader = task_loader
         self.custom_items: List[LogicalReasoningItem] = []
         
-        # AddSomeExamplequestion
+        # Add sample questions
         self._add_sample_items()
     
     def _add_sample_items(self):
-        """AddExamplelogicInferencequestion"""
+        """Add sample logical reasoning questions."""
         self.custom_items = [
             LogicalReasoningItem(
                 context="All mammals are warm-blooded. All whales are mammals.",
@@ -104,14 +103,14 @@ class LogicalReasoningTask:
     def get_items(self, reasoning_type: str = None, 
                   difficulty: str = None) -> List[LogicalReasoningItem]:
         """
-        GetlogicInferencequestion
-        
+        Get logical reasoning questions.
+
         Args:
-            reasoning_type: Reasoning typeFilter
-            difficulty: difficultyFilter
-            
+            reasoning_type: Reasoning type filter.
+            difficulty: Difficulty filter.
+
         Returns:
-            List[LogicalReasoningItem]: questionList
+            List[LogicalReasoningItem]: List of questions.
         """
         items = self.custom_items.copy()
         
@@ -125,42 +124,42 @@ class LogicalReasoningTask:
     
     def get_from_dataset(self, n: int = 100) -> List[Dict]:
         """
-        FromDatasetGetlogicInferencequestion
-        
+        Get logical reasoning questions from the dataset.
+
         Args:
-            n: questionCount
-            
+            n: Number of questions.
+
         Returns:
-            List[Dict]: questionList
+            List[Dict]: List of questions.
         """
         if self.task_loader is None:
             return []
         
-        # FromSystem 2taskinfilterlogicInferencequestion
+        # Filter logical reasoning questions from System 2 tasks
         tasks = self.task_loader.get_system2_tasks(source_filter="LogiQA")
         return [t.to_dict() for t in tasks[:n]]
     
     def evaluate_response(self, item: LogicalReasoningItem, 
                          response: str) -> Dict[str, Any]:
         """
-        EvaluateResponse
-        
+        Evaluate a response.
+
         Args:
-            item: logicInferencequestion
-            response: ModelResponse
-            
+            item: Logical reasoning question.
+            response: Model response.
+
         Returns:
-            Dict: Evaluation result
+            Dict: Evaluation result.
         """
         response_clean = response.upper().strip()
         
-        # attemptExtractOptionletter
+        # Attempt to extract the option letter
         correct_letter = chr(65 + item.correct_answer)
         
         is_correct = False
         selected_option = None
         
-        # CheckResponseinIswhetherContainscorrectOption
+        # Check whether the response contains the correct option
         for i, opt in enumerate(item.options):
             letter = chr(65 + i)
             if letter in response_clean or opt.lower() in response.lower():
@@ -180,13 +179,13 @@ class LogicalReasoningTask:
     
     def format_for_experiment(self, item: LogicalReasoningItem) -> Dict[str, Any]:
         """
-        FormatForexperimentFormat
-        
+        Format a logical reasoning item for the experiment.
+
         Args:
-            item: logicInferencequestion
-            
+            item: Logical reasoning question.
+
         Returns:
-            Dict: experimentFormatData
+            Dict: Experiment-format data.
         """
         options_text = "\n".join([f"{chr(65+i)}. {opt}" for i, opt in enumerate(item.options)])
         

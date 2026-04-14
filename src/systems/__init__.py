@@ -1,6 +1,7 @@
 """
 Cognitive Systems Module
-ImplementSystem 1andSystem 2cognitive architecture
+
+Implements the System 1 and System 2 cognitive architecture.
 """
 
 from systems.system1 import System1
