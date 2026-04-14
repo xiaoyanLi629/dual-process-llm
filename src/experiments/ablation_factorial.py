@@ -1,14 +1,26 @@
 """
 Factorial Ablation Experiment for Dual-Process Theory in LLMs
+(Main experiment for the BIBM 2026 paper)
 
 2x2x2 factorial design isolating:
 - Model size (gpt-4o-mini vs gpt-4o)
 - Temperature (0.2 vs 0.9)
 - Prompting strategy (zero-shot vs chain-of-thought)
 
+Key comparisons:
+- C5 vs C8: same-model comparison (primary finding)
+  Holds model constant (gpt-4o); isolates temperature + prompting
+- C1 vs C8: canonical S1 vs S2 comparison (secondary)
+  Varies all three factors simultaneously
+
+Control baselines:
+- Random baseline: expected accuracy by chance per task category
+- Variance baseline: C8 run twice to establish the noise floor
+
 Usage:
     python -m src.experiments.ablation_factorial --n_samples 50
     python -m src.experiments.ablation_factorial --n_samples 100 --output results/ablation/
+    python -m src.experiments.ablation_factorial --n_samples 100 --no_variance_baseline
 """
 
 import argparse
@@ -18,7 +30,7 @@ import time
 import numpy as np
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, List, Any, Tuple
+from typing import Dict, List, Any, Optional, Tuple
 from tqdm import tqdm
 
 project_root = Path(__file__).parent.parent.parent
@@ -186,6 +198,86 @@ def _run_single_trial(
         "confidence": confidence,
         "tokens_used": tokens_used,
         "parse_error": parse_error,
+    }
+
+
+# ============================================================
+# Control baselines
+# ============================================================
+def compute_random_baseline(tasks_by_category: dict) -> dict:
+    """
+    Compute expected random accuracy for each task category.
+
+    For MCQ tasks: 1/n_options
+    For open-ended: 0%
+    """
+    baselines = {}
+    for category, tasks in tasks_by_category.items():
+        if not tasks:
+            baselines[category] = 0.0
+            continue
+
+        total_expected = 0.0
+        for task in tasks:
+            if hasattr(task, 'options') and task.options:
+                total_expected += 1.0 / len(task.options)
+            else:
+                total_expected += 0.0  # open-ended: 0% random chance
+
+        baselines[category] = total_expected / len(tasks)
+
+    return baselines
+
+
+def compute_variance_baseline(
+    condition: Dict[str, Any],
+    tasks: List[Any],
+    client,
+    evaluator: "DualProcessEvaluator",
+    n_subset: int = 50,
+) -> Dict[str, Any]:
+    """
+    Run the same condition (C8) twice on a subset of tasks and measure
+    agreement rate and accuracy difference to establish the noise floor.
+
+    Args:
+        condition: Condition dict (typically C8).
+        tasks: Full task list; first n_subset items are used.
+        client: OpenAI client instance.
+        evaluator: DualProcessEvaluator instance.
+        n_subset: Number of tasks per run (default 50).
+
+    Returns:
+        Dict with agreement_rate, accuracy_run1, accuracy_run2,
+        accuracy_difference, and per-trial details.
+    """
+    subset = tasks[:n_subset]
+
+    print(f"\n[Variance Baseline] Running {condition['id']} twice on {len(subset)} tasks …")
+
+    run1 = run_condition(condition, subset, client, evaluator)
+    run2 = run_condition(condition, subset, client, evaluator)
+
+    n = len(subset)
+    acc1 = sum(t["is_correct"] for t in run1) / n if n else float("nan")
+    acc2 = sum(t["is_correct"] for t in run2) / n if n else float("nan")
+
+    # Agreement: both runs give the same correctness outcome for each item
+    agreements = [r1["is_correct"] == r2["is_correct"] for r1, r2 in zip(run1, run2)]
+    agreement_rate = sum(agreements) / len(agreements) if agreements else float("nan")
+
+    print(f"  Run 1 accuracy: {acc1:.3f}  Run 2 accuracy: {acc2:.3f}")
+    print(f"  Agreement rate: {agreement_rate:.3f}  |Δacc|: {abs(acc1 - acc2):.3f}")
+
+    return {
+        "condition_id": condition["id"],
+        "n_subset": n_subset,
+        "accuracy_run1": acc1,
+        "accuracy_run2": acc2,
+        "accuracy_difference": abs(acc1 - acc2),
+        "agreement_rate": agreement_rate,
+        "run1_trials": run1,
+        "run2_trials": run2,
     }
 
 
@@ -380,6 +472,30 @@ def _print_summary_table(results: Dict, main_effects: Dict, interactions: Dict) 
             f"{summary['temperature']:>5.1f} {summary['prompt']:<12} {acc_str:>7} {summary['n_trials']:>5}"
         )
 
+    # ---- Key comparisons ----
+    print("\n" + "=" * 80)
+    print("KEY COMPARISONS")
+    print("=" * 80)
+
+    def _acc(cid: str) -> float:
+        if cid in results and results[cid]["trials"]:
+            trials = results[cid]["trials"]
+            return sum(t["is_correct"] for t in trials) / len(trials)
+        return float("nan")
+
+    c5_acc = _acc("C5")
+    c8_acc = _acc("C8")
+    c1_acc = _acc("C1")
+
+    if not np.isnan(c5_acc) and not np.isnan(c8_acc):
+        print(f"  [PRIMARY]   C5 vs C8 (same-model, gpt-4o): "
+              f"C5={c5_acc:.3f}  C8={c8_acc:.3f}  delta={c8_acc - c5_acc:+.3f}")
+        print(f"              Interpretation: effect of low-T + CoT within gpt-4o")
+    if not np.isnan(c1_acc) and not np.isnan(c8_acc):
+        print(f"  [SECONDARY] C1 vs C8 (canonical S1 vs S2): "
+              f"C1={c1_acc:.3f}  C8={c8_acc:.3f}  delta={c8_acc - c1_acc:+.3f}")
+        print(f"              Interpretation: full model+temperature+prompt contrast")
+
     print("\n" + "=" * 80)
     print("MAIN EFFECTS")
     print("=" * 80)
@@ -415,15 +531,18 @@ def run_experiment(
     output_dir: str = "results/ablation/",
     dry_run: bool = False,
     condition_ids: List[str] = None,
+    with_variance_baseline: bool = True,
 ) -> Dict[str, Any]:
     """
-    Run the full 2x2x2 factorial ablation experiment.
+    Run the full 2x2x2 factorial ablation experiment (main experiment).
 
     Args:
         n_samples: Number of tasks per category per condition.
         output_dir: Directory to save result JSON files.
         dry_run: If True, run only 1 task per condition for verification.
         condition_ids: List of condition IDs to run (default: all).
+        with_variance_baseline: If True, run C8 a second time on a 50-item
+            subset to establish the noise floor (default: True).
 
     Returns:
         Full results dict.
@@ -454,8 +573,18 @@ def run_experiment(
     conflict_tasks = loader.get_conflict_tasks(n=n_samples, shuffle=True)
     all_tasks = s1_tasks + s2_tasks + conflict_tasks
 
+    tasks_by_category = {
+        "system1": s1_tasks,
+        "system2": s2_tasks,
+        "conflict": conflict_tasks,
+    }
+
     print(f"\nTasks per condition: {len(all_tasks)} "
           f"({len(s1_tasks)} intuitive, {len(s2_tasks)} analytical, {len(conflict_tasks)} conflict)")
+
+    # Compute random baseline (no API calls)
+    random_baseline = compute_random_baseline(tasks_by_category)
+    print(f"\nRandom baselines: " + "  ".join(f"{k}={v:.3f}" for k, v in random_baseline.items()))
 
     # Run each condition
     results: Dict[str, Any] = {}
@@ -494,8 +623,26 @@ def run_experiment(
     main_effects = compute_main_effects(results)
     interactions = compute_interactions(results)
 
-    # Print summary table
+    # Print summary table (includes key comparisons)
     _print_summary_table(results, main_effects, interactions)
+
+    # Variance baseline: run C8 again on a subset to measure noise floor
+    variance_baseline: Optional[Dict[str, Any]] = None
+    if with_variance_baseline and not dry_run:
+        # Only run if C8 was included in this run
+        c8_condition = _CONDITION_INDEX.get("C8")
+        if c8_condition and ("C8" in results or condition_ids is None):
+            variance_baseline = compute_variance_baseline(
+                condition=c8_condition,
+                tasks=all_tasks,
+                client=client,
+                evaluator=evaluator,
+                n_subset=min(50, len(all_tasks)),
+            )
+        else:
+            print("\n[Variance Baseline] Skipped — C8 was not in the active conditions.")
+    elif dry_run:
+        print("\n[Variance Baseline] Skipped in dry-run mode.")
 
     # Assemble full output
     full_output = {
@@ -505,10 +652,33 @@ def run_experiment(
             "n_samples_per_category": n_samples,
             "dry_run": dry_run,
             "conditions_run": [c["id"] for c in active_conditions],
+            "with_variance_baseline": with_variance_baseline,
         },
         "conditions": results,
         "main_effects": main_effects,
         "interactions": interactions,
+        "random_baseline": random_baseline,
+        "variance_baseline": variance_baseline,
+        "key_comparisons": {
+            "primary": {
+                "label": "C5 vs C8 (same-model: gpt-4o, isolates temperature + prompting)",
+                "C5": _accuracy_for_conditions(results, ["C5"]),
+                "C8": _accuracy_for_conditions(results, ["C8"]),
+                "delta_C8_minus_C5": (
+                    _accuracy_for_conditions(results, ["C8"])
+                    - _accuracy_for_conditions(results, ["C5"])
+                ),
+            },
+            "secondary": {
+                "label": "C1 vs C8 (canonical S1 vs S2, all three factors vary)",
+                "C1": _accuracy_for_conditions(results, ["C1"]),
+                "C8": _accuracy_for_conditions(results, ["C8"]),
+                "delta_C8_minus_C1": (
+                    _accuracy_for_conditions(results, ["C8"])
+                    - _accuracy_for_conditions(results, ["C1"])
+                ),
+            },
+        },
     }
 
     # Save JSON
@@ -552,6 +722,11 @@ def _parse_args() -> argparse.Namespace:
         default=None,
         help="Comma-separated condition IDs to run, e.g. --conditions C1,C8 (default: all).",
     )
+    parser.add_argument(
+        "--no_variance_baseline",
+        action="store_true",
+        help="Disable the same-config variance baseline (C8 run twice). Enabled by default.",
+    )
     return parser.parse_args()
 
 
@@ -573,4 +748,5 @@ if __name__ == "__main__":
         output_dir=args.output,
         dry_run=args.dry_run,
         condition_ids=condition_ids,
+        with_variance_baseline=not args.no_variance_baseline,
     )

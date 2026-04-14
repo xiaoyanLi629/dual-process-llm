@@ -2,21 +2,23 @@
 BIBM 2026 Master Experiment Runner
 
 Orchestrates all experiments needed for the paper:
-1. Main experiment (System 1 vs System 2, reuse existing results if available)
-2. Factorial ablation (2x2x2 design)
-3. Multi-model validation (4 model families)
-4. Novel conflict tasks (using the ablation runner with C1 and C8 only)
-5. Human comparison analysis (post-hoc, no API calls)
-6. Statistical analysis (post-hoc, no API calls)
+1. Main experiment — 2x2x2 factorial ablation (8 conditions, core of the paper)
+   - Includes random baseline and same-config variance baseline (C8 x2)
+   - Novel conflict tasks are part of the main dataset (bibm_dataset.json)
+2. Multi-model validation — 4 model families (OpenAI, DeepSeek, Qwen, LLaMA)
+3. Post-hoc analysis — statistical analysis + human comparison (no API calls)
+
+Key comparisons:
+    - C5 vs C8: primary same-model comparison (gpt-4o, isolates T + prompting)
+    - C1 vs C8: canonical S1 vs S2 comparison (all three factors vary)
 
 Usage:
     # Run everything
     python -m src.experiments.run_all_bibm --all --n_samples 100
 
     # Run specific experiments
-    python -m src.experiments.run_all_bibm --experiment ablation --n_samples 50
+    python -m src.experiments.run_all_bibm --experiment main --n_samples 50
     python -m src.experiments.run_all_bibm --experiment multi_model --n_samples 50
-    python -m src.experiments.run_all_bibm --experiment novel_conflict --n_samples 50
 
     # Run only post-hoc analyses (no API calls)
     python -m src.experiments.run_all_bibm --analyze_only --input results/bibm_2026/
@@ -25,10 +27,9 @@ Usage:
     python -m src.experiments.run_all_bibm --all --dry_run
 
 Estimated costs (at n_samples=100):
-    - Ablation: ~4,800 API calls, ~$20-30
-    - Multi-model: ~2,400 API calls per family, ~$15-40 total
-    - Novel conflict: ~300 API calls, ~$2-5
-    Total: ~$40-80
+    - Main experiment (8 conditions + variance baseline): ~5,100 API calls, ~$22-35
+    - Multi-model validation (4 families): ~2,400 API calls per family, ~$15-40 total
+    Total: ~$37-75
 """
 
 import argparse
@@ -48,22 +49,32 @@ sys.path.insert(1, str(project_root / "src"))
 # Sub-experiment wrappers
 # ===========================================================================
 
-def run_ablation(output_dir: Path, n_samples: int = 100, dry_run: bool = False) -> Optional[dict]:
-    """Run the 2x2x2 factorial ablation experiment (all 8 conditions)."""
+def run_main_experiment(output_dir: Path, n_samples: int = 100, dry_run: bool = False) -> Optional[dict]:
+    """
+    Run the main 2x2x2 factorial ablation experiment (all 8 conditions).
+
+    Includes:
+    - Random baseline computed from the task set
+    - Same-config variance baseline (C8 run twice on 50-item subset)
+    - Novel conflict tasks are already embedded in bibm_dataset.json
+    """
     from experiments.ablation_factorial import run_experiment as run_ablation_exp
 
     print("\n" + "=" * 60)
-    print("EXPERIMENT 1: Factorial Ablation (2x2x2)")
+    print("EXPERIMENT 1 (MAIN): 2x2x2 Factorial Ablation")
+    print("  Primary comparison:   C5 vs C8 (same-model, gpt-4o)")
+    print("  Secondary comparison: C1 vs C8 (canonical S1 vs S2)")
     print("=" * 60)
 
-    ablation_out = output_dir / "ablation"
-    ablation_out.mkdir(parents=True, exist_ok=True)
+    main_out = output_dir / "main_experiment"
+    main_out.mkdir(parents=True, exist_ok=True)
 
     return run_ablation_exp(
         n_samples=n_samples,
-        output_dir=str(ablation_out.relative_to(project_root)),
+        output_dir=str(main_out.relative_to(project_root)),
         dry_run=dry_run,
-        condition_ids=None,  # run all 8 conditions
+        condition_ids=None,          # run all 8 conditions
+        with_variance_baseline=True, # always include noise-floor baseline
     )
 
 
@@ -90,32 +101,6 @@ def run_multi_model(
         n_samples=n_samples,
         output_dir=str(mm_out.relative_to(project_root)),
         dry_run=dry_run,
-    )
-
-
-def run_novel_conflict(output_dir: Path, n_samples: int = 50, dry_run: bool = False) -> Optional[dict]:
-    """
-    Run novel conflict task experiment.
-
-    Reuses the ablation runner but executes only the canonical System 1
-    (C1: gpt-4o-mini, high-T, zero-shot) and System 2
-    (C8: gpt-4o, low-T, CoT) conditions so that results are directly
-    comparable with the main paper experiment.
-    """
-    from experiments.ablation_factorial import run_experiment as run_ablation_exp
-
-    print("\n" + "=" * 60)
-    print("EXPERIMENT 3: Novel Conflict Tasks (C1 vs C8)")
-    print("=" * 60)
-
-    nc_out = output_dir / "novel_conflict"
-    nc_out.mkdir(parents=True, exist_ok=True)
-
-    return run_ablation_exp(
-        n_samples=n_samples,
-        output_dir=str(nc_out.relative_to(project_root)),
-        dry_run=dry_run,
-        condition_ids=["C1", "C8"],
     )
 
 
@@ -155,12 +140,13 @@ def run_analysis(output_dir: Path, input_dir: Optional[Path] = None) -> None:
     # ------------------------------------------------------------------
     # 1. Collect candidate result files
     # ------------------------------------------------------------------
-    # Priority order for statistical analysis: ablation > novel_conflict > multi_model
-    ablation_files   = sorted((input_dir / "ablation").glob("*.json"))        if (input_dir / "ablation").is_dir()        else []
-    novel_files      = sorted((input_dir / "novel_conflict").glob("*.json"))   if (input_dir / "novel_conflict").is_dir()   else []
-    mm_files         = sorted((input_dir / "multi_model").glob("*.json"))      if (input_dir / "multi_model").is_dir()      else []
+    # Priority order for statistical analysis:
+    #   main_experiment (factorial ablation) > multi_model > paper_results
+    # Note: novel_conflict tasks are embedded in main_experiment results.
+    main_files  = sorted((input_dir / "main_experiment").glob("*.json")) if (input_dir / "main_experiment").is_dir() else []
+    mm_files    = sorted((input_dir / "multi_model").glob("*.json"))     if (input_dir / "multi_model").is_dir()     else []
     # Also check for a flat paper_results.json in the input directory itself
-    paper_files      = sorted(input_dir.glob("paper_results*.json"))
+    paper_files = sorted(input_dir.glob("paper_results*.json"))
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
@@ -169,7 +155,7 @@ def run_analysis(output_dir: Path, input_dir: Optional[Path] = None) -> None:
     # ------------------------------------------------------------------
     print("\n--- Statistical Analysis ---")
 
-    stat_candidates = ablation_files or novel_files or paper_files
+    stat_candidates = main_files or paper_files
     if stat_candidates:
         stat_file = stat_candidates[-1]  # newest / highest priority
         print(f"  Loading results from: {stat_file}")
@@ -206,12 +192,11 @@ def run_analysis(output_dir: Path, input_dir: Optional[Path] = None) -> None:
     # ------------------------------------------------------------------
     print("\n--- Human-LLM Comparison ---")
 
-    # Prefer ablation or novel_conflict (contain C1/C8 S1 vs S2 data);
+    # Prefer main_experiment (contains all 8 conditions + baselines);
     # fall back to multi-model or paper results.
     hc_candidates: List[Path] = []
     for candidate_dir in [
-        input_dir / "ablation",
-        input_dir / "novel_conflict",
+        input_dir / "main_experiment",
         input_dir / "multi_model",
     ]:
         if candidate_dir.is_dir():
@@ -258,8 +243,8 @@ def main() -> None:
     )
     parser.add_argument(
         "--experiment", type=str,
-        choices=["ablation", "multi_model", "novel_conflict"],
-        help="Run a single named experiment.",
+        choices=["main", "multi_model"],
+        help="Run a single named experiment: 'main' (factorial ablation) or 'multi_model' (validation).",
     )
     parser.add_argument(
         "--analyze_only", action="store_true",
@@ -311,18 +296,15 @@ def main() -> None:
         run_analysis(output_dir, input_dir)
 
     elif args.all:
-        run_ablation(output_dir, args.n_samples, args.dry_run)
+        run_main_experiment(output_dir, args.n_samples, args.dry_run)
         run_multi_model(output_dir, args.n_samples, args.families, args.dry_run)
-        run_novel_conflict(output_dir, args.n_samples // 2, args.dry_run)
         run_analysis(output_dir)
 
     elif args.experiment:
-        if args.experiment == "ablation":
-            run_ablation(output_dir, args.n_samples, args.dry_run)
+        if args.experiment == "main":
+            run_main_experiment(output_dir, args.n_samples, args.dry_run)
         elif args.experiment == "multi_model":
             run_multi_model(output_dir, args.n_samples, args.families, args.dry_run)
-        elif args.experiment == "novel_conflict":
-            run_novel_conflict(output_dir, args.n_samples, args.dry_run)
     else:
         parser.print_help()
 
