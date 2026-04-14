@@ -25,6 +25,7 @@ Usage:
 
 import argparse
 import json
+import os
 import sys
 import time
 import numpy as np
@@ -82,6 +83,18 @@ Respond in JSON format:
 # ============================================================
 # Core run_condition function
 # ============================================================
+def _resolve_model_name(model: str) -> str:
+    """
+    Apply MODEL_PREFIX from environment if set.
+    E.g., MODEL_PREFIX="openai/" turns "gpt-4o" into "openai/gpt-4o".
+    This allows using OpenRouter or other proxy APIs without changing CONDITIONS.
+    """
+    prefix = os.environ.get("MODEL_PREFIX", "")
+    if prefix and not model.startswith(prefix):
+        return prefix + model
+    return model
+
+
 def run_condition(
     condition: Dict[str, Any],
     tasks: List[Any],
@@ -100,7 +113,7 @@ def run_condition(
     Returns:
         List of per-trial result dicts.
     """
-    model = condition["model"]
+    model = _resolve_model_name(condition["model"])
     temperature = condition["temperature"]
     prompt_type = condition["prompt"]
     condition_id = condition["id"]

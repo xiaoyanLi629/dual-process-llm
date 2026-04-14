@@ -11,6 +11,7 @@ Usage:
 
 import argparse
 import json
+import os
 import sys
 import time
 import re
@@ -36,34 +37,62 @@ from evaluation.evaluator import DualProcessEvaluator
 # Model family definitions
 # ============================================================
 
-MODEL_FAMILIES = {
-    "openai": {
-        "system1": {"model": "gpt-4o-mini", "provider_func": "get_openai_client"},
-        "system2": {"model": "gpt-4o", "provider_func": "get_openai_client"},
-    },
-    "deepseek": {
-        "system1": {"model": "deepseek-chat", "provider_func": "get_deepseek_client"},
-        "system2": {
-            "model": "deepseek-reasoner",
-            "provider_func": "get_deepseek_client",
-            "no_temperature": True,
+# When USE_OPENROUTER=1, all families use get_openai_client() (pointed at OpenRouter)
+# with provider-prefixed model names. Otherwise, each family uses its own provider.
+_USE_OPENROUTER = os.environ.get("USE_OPENROUTER", "0") == "1"
+
+if _USE_OPENROUTER:
+    MODEL_FAMILIES = {
+        "openai": {
+            "system1": {"model": "openai/gpt-4o-mini", "provider_func": "get_openai_client"},
+            "system2": {"model": "openai/gpt-4o", "provider_func": "get_openai_client"},
         },
-    },
-    "qwen": {
-        "system1": {"model": "qwen-turbo", "provider_func": "get_dashscope_client"},
-        "system2": {"model": "qwen-max", "provider_func": "get_dashscope_client"},
-    },
-    "llama": {
-        "system1": {
-            "model": "meta-llama/Llama-3.1-8B-Instruct-Turbo",
-            "provider_func": "get_together_client",
+        "deepseek": {
+            "system1": {"model": "deepseek/deepseek-chat", "provider_func": "get_openai_client"},
+            "system2": {
+                "model": "deepseek/deepseek-r1",
+                "provider_func": "get_openai_client",
+                "no_temperature": True,
+            },
         },
-        "system2": {
-            "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-            "provider_func": "get_together_client",
+        "qwen": {
+            "system1": {"model": "qwen/qwen-2.5-7b-instruct", "provider_func": "get_openai_client"},
+            "system2": {"model": "qwen/qwen-2.5-72b-instruct", "provider_func": "get_openai_client"},
         },
-    },
-}
+        "llama": {
+            "system1": {"model": "meta-llama/llama-3.1-8b-instruct", "provider_func": "get_openai_client"},
+            "system2": {"model": "meta-llama/llama-3.3-70b-instruct", "provider_func": "get_openai_client"},
+        },
+    }
+else:
+    MODEL_FAMILIES = {
+        "openai": {
+            "system1": {"model": "gpt-4o-mini", "provider_func": "get_openai_client"},
+            "system2": {"model": "gpt-4o", "provider_func": "get_openai_client"},
+        },
+        "deepseek": {
+            "system1": {"model": "deepseek-chat", "provider_func": "get_deepseek_client"},
+            "system2": {
+                "model": "deepseek-reasoner",
+                "provider_func": "get_deepseek_client",
+                "no_temperature": True,
+            },
+        },
+        "qwen": {
+            "system1": {"model": "qwen-turbo", "provider_func": "get_dashscope_client"},
+            "system2": {"model": "qwen-max", "provider_func": "get_dashscope_client"},
+        },
+        "llama": {
+            "system1": {
+                "model": "meta-llama/Llama-3.1-8B-Instruct-Turbo",
+                "provider_func": "get_together_client",
+            },
+            "system2": {
+                "model": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+                "provider_func": "get_together_client",
+            },
+        },
+    }
 
 # Map provider names to their keys in validate_api_keys() output
 _PROVIDER_KEY_MAP: Dict[str, str] = {
