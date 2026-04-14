@@ -284,6 +284,74 @@ class TaskLoader:
         
         return stats
     
+    def load_novel_conflict_tasks(self, file_path: str = None) -> bool:
+        """
+        Load novel conflict tasks from JSON file.
+
+        These tasks are designed to avoid training data contamination while
+        preserving the same cognitive conflict structure as classic CRT tasks.
+
+        Args:
+            file_path: Path to the novel conflict tasks JSON file.
+                       Defaults to data/novel_conflict_tasks.json in the project root.
+
+        Returns:
+            bool: Whether loading succeeded.
+        """
+        if file_path is None:
+            project_root = Path(__file__).parent.parent.parent
+            file_path = project_root / "data" / "novel_conflict_tasks.json"
+        else:
+            file_path = Path(file_path)
+
+        if not file_path.exists():
+            print(f"Novel conflict tasks file not found: {file_path}")
+            return False
+
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                raw_data = json.load(f)
+
+            novel_tasks = raw_data.get("novel_conflict_tasks", [])
+            count = 0
+
+            for item in novel_tasks:
+                task = self._parse_task(item, TaskType.CONFLICT)
+                # Store intuitive_answer and explanation in metadata
+                task.metadata["intuitive_answer"] = item.get("intuitive_answer", "")
+                task.metadata["explanation"] = item.get("explanation", "")
+                self.dataset["conflict_tasks"].append(task)
+                count += 1
+
+            print(f"Loaded {count} novel conflict tasks from {file_path}")
+            return True
+
+        except Exception as e:
+            print(f"Error loading novel conflict tasks: {e}")
+            return False
+
+    def get_novel_conflict_tasks(self, n: int = None, **kwargs) -> List[Task]:
+        """
+        Get only the novel (non-training-data) conflict tasks.
+
+        These are conflict tasks whose source starts with 'novel_',
+        indicating they were designed to avoid training data contamination.
+
+        Args:
+            n: Number of tasks to return (None returns all).
+            **kwargs: Additional arguments passed to get_tasks (e.g., shuffle).
+
+        Returns:
+            List[Task]: List of novel conflict tasks.
+        """
+        all_conflict = self.get_tasks("conflict_tasks", n=None, **kwargs)
+        novel = [t for t in all_conflict if t.source.startswith("novel_")]
+
+        if n is not None:
+            novel = novel[:n]
+
+        return novel
+
     def get_task_by_id(self, task_id: str) -> Optional[Task]:
         """
         Get a task by its ID.

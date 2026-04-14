@@ -82,6 +82,7 @@ results/
 *.csv
 *.json
 !src/tasks/*.json
+!data/novel_conflict_tasks.json
 
 # Model checkpoints
 *.pt

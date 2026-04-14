@@ -1,0 +1,464 @@
+{
+  "novel_conflict_tasks": [
+    {
+      "id": "novel_crt_01",
+      "question": "A laptop and a mouse cost $310 in total. The laptop costs $300 more than the mouse. How much does the mouse cost?",
+      "intuitive_answer": "$10",
+      "correct_answer": "$5",
+      "task_type": "conflict",
+      "source": "novel_crt_modified",
+      "explanation": "If mouse = x, laptop = x + 300. Then x + (x + 300) = 310, so 2x = 10, x = 5. The mouse costs $5, the laptop costs $305."
+    },
+    {
+      "id": "novel_crt_02",
+      "question": "A jacket and a tie cost $550 in total. The jacket costs $500 more than the tie. How much does the tie cost?",
+      "intuitive_answer": "$50",
+      "correct_answer": "$25",
+      "task_type": "conflict",
+      "source": "novel_crt_modified",
+      "explanation": "If tie = x, jacket = x + 500. Then x + (x + 500) = 550, so 2x = 50, x = 25. The tie costs $25, the jacket costs $525."
+    },
+    {
+      "id": "novel_crt_03",
+      "question": "A bookshelf and a lamp cost $420 in total. The bookshelf costs $400 more than the lamp. How much does the lamp cost?",
+      "intuitive_answer": "$20",
+      "correct_answer": "$10",
+      "task_type": "conflict",
+      "source": "novel_crt_modified",
+      "explanation": "If lamp = x, bookshelf = x + 400. Then x + (x + 400) = 420, so 2x = 20, x = 10. The lamp costs $10, the bookshelf costs $410."
+    },
+    {
+      "id": "novel_crt_04",
+      "question": "A colony of algae in a pond doubles its area every day. It takes 30 days for the algae to cover the entire pond. On which day was the pond half covered?",
+      "intuitive_answer": "Day 15",
+      "correct_answer": "Day 29",
+      "task_type": "conflict",
+      "source": "novel_crt_modified",
+      "explanation": "Since the algae doubles daily, if the pond is fully covered on day 30, it was half covered the day before, day 29."
+    },
+    {
+      "id": "novel_crt_05",
+      "question": "A population of rabbits doubles every month. It reaches carrying capacity after 18 months. When was the population at half of carrying capacity?",
+      "intuitive_answer": "9 months",
+      "correct_answer": "17 months",
+      "task_type": "conflict",
+      "source": "novel_crt_modified",
+      "explanation": "Since the population doubles monthly, if it reaches carrying capacity at 18 months, it was at half capacity one month earlier, at 17 months."
+    },
+    {
+      "id": "novel_crt_06",
+      "question": "If 8 printers take 8 minutes to print 8 documents, how long would it take 80 printers to print 80 documents?",
+      "intuitive_answer": "80 minutes",
+      "correct_answer": "8 minutes",
+      "task_type": "conflict",
+      "source": "novel_crt_modified",
+      "explanation": "Each printer prints 1 document in 8 minutes. With 80 printers printing 80 documents, each printer still handles 1 document, so it takes 8 minutes."
+    },
+    {
+      "id": "novel_crt_07",
+      "question": "If 12 welders take 12 hours to build 12 frames, how long would it take 6 welders to build 6 frames?",
+      "intuitive_answer": "6 hours",
+      "correct_answer": "12 hours",
+      "task_type": "conflict",
+      "source": "novel_crt_modified",
+      "explanation": "Each welder builds 1 frame in 12 hours. With 6 welders building 6 frames, each welder handles 1 frame, so it still takes 12 hours."
+    },
+    {
+      "id": "novel_crt_08",
+      "question": "A guitar and a set of strings cost $260 in total. The guitar costs $250 more than the strings. How much do the strings cost?",
+      "intuitive_answer": "$10",
+      "correct_answer": "$5",
+      "task_type": "conflict",
+      "source": "novel_crt_modified",
+      "explanation": "If strings = x, guitar = x + 250. Then x + (x + 250) = 260, so 2x = 10, x = 5. The strings cost $5, the guitar costs $255."
+    },
+    {
+      "id": "novel_crt_09",
+      "question": "A digital file is being copied. The copy process doubles the amount of data transferred each second. It takes 40 seconds to transfer the entire file. After how many seconds was exactly half the file transferred?",
+      "intuitive_answer": "20 seconds",
+      "correct_answer": "39 seconds",
+      "task_type": "conflict",
+      "source": "novel_crt_modified",
+      "explanation": "Since the data doubles each second, if the full file is transferred at 40 seconds, half was transferred at 39 seconds."
+    },
+    {
+      "id": "novel_crt_10",
+      "question": "If 15 bakers take 15 minutes to bake 15 pies, how many minutes would it take 150 bakers to bake 150 pies?",
+      "intuitive_answer": "150 minutes",
+      "correct_answer": "15 minutes",
+      "task_type": "conflict",
+      "source": "novel_crt_modified",
+      "explanation": "Each baker bakes 1 pie in 15 minutes. With 150 bakers baking 150 pies, each baker handles 1 pie, so it takes 15 minutes."
+    },
+    {
+      "id": "novel_baserate_01",
+      "question": "In a company of 1000 employees, 5 are engineers and 995 are salespeople. Tom is described as quiet, enjoys puzzles, and prefers working alone. What is more likely: Tom is an engineer or a salesperson?",
+      "intuitive_answer": "engineer",
+      "correct_answer": "salesperson",
+      "task_type": "conflict",
+      "source": "novel_baserate",
+      "explanation": "Despite the stereotypical engineer description, the base rate overwhelmingly favors salesperson (995/1000 = 99.5%). Even if the description is 10 times more likely for engineers, the base rate still makes salesperson more probable."
+    },
+    {
+      "id": "novel_baserate_02",
+      "question": "At a large technology conference, 950 of the 1000 attendees are software developers and 50 are professional magicians. David is charismatic, enjoys performing in front of crowds, and practices card tricks in his spare time. What is more likely: David is a software developer or a professional magician?",
+      "intuitive_answer": "professional magician",
+      "correct_answer": "software developer",
+      "task_type": "conflict",
+      "source": "novel_baserate",
+      "explanation": "The base rate strongly favors software developer (950/1000 = 95%). Despite the description fitting a magician stereotype, the overwhelming majority of attendees are developers."
+    },
+    {
+      "id": "novel_baserate_03",
+      "question": "In a group of 800 people, 780 are accountants and 20 are professional athletes. Sarah is tall, muscular, and spends her weekends hiking and rock climbing. What is more likely: Sarah is an accountant or a professional athlete?",
+      "intuitive_answer": "professional athlete",
+      "correct_answer": "accountant",
+      "task_type": "conflict",
+      "source": "novel_baserate",
+      "explanation": "The base rate heavily favors accountant (780/800 = 97.5%). Physical fitness and hobbies like hiking are common in the general population, not unique to athletes."
+    },
+    {
+      "id": "novel_baserate_04",
+      "question": "A hospital emergency room treats 200 patients per day. On average, 190 have minor ailments and 10 have serious conditions. Patient X arrives with chest pain, shortness of breath, and dizziness. Based only on this information, what is more likely: Patient X has a minor ailment or a serious condition?",
+      "intuitive_answer": "serious condition",
+      "correct_answer": "minor ailment",
+      "task_type": "conflict",
+      "source": "novel_baserate",
+      "explanation": "The base rate strongly favors minor ailments (190/200 = 95%). Chest pain, shortness of breath, and dizziness have many benign causes (anxiety, acid reflux, dehydration). Without additional diagnostic information, the prior probability still favors the more common category."
+    },
+    {
+      "id": "novel_baserate_05",
+      "question": "A university has 2000 students. 1960 are enrolled in business programs and 40 are enrolled in creative writing programs. Emma writes poetry in her journal every evening, has won a local short story competition, and reads two novels per week. What is more likely: Emma is a business student or a creative writing student?",
+      "intuitive_answer": "creative writing student",
+      "correct_answer": "business student",
+      "task_type": "conflict",
+      "source": "novel_baserate",
+      "explanation": "The base rate overwhelmingly favors business student (1960/2000 = 98%). Many business students enjoy reading and writing as hobbies regardless of their major."
+    },
+    {
+      "id": "novel_baserate_06",
+      "question": "At a car dealership, 97% of the cars on the lot are sedans and 3% are sports cars. A car is described as red, has a spoiler, and features alloy wheels. What is more likely: the car is a sedan or a sports car?",
+      "intuitive_answer": "sports car",
+      "correct_answer": "sedan",
+      "task_type": "conflict",
+      "source": "novel_baserate",
+      "explanation": "The base rate strongly favors sedan (97% vs 3%). Sedans frequently come in red, and many models offer spoilers and alloy wheels as standard or optional features."
+    },
+    {
+      "id": "novel_baserate_07",
+      "question": "In a neighborhood of 500 households, 490 own dogs and 10 own exotic reptiles. The Johnson family has a large backyard with a heat lamp visible through the window and a sign that says 'Beware of Bites.' What is more likely: the Johnsons own a dog or an exotic reptile?",
+      "intuitive_answer": "exotic reptile",
+      "correct_answer": "dog",
+      "task_type": "conflict",
+      "source": "novel_baserate",
+      "explanation": "The base rate heavily favors dog ownership (490/500 = 98%). Heat lamps have many uses, and 'Beware of Bites' is commonly associated with dogs. The vivid but circumstantial details do not overcome the extreme base rate."
+    },
+    {
+      "id": "novel_baserate_08",
+      "question": "A city has 10,000 taxi cabs. 9,200 are painted green and 800 are painted blue. A witness to an accident identified the cab involved as blue. Testing shows witnesses correctly identify cab color 80% of the time. What is the probability that the cab was actually blue?",
+      "intuitive_answer": "80%",
+      "correct_answer": "approximately 26%",
+      "task_type": "conflict",
+      "source": "novel_baserate",
+      "explanation": "By Bayes' theorem: P(blue|identified blue) = P(identified blue|blue) * P(blue) / P(identified blue) = 0.80 * 0.08 / (0.80 * 0.08 + 0.20 * 0.92) = 0.064 / (0.064 + 0.184) = 0.064 / 0.248 ≈ 0.258 or about 26%. The low base rate of blue cabs (8%) significantly reduces the probability despite the witness's 80% accuracy."
+    },
+    {
+      "id": "novel_baserate_09",
+      "question": "In a town, 99% of the population is healthy and 1% has a particular genetic condition. A genetic test has a 95% detection rate and a 5% false positive rate. If a randomly selected person tests positive, what is the approximate probability they actually have the condition?",
+      "intuitive_answer": "95%",
+      "correct_answer": "approximately 16%",
+      "task_type": "conflict",
+      "source": "novel_baserate",
+      "explanation": "By Bayes' theorem: P(condition|positive) = (0.95 * 0.01) / (0.95 * 0.01 + 0.05 * 0.99) = 0.0095 / (0.0095 + 0.0495) = 0.0095 / 0.059 ≈ 0.161 or about 16%. The low prevalence means most positive results are false positives."
+    },
+    {
+      "id": "novel_baserate_10",
+      "question": "A factory produces 10,000 widgets daily. Machine A produces 9,500 widgets with a 2% defect rate. Machine B produces 500 widgets with a 10% defect rate. A defective widget is randomly selected from the day's output. What is the probability it came from Machine B?",
+      "intuitive_answer": "Machine B is much more likely",
+      "correct_answer": "approximately 21%",
+      "task_type": "conflict",
+      "source": "novel_baserate",
+      "explanation": "Machine A produces 9500 * 0.02 = 190 defective widgets. Machine B produces 500 * 0.10 = 50 defective widgets. Total defective = 240. P(B|defective) = 50/240 ≈ 0.208 or about 21%. Despite Machine B's higher defect rate, Machine A produces most defective widgets due to its much larger output."
+    },
+    {
+      "id": "novel_conjunction_01",
+      "question": "Marcus is 42, has a PhD in marine biology, and volunteers at ocean conservation nonprofits on weekends. Which is more probable?\nA. Marcus works at a bank\nB. Marcus works at a bank and is an active member of an environmental organization",
+      "intuitive_answer": "B",
+      "correct_answer": "A",
+      "options": ["Marcus works at a bank", "Marcus works at a bank and is an active member of an environmental organization"],
+      "task_type": "conflict",
+      "source": "novel_conjunction",
+      "explanation": "P(A and B) can never exceed P(A). The conjunction of two events is always less probable than or equal to either event alone. Even though Marcus's description makes B seem fitting, 'works at a bank' alone is necessarily at least as probable as 'works at a bank AND is an environmentalist.'"
+    },
+    {
+      "id": "novel_conjunction_02",
+      "question": "Priya is 35, grew up on a farm, studied agricultural science, and enjoys cooking with fresh vegetables from her garden. Which is more probable?\nA. Priya is a pharmaceutical sales representative\nB. Priya is a pharmaceutical sales representative who shops exclusively at farmers' markets",
+      "intuitive_answer": "B",
+      "correct_answer": "A",
+      "options": ["Priya is a pharmaceutical sales representative", "Priya is a pharmaceutical sales representative who shops exclusively at farmers' markets"],
+      "task_type": "conflict",
+      "source": "novel_conjunction",
+      "explanation": "The conjunction (A and B) cannot be more probable than A alone. The description makes farming/food interests salient, but that does not make the conjunction more probable than the single event."
+    },
+    {
+      "id": "novel_conjunction_03",
+      "question": "Kenji is 50, was a competitive chess player in college, reads philosophy books, and attends classical music concerts regularly. Which is more probable?\nA. Kenji drives a delivery truck\nB. Kenji drives a delivery truck and plays in a weekend chess club",
+      "intuitive_answer": "B",
+      "correct_answer": "A",
+      "options": ["Kenji drives a delivery truck", "Kenji drives a delivery truck and plays in a weekend chess club"],
+      "task_type": "conflict",
+      "source": "novel_conjunction",
+      "explanation": "The conjunction of 'drives a delivery truck AND plays chess' cannot exceed the probability of just 'drives a delivery truck.' The representativeness of the chess detail is irrelevant to the logical relationship between the probabilities."
+    },
+    {
+      "id": "novel_conjunction_04",
+      "question": "Aisha is 28, recently completed a marathon, teaches yoga on weekends, and has a degree in nutrition science. Which is more probable?\nA. Aisha works as a corporate lawyer\nB. Aisha works as a corporate lawyer and volunteers as a running coach for underprivileged youth",
+      "intuitive_answer": "B",
+      "correct_answer": "A",
+      "options": ["Aisha works as a corporate lawyer", "Aisha works as a corporate lawyer and volunteers as a running coach for underprivileged youth"],
+      "task_type": "conflict",
+      "source": "novel_conjunction",
+      "explanation": "By the conjunction rule, P(lawyer AND running coach) <= P(lawyer). The vivid, representative description of Aisha's fitness interests does not change this mathematical fact."
+    },
+    {
+      "id": "novel_conjunction_05",
+      "question": "Dmitri is 55, emigrated from Russia, was a political dissident in his youth, and writes opinion columns for a local newspaper. Which is more probable?\nA. Dmitri is a high school mathematics teacher\nB. Dmitri is a high school mathematics teacher who is active in local politics",
+      "intuitive_answer": "B",
+      "correct_answer": "A",
+      "options": ["Dmitri is a high school mathematics teacher", "Dmitri is a high school mathematics teacher who is active in local politics"],
+      "task_type": "conflict",
+      "source": "novel_conjunction",
+      "explanation": "P(math teacher AND politically active) cannot exceed P(math teacher). The background description makes political activity seem likely but does not override the conjunction rule."
+    },
+    {
+      "id": "novel_conjunction_06",
+      "question": "Fatima is 31, has an engineering degree, builds robots in her garage, and participates in hackathons. Which is more probable?\nA. Fatima works as a florist\nB. Fatima works as a florist and teaches coding workshops at the local library",
+      "intuitive_answer": "B",
+      "correct_answer": "A",
+      "options": ["Fatima works as a florist", "Fatima works as a florist and teaches coding workshops at the local library"],
+      "task_type": "conflict",
+      "source": "novel_conjunction",
+      "explanation": "The conjunction (florist AND coding teacher) is necessarily less probable than (florist) alone. The description makes the coding aspect feel representative, but it cannot make the conjunction more probable than the single event."
+    },
+    {
+      "id": "novel_conjunction_07",
+      "question": "Oscar is 60, retired military officer, reads spy novels voraciously, and collects vintage maps. Which is more probable?\nA. Oscar volunteers at a public library\nB. Oscar volunteers at a public library and is a member of a military history book club",
+      "intuitive_answer": "B",
+      "correct_answer": "A",
+      "options": ["Oscar volunteers at a public library", "Oscar volunteers at a public library and is a member of a military history book club"],
+      "task_type": "conflict",
+      "source": "novel_conjunction",
+      "explanation": "P(library volunteer AND book club member) <= P(library volunteer). The military background makes the book club seem fitting, but the conjunction cannot exceed the probability of the single component."
+    },
+    {
+      "id": "novel_conjunction_08",
+      "question": "Chen Wei is 38, studied environmental science, cycles to work, composts at home, and has solar panels on his roof. Which is more probable?\nA. Chen Wei is an investment banker\nB. Chen Wei is an investment banker who donates 10% of his salary to climate change organizations",
+      "intuitive_answer": "B",
+      "correct_answer": "A",
+      "options": ["Chen Wei is an investment banker", "Chen Wei is an investment banker who donates 10% of his salary to climate change organizations"],
+      "task_type": "conflict",
+      "source": "novel_conjunction",
+      "explanation": "The conjunction (banker AND climate donor) is necessarily at most as probable as (banker) alone. Environmental interests make the donation detail seem representative, but the conjunction rule holds regardless."
+    },
+    {
+      "id": "novel_conjunction_09",
+      "question": "Lucia is 45, grew up in a musical family, plays three instruments, and has perfect pitch. Which is more probable?\nA. Lucia is a data entry clerk\nB. Lucia is a data entry clerk who plays in a community orchestra on evenings",
+      "intuitive_answer": "B",
+      "correct_answer": "A",
+      "options": ["Lucia is a data entry clerk", "Lucia is a data entry clerk who plays in a community orchestra on evenings"],
+      "task_type": "conflict",
+      "source": "novel_conjunction",
+      "explanation": "P(data entry clerk AND orchestra member) <= P(data entry clerk). Musical talent makes the orchestra detail representative, but the conjunction cannot be more likely than the single event."
+    },
+    {
+      "id": "novel_conjunction_10",
+      "question": "Raj is 33, competed in national debate tournaments, has a law degree, and writes persuasive essays as a hobby. Which is more probable?\nA. Raj works as a zookeeper\nB. Raj works as a zookeeper and serves as a pro bono legal advocate for animal welfare cases",
+      "intuitive_answer": "B",
+      "correct_answer": "A",
+      "options": ["Raj works as a zookeeper", "Raj works as a zookeeper and serves as a pro bono legal advocate for animal welfare cases"],
+      "task_type": "conflict",
+      "source": "novel_conjunction",
+      "explanation": "P(zookeeper AND legal advocate) <= P(zookeeper). The law background and debate skills make the legal advocacy seem natural, but the conjunction rule prevents it from being more probable than the single event."
+    },
+    {
+      "id": "novel_biomed_01",
+      "question": "A screening test for a rare disease (prevalence: 1 in 10,000) has 99% sensitivity and 99% specificity. A randomly selected patient tests positive. What is the approximate probability that the patient actually has the disease?",
+      "intuitive_answer": "99%",
+      "correct_answer": "approximately 1% (0.98%)",
+      "task_type": "conflict",
+      "source": "novel_biomedical",
+      "explanation": "By Bayes' theorem: P(disease|positive) = (0.99 * 0.0001) / (0.99 * 0.0001 + 0.01 * 0.9999) = 0.000099 / (0.000099 + 0.009999) = 0.000099 / 0.010098 ≈ 0.0098 or about 1%. The extremely low prevalence means that even with a highly accurate test, most positive results are false positives."
+    },
+    {
+      "id": "novel_biomed_02",
+      "question": "A new drug trial reports that Drug X reduces the relative risk of heart attack by 50%. The baseline risk of heart attack in the control group over 5 years was 2%. What is the absolute risk reduction provided by Drug X?",
+      "intuitive_answer": "50% reduction (from 50% to near 0%)",
+      "correct_answer": "1 percentage point (from 2% to 1%)",
+      "task_type": "conflict",
+      "source": "novel_biomedical",
+      "explanation": "A 50% relative risk reduction sounds dramatic, but applied to a 2% baseline risk, the absolute risk drops from 2% to 1% — an absolute reduction of just 1 percentage point. The NNT (number needed to treat) is 100, meaning 100 patients must take the drug to prevent one heart attack."
+    },
+    {
+      "id": "novel_biomed_03",
+      "question": "A patient presents with a sudden severe headache. The doctor considers two diagnoses: tension headache (common, affects 40% of adults annually) and subarachnoid hemorrhage (rare, affects 9 per 100,000 annually). Based solely on the symptom of 'sudden severe headache' and population prevalence, which diagnosis is statistically more likely?",
+      "intuitive_answer": "subarachnoid hemorrhage",
+      "correct_answer": "tension headache",
+      "task_type": "conflict",
+      "source": "novel_biomedical",
+      "explanation": "Despite 'sudden severe headache' being a classic presentation of subarachnoid hemorrhage, tension headaches are approximately 4,400 times more common in the population (40% vs 0.009%). Even among patients presenting with severe headache, tension headache is still far more likely without additional diagnostic features."
+    },
+    {
+      "id": "novel_biomed_04",
+      "question": "Hospital A has a higher overall mortality rate (3.4%) than Hospital B (1.95%). However, Hospital A treats a much sicker patient population: 60% of its patients are high-risk, compared to 10% at Hospital B. Among high-risk patients, Hospital A has a 5% mortality rate while Hospital B has a 6% mortality rate. Among low-risk patients, Hospital A has a 1% mortality rate while Hospital B has a 1.5% mortality rate. Which hospital provides better outcomes for any individual patient?",
+      "intuitive_answer": "Hospital B (lower overall mortality)",
+      "correct_answer": "Hospital A (lower mortality in both patient categories)",
+      "task_type": "conflict",
+      "source": "novel_biomedical",
+      "explanation": "This is Simpson's paradox. Hospital A has better outcomes in BOTH categories (5% vs 6% for high-risk; 1% vs 1.5% for low-risk) but appears worse overall because it treats proportionally more high-risk patients. Hospital A overall: 0.6*5% + 0.4*1% = 3.4%. Hospital B overall: 0.1*6% + 0.9*1.5% = 1.95%. Despite Hospital A appearing worse in aggregate, it is actually better in every patient subgroup. The aggregated data reverses the true relationship."
+    },
+    {
+      "id": "novel_biomed_05",
+      "question": "A diagnostic test for a cancer has 95% sensitivity and 90% specificity. The cancer has a prevalence of 0.5% in the general population. If a randomly screened patient tests positive, what is the approximate probability they have cancer?",
+      "intuitive_answer": "90-95%",
+      "correct_answer": "approximately 4.6%",
+      "task_type": "conflict",
+      "source": "novel_biomedical",
+      "explanation": "By Bayes' theorem: P(cancer|positive) = (0.95 * 0.005) / (0.95 * 0.005 + 0.10 * 0.995) = 0.00475 / (0.00475 + 0.0995) = 0.00475 / 0.10425 ≈ 0.046 or about 4.6%. Even with good sensitivity and specificity, the low prevalence means ~95% of positive results are false positives."
+    },
+    {
+      "id": "novel_biomed_06",
+      "question": "A clinical trial for a new treatment reports: 'Patients receiving Treatment Y had a statistically significant (p = 0.03) improvement in symptom scores compared to placebo, with a mean difference of 0.5 points on a 100-point symptom scale.' Does this result indicate a clinically meaningful improvement?",
+      "intuitive_answer": "Yes, it is statistically significant so it must be clinically meaningful",
+      "correct_answer": "No, a 0.5 point difference on a 100-point scale is unlikely to be clinically meaningful despite statistical significance",
+      "task_type": "conflict",
+      "source": "novel_biomedical",
+      "explanation": "Statistical significance (p < 0.05) does not imply clinical significance. With a large enough sample size, even trivially small differences become statistically significant. A 0.5 point difference on a 100-point scale (0.5% of the range) is almost certainly below the minimum clinically important difference (MCID) for any validated symptom scale."
+    },
+    {
+      "id": "novel_biomed_07",
+      "question": "Two treatments are compared for a chronic condition. Treatment A shows 5 dramatic case reports of complete recovery published in medical journals. Treatment B has a randomized controlled trial with 2,000 patients showing a modest 15% improvement over placebo. Based on available evidence, which treatment has stronger evidence of efficacy?",
+      "intuitive_answer": "Treatment A (complete recovery cases)",
+      "correct_answer": "Treatment B (RCT evidence)",
+      "task_type": "conflict",
+      "source": "novel_biomedical",
+      "explanation": "Case reports are the lowest level of clinical evidence. They are subject to publication bias (failures go unreported), selection bias, placebo effect, and spontaneous remission. An RCT with 2,000 patients provides much stronger evidence despite showing only modest improvement, as it controls for confounders and represents the average treatment effect."
+    },
+    {
+      "id": "novel_biomed_08",
+      "question": "A patient is worried because their genetic test shows they carry a gene variant associated with a 3x increased relative risk for a rare autoimmune disorder. The baseline lifetime risk of this disorder in the general population is 0.1%. What is this patient's approximate lifetime risk?",
+      "intuitive_answer": "Very high / around 30-50%",
+      "correct_answer": "approximately 0.3%",
+      "task_type": "conflict",
+      "source": "novel_biomedical",
+      "explanation": "A 3x relative risk increase sounds alarming, but 3 times a 0.1% baseline risk is only 0.3%. The patient's lifetime risk increases from 1 in 1,000 to 3 in 1,000, which is still very low. Relative risk increases are often misinterpreted because people neglect the baseline rate."
+    },
+    {
+      "id": "novel_biomed_09",
+      "question": "A pharmaceutical company reports that their new statin reduces LDL cholesterol by 40%. In the clinical trial, the placebo group had average LDL of 130 mg/dL and the treatment group had average LDL of 78 mg/dL. The trial also showed that cardiovascular events occurred in 3.0% of the placebo group and 2.4% of the treatment group over 5 years. What is the number needed to treat (NNT) to prevent one cardiovascular event?",
+      "intuitive_answer": "About 2-3 patients (since it reduces cholesterol by 40%)",
+      "correct_answer": "167 patients (NNT = 1 / absolute risk reduction = 1 / 0.006)",
+      "task_type": "conflict",
+      "source": "novel_biomedical",
+      "explanation": "The dramatic 40% LDL reduction creates an anchoring effect. But the relevant outcome is cardiovascular events: 3.0% vs 2.4%, an absolute risk reduction of 0.6 percentage points. NNT = 1/0.006 ≈ 167. This means 167 people must take the statin for 5 years to prevent one cardiovascular event."
+    },
+    {
+      "id": "novel_biomed_10",
+      "question": "A medical device company claims their AI diagnostic tool has 99.9% accuracy for detecting a condition that affects 1 in 100,000 people. If the tool screens 1 million people, approximately how many of the positive results will be false positives?",
+      "intuitive_answer": "Very few, since accuracy is 99.9%",
+      "correct_answer": "approximately 999 false positives (vs. about 10 true positives)",
+      "task_type": "conflict",
+      "source": "novel_biomedical",
+      "explanation": "In 1 million people: ~10 truly have the condition (1/100,000 * 1,000,000). With 99.9% accuracy (assuming this means 99.9% specificity): false positive rate = 0.1%. Among 999,990 healthy people, 0.1% = ~1,000 false positives. So roughly 999 false positives vs ~10 true positives. About 99% of positive results are false positives."
+    },
+    {
+      "id": "novel_cognitive_01",
+      "question": "You bought a $200 non-refundable ticket to Concert A weeks ago. On the day of the concert, you feel mildly under the weather. A friend offers you a free ticket to Concert B happening the same night, which you would enjoy more. Which concert should you attend to maximize your enjoyment?",
+      "intuitive_answer": "Concert A (because you already paid $200)",
+      "correct_answer": "Concert B (the $200 is a sunk cost and irrelevant to the decision)",
+      "task_type": "conflict",
+      "source": "novel_cognitive",
+      "explanation": "The $200 is already spent regardless of which concert you attend — it is a sunk cost. The rational decision is to choose whichever concert provides more enjoyment going forward. Since you would enjoy Concert B more, you should attend Concert B."
+    },
+    {
+      "id": "novel_cognitive_02",
+      "question": "A fair coin has been flipped and landed on heads 9 times in a row. What is the probability that the next flip will land on heads?",
+      "intuitive_answer": "Much less than 50% (tails is 'due')",
+      "correct_answer": "50%",
+      "task_type": "conflict",
+      "source": "novel_cognitive",
+      "explanation": "This is the gambler's fallacy. Each coin flip is an independent event. The coin has no memory of previous flips. The probability of heads on any single flip of a fair coin is always 50%, regardless of previous outcomes."
+    },
+    {
+      "id": "novel_cognitive_03",
+      "question": "Which is a more common cause of death in the United States: shark attacks or falling vending machines?",
+      "intuitive_answer": "shark attacks",
+      "correct_answer": "falling vending machines",
+      "task_type": "conflict",
+      "source": "novel_cognitive",
+      "explanation": "Vending machine accidents kill more people annually than shark attacks in the US (approximately 2-3 deaths vs 0-1 death per year). Shark attacks receive disproportionate media coverage, making them seem more common due to the availability heuristic."
+    },
+    {
+      "id": "novel_cognitive_04",
+      "question": "You have invested $50,000 in developing a software product over the past year. It is not yet complete and will need another $20,000 to finish. You discover a competing product that already exists, is superior to what yours would be, and costs only $5,000 to license. What is the economically rational choice?",
+      "intuitive_answer": "Continue developing your own product (to not waste the $50,000 already invested)",
+      "correct_answer": "License the competing product for $5,000",
+      "task_type": "conflict",
+      "source": "novel_cognitive",
+      "explanation": "The $50,000 already spent is a sunk cost and should not factor into the decision. The forward-looking comparison is: spend $20,000 for an inferior product vs. spend $5,000 for a superior product. The rational choice is clearly to license for $5,000."
+    },
+    {
+      "id": "novel_cognitive_05",
+      "question": "In a room of 35 people, what is the approximate probability that at least two people share the same birthday?",
+      "intuitive_answer": "About 10% (since 35 is much less than 365)",
+      "correct_answer": "approximately 81%",
+      "task_type": "conflict",
+      "source": "novel_cognitive",
+      "explanation": "The birthday paradox: with 35 people, the probability of at least one shared birthday is about 81.4%. People dramatically underestimate this because they intuitively compare 35 to 365, but the number of pairwise comparisons is 35*34/2 = 595, which is much larger than intuition suggests."
+    },
+    {
+      "id": "novel_cognitive_06",
+      "question": "A roulette wheel has landed on black 6 times in a row. A gambler must bet on the next spin. Which bet has a higher expected return: betting on red or betting on black?",
+      "intuitive_answer": "Betting on red (it's 'due')",
+      "correct_answer": "Neither — both bets have exactly the same expected return",
+      "task_type": "conflict",
+      "source": "novel_cognitive",
+      "explanation": "Each spin of a roulette wheel is independent. Previous outcomes do not affect future probabilities. Red and black each have the same probability on every spin (18/38 for American roulette, 18/37 for European). The gambler's fallacy makes people believe that red is 'due' after a streak of black."
+    },
+    {
+      "id": "novel_cognitive_07",
+      "question": "You are choosing between two surgeons for an elective procedure. Surgeon A has a 15% complication rate over 1,000 operations, most of which were extremely complex cases. Surgeon B has a 5% complication rate over 200 operations, mostly routine cases. Based only on this information, which surgeon is likely more skilled?",
+      "intuitive_answer": "Surgeon B (lower complication rate)",
+      "correct_answer": "Surgeon A is likely more skilled (the higher complication rate reflects more difficult cases, not less skill)",
+      "task_type": "conflict",
+      "source": "novel_cognitive",
+      "explanation": "This is a case of confounded comparison. Surgeon A's higher complication rate is explained by taking on more complex cases and having a much larger sample size. A surgeon who only takes easy cases will naturally have a lower complication rate. Without controlling for case difficulty, raw complication rates cannot be compared."
+    },
+    {
+      "id": "novel_cognitive_08",
+      "question": "A lottery has odds of 1 in 14 million. You can buy one ticket per week. After buying tickets every week for 20 years (1,040 tickets), by roughly how much have your cumulative odds of ever winning improved compared to buying a single ticket?",
+      "intuitive_answer": "Significantly improved / much better odds after 20 years",
+      "correct_answer": "Your odds improve from about 0.0000071% to about 0.0074% — still essentially zero",
+      "task_type": "conflict",
+      "source": "novel_cognitive",
+      "explanation": "After 1,040 tickets, P(at least one win) = 1 - (1 - 1/14000000)^1040 ≈ 0.0000743 or about 0.0074%. While this is technically about 1,040 times better than a single ticket, your absolute probability has gone from virtually zero to still virtually zero. The human tendency is to feel that persistent effort should substantially improve outcomes."
+    },
+    {
+      "id": "novel_cognitive_09",
+      "question": "Imagine you are given two options:\nOption A: A guaranteed gain of $500\nOption B: A 50% chance of gaining $1,100 and a 50% chance of gaining $0\nWhich option has a higher expected value?",
+      "intuitive_answer": "Option A (the safe choice of $500)",
+      "correct_answer": "Option B (expected value = $550 vs $500)",
+      "task_type": "conflict",
+      "source": "novel_cognitive",
+      "explanation": "Expected value of Option A = $500. Expected value of Option B = 0.5 * $1,100 + 0.5 * $0 = $550. Option B has a higher expected value by $50. Most people choose Option A due to loss aversion and risk aversion (prospect theory), preferring the certain gain even though the gamble has higher expected value."
+    },
+    {
+      "id": "novel_cognitive_10",
+      "question": "A disease kills 1,286 out of every 10,000 people. Another disease kills 24.14 out of every 100 people. Which disease is more deadly?",
+      "intuitive_answer": "The first disease (1,286 sounds like a larger number)",
+      "correct_answer": "The second disease (24.14% mortality vs 12.86% mortality)",
+      "task_type": "conflict",
+      "source": "novel_cognitive",
+      "explanation": "The first disease has a 12.86% mortality rate (1,286/10,000). The second has a 24.14% mortality rate (24.14/100). The large raw number 1,286 anchors attention, but when normalized to the same base, the second disease is nearly twice as deadly. This exploits denominator neglect — the tendency to focus on numerators while ignoring the different denominators."
+    }
+  ]
+}
