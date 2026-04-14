@@ -4,6 +4,7 @@ Dual Process Theory Evaluator
 Evaluates System 1 and System 2 performance on various tasks.
 """
 
+import json
 import re
 from typing import Dict, List, Any, Optional, Tuple
 from datetime import datetime
@@ -81,8 +82,28 @@ class DualProcessEvaluator:
         
         return evaluation
     
-    def _check_correctness(self, 
-                          response: str, 
+    def _extract_json_answer(self, response_text: str) -> str:
+        """
+        Try to extract the 'answer' field from a JSON response.
+        Returns the answer string if found, otherwise returns the full response.
+        """
+        try:
+            data = json.loads(response_text)
+            if isinstance(data, dict) and 'answer' in data:
+                return str(data['answer'])
+        except (json.JSONDecodeError, TypeError):
+            pass
+
+        # Try to find JSON in the response (model might include text before/after)
+        json_match = re.search(r'\{[^{}]*"answer"\s*:\s*"([^"]*)"[^{}]*\}', response_text)
+        if json_match:
+            return json_match.group(1)
+
+        # Fallback: return original response
+        return response_text
+
+    def _check_correctness(self,
+                          response: str,
                           correct_answer: Any,
                           options: List[str] = None,
                           task_type: str = "general") -> bool:
@@ -100,77 +121,80 @@ class DualProcessEvaluator:
         """
         if response is None or correct_answer is None:
             return False
-        
-        response_clean = str(response).lower().strip()
+
+        # Step 1: Extract answer from JSON if possible
+        answer_text = self._extract_json_answer(str(response))
+
+        # Step 2: Clean
+        answer_clean = answer_text.lower().strip()
         correct_clean = str(correct_answer).lower().strip()
-        
-        # Direct match
-        if correct_clean in response_clean:
+
+        # Step 3: Direct match
+        if correct_clean == answer_clean:
             return True
-        
-        # Multiple choice match
+        if correct_clean in answer_clean or answer_clean in correct_clean:
+            return True
+
+        # Step 4: Multiple choice (strict)
         if options is not None:
-            return self._check_multiple_choice(response_clean, correct_answer, options)
-        
-        # Numeric match
+            return self._check_multiple_choice(answer_clean, correct_answer, options)
+
+        # Step 5: Numeric (on extracted answer only)
         if self._is_numeric_task(task_type):
-            return self._check_numeric(response_clean, correct_clean)
-        
-        # Fuzzy match
-        return self._fuzzy_match(response_clean, correct_clean)
-    
-    def _check_multiple_choice(self,
-                               response: str,
-                               correct_answer: Any,
-                               options: List[str]) -> bool:
-        """Check a multiple choice answer."""
-        # If the correct answer is an index
-        if isinstance(correct_answer, int):
-            correct_letter = chr(65 + correct_answer)
-            correct_text = options[correct_answer].lower() if correct_answer < len(options) else ""
-        else:
-            correct_letter = str(correct_answer).upper()
-            correct_text = ""
-            # Attempt to find the corresponding option text
-            for i, opt in enumerate(options):
-                if chr(65 + i) == correct_letter:
-                    correct_text = opt.lower()
-                    break
-        
-        # Check whether the response contains the correct option letter
-        if correct_letter.lower() in response:
-            # Ensure it is not another option
-            for i in range(len(options)):
-                letter = chr(65 + i).lower()
-                if letter in response and letter != correct_letter.lower():
-                    # Response contains multiple options, need more precise matching
-                    pass
-            return True
-        
-        # Check whether the response contains the correct option text
-        if correct_text and correct_text in response:
-            return True
-        
+            return self._check_numeric(answer_clean, correct_clean)
+
+        # Step 6: No fuzzy fallback — if we can't match cleanly, it's wrong
         return False
     
-    def _check_numeric(self, response: str, correct: str) -> bool:
-        """Check a numeric answer."""
-        # Extract numbers
-        response_nums = re.findall(r'-?\d+\.?\d*', response)
+    def _check_multiple_choice(self,
+                               answer: str,
+                               correct_answer: Any,
+                               options: List[str]) -> bool:
+        """Check a multiple choice answer (strict matching)."""
+        # Determine correct letter
+        if isinstance(correct_answer, int):
+            correct_letter = chr(65 + correct_answer).lower()
+        else:
+            correct_letter = str(correct_answer).strip().lower()
+
+        # The answer field should contain just the letter or the option text
+        # Check if answer IS the correct letter (not just contains it)
+        answer_stripped = answer.strip().rstrip('.').lower()
+
+        # Direct letter match: answer is exactly "a", "b", "c", etc.
+        if answer_stripped == correct_letter:
+            return True
+
+        # Answer starts with the correct letter followed by punctuation or space
+        if len(answer_stripped) > 1 and answer_stripped[0] == correct_letter and answer_stripped[1] in '.):, ':
+            return True
+
+        # Check if answer matches the correct option text
+        if isinstance(correct_answer, int) and correct_answer < len(options):
+            correct_text = options[correct_answer].lower().strip()
+            if correct_text in answer or answer in correct_text:
+                return True
+
+        return False
+    
+    def _check_numeric(self, answer: str, correct: str) -> bool:
+        """Check a numeric answer (matches last number in extracted answer field only)."""
+        response_nums = re.findall(r'-?\d+\.?\d*', answer)
         correct_nums = re.findall(r'-?\d+\.?\d*', correct)
-        
+
         if not response_nums or not correct_nums:
             return False
-        
-        # Check whether any numbers match
-        for rn in response_nums:
+
+        # Compare the LAST number in the answer (most likely the final answer)
+        # against all correct numbers
+        try:
+            answer_num = float(response_nums[-1])
             for cn in correct_nums:
-                try:
-                    if abs(float(rn) - float(cn)) < 0.01:
-                        return True
-                except ValueError:
-                    continue
-        
+                if abs(answer_num - float(cn)) < 0.01:
+                    return True
+        except ValueError:
+            pass
+
         return False
     
     def _is_numeric_task(self, task_type: str) -> bool:
@@ -182,20 +206,18 @@ class DualProcessEvaluator:
         return task_type.lower() in numeric_types
     
     def _fuzzy_match(self, response: str, correct: str) -> bool:
-        """Fuzzy matching."""
-        # Simple containment check
+        """Strict fuzzy matching (95% word overlap required). Rarely used since JSON extraction handles most cases."""
         if correct in response:
             return True
-        
-        # Check keyword overlap
+
         correct_words = set(correct.split())
         response_words = set(response.split())
-        
+
         if len(correct_words) > 0:
             overlap = len(correct_words & response_words) / len(correct_words)
-            if overlap > 0.8:
+            if overlap >= 0.95:
                 return True
-        
+
         return False
     
     def evaluate_batch(self, 
