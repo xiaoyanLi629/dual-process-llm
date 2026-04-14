@@ -1,0 +1,462 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{multirow}
+
+% Placeholder command for marking TODOs
+\newcommand{\TODO}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
+
+\begin{document}
+
+\title{Do Large Language Models Think Fast and Slow?\\Simulating Dual-Process Cognition for\\Biomedical Decision Support}
+
+% Anonymous submission
+\author{\IEEEauthorblockN{Anonymous BIBM Submission}
+\IEEEauthorblockA{Paper ID: XXX}}
+
+\maketitle
+
+\begin{abstract}
+Dual-process theory posits that human cognition operates through two complementary systems: fast, intuitive System~1 and slow, analytical System~2. This distinction is especially consequential in clinical medicine, where physicians rely on rapid pattern recognition for routine presentations but engage deliberate analytical reasoning for complex or ambiguous diagnoses. As large language models (LLMs) are increasingly deployed in biomedical workflows---diagnostic support, triage, and clinical decision-making---understanding whether they exhibit analogous cognitive modes becomes critical for safe and effective integration. We present a systematic framework for eliciting dual-process behavioral signatures in LLMs through parameter manipulation along three dimensions: model capacity, sampling temperature, and prompting strategy. In our initial experiments using the GPT-4o family, System~2 configurations significantly outperformed System~1 on analytical tasks (+21.3\%, $p = .042$) but showed no advantage on intuitive tasks (+6.3\%, $p = .11$), consistent with dual-process predictions. System~2 required $3\times$ more tokens, paralleling human cognitive effort asymmetry. We extend this work with a $2 \times 2 \times 2$ factorial ablation to isolate each parameter's contribution, multi-model validation across four LLM families, and novel conflict tasks resistant to training-data memorization. We replace wall-clock response time with token efficiency as a model-intrinsic effort metric. Our findings have direct implications for configuring LLM-based clinical decision support systems: System~2-like configurations are preferable for complex diagnostic reasoning, while System~1-like configurations suffice for routine pattern-matching tasks.
+\end{abstract}
+
+\begin{IEEEkeywords}
+dual-process theory, large language models, clinical decision support, cognitive architecture, chain-of-thought reasoning, biomedical informatics
+\end{IEEEkeywords}
+
+%% ============================================================
+\section{Introduction}
+\label{sec:intro}
+
+Consider the following problem: ``A bat and a ball cost \$1.10 in total. The bat costs \$1.00 more than the ball. How much does the ball cost?'' Most people immediately answer ``10 cents,'' an intuitive response that feels right but is incorrect. The correct answer---5 cents---requires overriding this initial intuition through careful analysis. This classic puzzle from Frederick's Cognitive Reflection Test~\cite{Frederick2005} illustrates a central claim in cognitive science: human cognition operates via at least two distinct modes of thinking.
+
+Kahneman~\cite{Kahneman2011} characterized these as System~1 and System~2. System~1 is fast, automatic, and effortless, relying on heuristics and associative processing. System~2 is slow, deliberate, and effortful, engaging rule-based reasoning and working memory. This dual-process framework has become one of the most influential theories in cognitive science, with broad applications from judgment and decision-making~\cite{Tversky1974} to individual differences in reasoning~\cite{Stanovich2000}.
+
+This distinction is especially consequential in clinical medicine. Physicians routinely rely on dual-process cognition: fast pattern recognition (System~1) enables rapid identification of common presentations---a dermatologist instantly recognizing melanoma, an emergency physician identifying ST-elevation on an ECG. Slow analytical reasoning (System~2) is engaged for complex, ambiguous, or high-stakes diagnoses where deliberate differential diagnosis is essential~\cite{Croskerry2009, Norman2009}. Diagnostic errors frequently arise when System~1 heuristics dominate inappropriately---anchoring on an initial impression, premature closure, or base-rate neglect---without adequate System~2 oversight~\cite{Croskerry2013, Saposnik2016}. Pelaccia et al.~\cite{Pelaccia2011} demonstrated that expert clinical reasoning involves a dynamic interplay between these two systems, with expertise enabling more effective metacognitive monitoring of when to override intuition.
+
+As large language models (LLMs) enter clinical workflows---powering diagnostic support tools, triage systems, and clinical documentation~\cite{Singhal2023, Thirunavukarasu2023, Lee2023}---understanding their cognitive modes becomes critical. If LLMs can be configured to exhibit System~1-like and System~2-like processing, this has direct implications for system design: rapid triage queries may benefit from efficient System~1-like responses, while complex diagnostic reasoning demands the thoroughness of System~2-like processing. Misconfiguring these modes could lead to overconfident snap judgments in complex cases or unnecessarily slow responses in time-critical scenarios.
+
+Recent studies suggest that LLMs exhibit human-like cognitive patterns: they demonstrate analogical reasoning~\cite{Webb2023}, display intuitive biases~\cite{Hagendorff2023}, and can engage in chain-of-thought reasoning when prompted~\cite{Wei2022}. These observations motivate a central question: \textit{Can LLMs be configured to systematically exhibit the distinct behavioral signatures of System~1 and System~2 processing, and what are the implications for biomedical applications?}
+
+We hypothesize that the key characteristics of dual-process cognition---speed-accuracy trade-offs, task-specific performance differences, and effort asymmetry---can be elicited in LLMs through systematic manipulation of model parameters. To test this, we developed a framework operationalizing System~1 and System~2 within LLMs (Fig.~\ref{fig:architecture}). We present initial results from the GPT-4o family and extend the work with three methodological advances: (1)~a $2 \times 2 \times 2$ factorial ablation isolating the contribution of each parameter, (2)~multi-model validation across four LLM families, and (3)~novel conflict tasks resistant to training-data memorization. We replace wall-clock response time with token efficiency as a model-intrinsic effort metric.
+
+\begin{figure}[t]
+\centerline{\includegraphics[width=\columnwidth]{figures/fig0_architecture.png}}
+\caption{Experimental framework for dual-process simulation in LLMs. The pipeline processes task items through parallel System~1 (high temperature, zero-shot) and System~2 (low temperature, chain-of-thought) pathways across three randomized rounds, recording accuracy, confidence, token usage, and reasoning steps.}
+\label{fig:architecture}
+\end{figure}
+
+%% ============================================================
+\section{Background and Related Work}
+\label{sec:background}
+
+\subsection{Dual-Process Theory in Human Cognition}
+
+The idea that human cognition involves multiple processing systems has a long history, dating to William James's distinction between associative and true reasoning~\cite{Evans2013}. Modern dual-process theories emerged from converging evidence across reasoning, judgment, and decision-making. Sloman~\cite{Sloman1996} provided influential empirical evidence for two distinct reasoning systems, while Stanovich and West~\cite{Stanovich2000} developed a comprehensive framework distinguishing System~1 (associative, automatic) from System~2 (rule-based, controlled). Evans~\cite{Evans2008} synthesized decades of research and identified the core attributes distinguishing the two systems (Table~\ref{tab:dual-process-attributes}).
+
+\begin{table}[t]
+\caption{Defining attributes of dual-process cognition~\cite{Evans2008, Evans2013}.}
+\label{tab:dual-process-attributes}
+\centering
+\begin{tabular}{lcc}
+\toprule
+Attribute & System 1 & System 2 \\
+\midrule
+Speed & Fast & Slow \\
+Effort & Effortless & Effortful \\
+Awareness & Unconscious & Conscious \\
+Control & Automatic & Controlled \\
+Capacity & High & Limited \\
+Processing & Parallel & Serial \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+These two systems interact in complex ways. De~Neys~\cite{DeNeys2006} demonstrated that System~2 can detect conflicts with System~1 outputs even when it fails to override them. Pennycook et al.~\cite{Pennycook2015} proposed a three-stage model where initial intuitions trigger (or fail to trigger) analytical engagement.
+
+\subsection{Dual-Process Cognition in Clinical Medicine}
+
+Dual-process theory has been extensively applied to clinical reasoning. Croskerry~\cite{Croskerry2009} proposed a universal model of diagnostic reasoning in which physicians toggle between intuitive (non-analytical) and analytical pathways. Pattern recognition---a System~1 process---allows experienced clinicians to rapidly identify common conditions, but it is also the source of well-documented diagnostic errors: anchoring bias, availability heuristic, and premature closure~\cite{Croskerry2013, Saposnik2016}. Norman and Eva~\cite{Norman2009} showed that diagnostic errors often arise from failure to engage System~2 when System~1 produces an incorrect initial hypothesis. Pelaccia et al.~\cite{Pelaccia2011} demonstrated that expert clinical reasoning involves dynamic interplay between the two systems, with metacognitive monitoring determining when intuition should be overridden.
+
+These findings have direct relevance for LLM-based clinical tools. If LLMs exhibit analogous dual-process behavior, the same failure modes that cause human diagnostic errors---overreliance on pattern matching, insufficient analytical verification---could affect AI-assisted diagnosis.
+
+\subsection{Dual-Process Patterns in LLMs}
+
+The development of LLMs has created opportunities to study cognitive-like phenomena in artificial systems. Binz and Schulz~\cite{Binz2023} systematically tested GPT-3 on classic cognitive psychology tasks, finding human-like performance on risky choice and causal reasoning but deviations in tasks requiring deliberation. Binz et al.~\cite{Binz2025} developed a foundation model capturing human cognition across diverse tasks, demonstrating growing convergence between AI and cognitive modeling. Hagendorff et al.~\cite{Hagendorff2023} documented that LLMs display intuitive behaviors and reasoning biases mirroring human patterns. Itzhak et al.~\cite{Itzhak2024} showed that instruction-tuned models exhibit emergent cognitive biases.
+
+Most relevant to our work, Wei et al.~\cite{Wei2022} found that chain-of-thought prompting substantially improves reasoning performance. Kojima et al.~\cite{Kojima2022} showed this effect emerges even without task-specific examples. However, Liu et al.~\cite{Liu2024} demonstrated that chain-of-thought can \textit{reduce} performance on tasks where deliberation harms human performance---a striking parallel to dual-process predictions. Bellini-Leite~\cite{BelliniLeite2024} offered a comprehensive theoretical overview connecting dual-process theory to LLM reliability. The development of reasoning-focused models like DeepSeek-R1~\cite{DeepSeekAI2025}, which uses reinforcement learning to incentivize extended reasoning chains, represents a deliberate engineering effort to enhance System~2-like capabilities.
+
+In the medical domain, LLMs have demonstrated clinical knowledge at expert levels~\cite{Singhal2023, Nori2023}, and diagnostic reasoning prompts have shown potential for interpretable clinical decision support~\cite{Savage2024}. These advances motivate our investigation: understanding how parameter configuration affects the cognitive mode of LLM responses is essential for deploying them safely in biomedical settings.
+
+%% ============================================================
+\section{Method}
+\label{sec:method}
+
+\subsection{Research Questions}
+
+We designed our study to address four core questions:
+
+\textbf{RQ1 (Performance Patterns):} Do LLM configurations designed to simulate System~1 and System~2 show the predicted performance differences across task types?
+
+\textbf{RQ2 (Effort Asymmetry):} Do the two configurations exhibit the effort asymmetry predicted by dual-process theory, measured through token efficiency rather than wall-clock time?
+
+\textbf{RQ3 (Metacognitive Calibration):} Do the two systems differ in confidence calibration?
+
+\textbf{RQ4 (Generalizability):} Do dual-process patterns generalize across model families and persist on novel conflict tasks? % TODO: Update after multi-model experiments
+
+\subsection{System Configuration}
+
+We operationalized System~1 and System~2 through three parameter dimensions, each grounded in theoretical parallels to human cognition (Table~\ref{tab:system-config}).
+
+\begin{table}[t]
+\caption{Operationalization of System~1 and System~2 in LLMs.}
+\label{tab:system-config}
+\centering
+\begin{tabular}{lcc}
+\toprule
+Parameter & System 1 & System 2 \\
+\midrule
+Model & GPT-4o-mini & GPT-4o \\
+Temperature & 0.9 (high) & 0.2 (low) \\
+Prompting & Zero-shot & Chain-of-thought \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Model Selection.} We used GPT-4o-mini for System~1 and GPT-4o for System~2, reflecting the resource asymmetry in human cognition: System~1 operates with minimal cognitive resources, whereas System~2 requires substantial working memory~\cite{Kahneman2011}.
+
+\textbf{Temperature.} High temperature (0.9) introduces response variability, simulating the probabilistic nature of intuitive judgments. Low temperature (0.2) produces consistent, deterministic outputs characteristic of analytical reasoning.
+
+\textbf{Prompting Strategy.} Zero-shot prompting for System~1 simulates automatic, unreflective processing. Chain-of-thought prompting for System~2 explicitly elicits step-by-step reasoning~\cite{Wei2022}.
+
+The System~1 prompt instructed: ``\textit{You are a fast, intuitive thinker. Respond quickly based on your first impression. Trust your gut feeling.}'' The System~2 prompt instructed: ``\textit{You are a careful, analytical thinker. Think step by step. Break down the problem systematically before reaching a conclusion.}'' Both prompts required a confidence rating (0--1) alongside each response.
+
+\subsection{Factorial Ablation Design}
+\label{sec:factorial}
+
+% TODO: Update with actual results from factorial ablation experiment
+
+A key criticism of the initial design is that model, temperature, and prompting strategy are confounded---all three change simultaneously between System~1 and System~2. To isolate each factor's contribution, we conduct a $2 \times 2 \times 2$ factorial ablation (Table~\ref{tab:factorial}).
+
+\begin{table}[t]
+\caption{$2 \times 2 \times 2$ factorial ablation design. Each cell represents one experimental condition.}
+\label{tab:factorial}
+\centering
+\begin{tabular}{cccc}
+\toprule
+Condition & Model & Temp. & Prompt \\
+\midrule
+C1 (S1) & Mini & High & Zero-shot \\
+C2 & Mini & High & CoT \\
+C3 & Mini & Low & Zero-shot \\
+C4 & Mini & Low & CoT \\
+C5 & Full & High & Zero-shot \\
+C6 & Full & High & CoT \\
+C7 & Full & Low & Zero-shot \\
+C8 (S2) & Full & Low & CoT \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This design enables main-effect estimation for each factor and detection of two-way and three-way interactions. We analyze results using a three-way ANOVA on accuracy with model, temperature, and prompting as fixed factors.
+
+\subsection{Multi-Model Validation}
+\label{sec:multimodel}
+
+% TODO: Update with actual results from multi-model experiments
+
+To assess generalizability beyond a single model family, we replicate the core System~1 vs.\ System~2 comparison across four LLM families:
+
+\begin{enumerate}
+\item \textbf{OpenAI:} GPT-4o-mini (S1) vs.\ GPT-4o (S2)
+\item \textbf{Anthropic:} Claude 3.5 Haiku (S1) vs.\ Claude 3.5 Sonnet (S2)
+\item \textbf{Google:} Gemini 2.0 Flash (S1) vs.\ Gemini 2.0 Pro (S2)
+\item \textbf{Open-source:} Llama 3.1 8B (S1) vs.\ Llama 3.1 70B (S2)
+\end{enumerate}
+
+For each family, the smaller/faster model is configured as System~1 and the larger/more capable model as System~2, using the same temperature and prompting parameters.
+
+\subsection{Task Design}
+
+We developed a task battery spanning three categories, each designed to differentially engage the two processing modes. Tasks were adapted from established cognitive psychology paradigms.
+
+\textbf{Intuitive Tasks} ($n = 200$/round): Pattern completion, semantic associations, common-sense judgments, and rapid categorization. These tasks have clear intuitive answers accessible through pattern matching and associative retrieval, characteristic of System~1 processing.
+
+\textbf{Analytical Tasks} ($n = 200$/round): Multi-step arithmetic, logical deduction, constraint satisfaction, and algorithmic reasoning. These tasks require systematic, step-by-step analysis that cannot be solved through intuition alone.
+
+\textbf{Conflict Tasks} ($n = 200$/round): CRT-style problems, base-rate neglect scenarios, and belief bias tasks. These present situations where intuitive and analytical responses diverge, requiring System~2 to override System~1's initial response~\cite{Frederick2005}.
+
+\subsubsection{Novel Conflict Tasks}
+\label{sec:novel-conflict}
+
+% TODO: Update with actual novel conflict task descriptions and results
+
+To address the concern that classic CRT problems may be memorized from training data, we develop novel conflict tasks with the following properties: (1)~they are structurally isomorphic to established CRT items but use novel surface content unlikely to appear in training corpora; (2)~they present a salient intuitive lure that diverges from the correct analytical answer; and (3)~they are validated through pilot testing to confirm that the intuitive lure is indeed attractive. These novel items are interleaved with classic items to enable direct comparison of memorization effects.
+
+\subsection{Metrics}
+
+We measure the following for each task:
+
+\begin{itemize}
+\item \textbf{Accuracy:} Correctness of the final answer.
+\item \textbf{Confidence:} Model-generated certainty rating (0--1 scale).
+\item \textbf{Token Efficiency:} Total tokens consumed per response. Unlike wall-clock response time, which conflates model architecture with network latency and server load, token usage is a model-intrinsic measure of computational effort directly analogous to the concept of cognitive effort in dual-process theory.
+\item \textbf{Reasoning Steps:} Number of explicit steps in System~2 responses.
+\end{itemize}
+
+Statistical comparisons use independent samples $t$-tests with effect sizes (Cohen's $d$)~\cite{Cohen1988}. For the factorial ablation, we use three-way ANOVA. For multi-model comparisons, we report mixed-effects models with model family as a random effect.
+
+%% ============================================================
+\section{Results}
+\label{sec:results}
+
+\subsection{Initial Experiment: GPT-4o Family}
+
+\subsubsection{Overall Performance}
+
+System~2 significantly outperformed System~1 overall (81.4\% vs.\ 69.9\%, $p < .001$), but this advantage came at substantial computational cost (Table~\ref{tab:main-results}).
+
+\begin{table}[t]
+\caption{Overall performance and processing characteristics (GPT-4o family, $N = 1{,}800$ tasks per system).}
+\label{tab:main-results}
+\centering
+\begin{tabular}{lccc}
+\toprule
+Metric & System 1 & System 2 & Ratio \\
+\midrule
+Accuracy & 69.9\% & \textbf{81.4\%} & $1.16\times$ \\
+Tokens Used & 192.7 & 598.8 & $3.1\times$ \\
+Reasoning Steps & 0 & 8.7 & --- \\
+Confidence & 0.877 & 0.905 & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+System~2 consumed $3.1\times$ more tokens per task, generating an average of 8.7 explicit reasoning steps per response, while System~1 produced direct answers without intermediate reasoning. This effort asymmetry is consistent with dual-process theory: analytical thinking is more accurate but cognitively expensive.
+
+\subsubsection{Task-Specific Performance}
+
+Dual-process theory predicts that System~2 should show its largest advantage on analytical tasks, minimal advantage on intuitive tasks, and intermediate effects on conflict tasks. The observed pattern was consistent with these predictions (Table~\ref{tab:category-results}, Fig.~\ref{fig:category}).
+
+\begin{table}[t]
+\caption{Performance by task category (GPT-4o family).}
+\label{tab:category-results}
+\centering
+\begin{tabular}{lcccc}
+\toprule
+Task Type & System 1 & System 2 & $\Delta$ & $p$ \\
+\midrule
+Intuitive & 49.7\% & 56.0\% & +6.3\% & .113 \\
+Analytical & 72.0\% & \textbf{93.3\%} & +21.3\% & .042 \\
+Conflict & 95.0\% & 96.7\% & +1.7\% & .338 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Analytical Tasks.} System~2 achieved 93.3\% accuracy compared to System~1's 72.0\%, a 21.3 percentage point advantage ($t(398) = -2.04$, $p = .042$). Chain-of-thought prompting and low-temperature sampling improve performance when systematic analysis is required.
+
+\textbf{Intuitive Tasks.} The 6.3\% advantage for System~2 was not statistically significant ($t(398) = -1.59$, $p = .113$). This null effect is theoretically important: analytical processing provides limited benefit when problems can be solved through pattern matching, as dual-process theory predicts.
+
+\textbf{Conflict Tasks.} Both systems performed well (95.0\% vs.\ 96.7\%, $p = .338$). This near-ceiling performance likely reflects familiarity with CRT-style problems in training data, motivating our novel conflict task extension (Section~\ref{sec:novel-conflict}).
+
+\begin{figure}[t]
+\centerline{\includegraphics[width=\columnwidth]{figures/fig2_category_breakdown.png}}
+\caption{Performance by task category. System~2's advantage is largest on analytical tasks and minimal on intuitive tasks. Error bars show $\pm 1$ SD across rounds.}
+\label{fig:category}
+\end{figure}
+
+\subsubsection{Replication Consistency}
+
+The dual-process patterns were consistent across three experimental rounds (Table~\ref{tab:round-results}), supporting reliability.
+
+\begin{table}[t]
+\caption{Accuracy by round showing consistent System~2 advantage.}
+\label{tab:round-results}
+\centering
+\begin{tabular}{lccc}
+\toprule
+& Round 1 & Round 2 & Round 3 \\
+\midrule
+System 1 & 70.3\% & 69.5\% & 69.8\% \\
+System 2 & 82.3\% & 80.5\% & 81.3\% \\
+$\Delta$ & +12.0\% & +11.0\% & +11.5\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Confidence Calibration}
+
+System~1 showed substantial overconfidence, with a 17.8 percentage point gap between confidence and accuracy. System~2's gap was nearly half (9.1\%), indicating better calibration (Table~\ref{tab:confidence}). This pattern is consistent with human research on deliberate processing and metacognitive accuracy.
+
+\begin{table}[t]
+\caption{Confidence calibration metrics (GPT-4o family).}
+\label{tab:confidence}
+\centering
+\begin{tabular}{lcc}
+\toprule
+Metric & System 1 & System 2 \\
+\midrule
+Mean Confidence & 0.877 & 0.905 \\
+Actual Accuracy & 0.699 & 0.814 \\
+Overconfidence Gap & +17.8\% & +9.1\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+System~2 showed \textit{lower} confidence than System~1 on intuitive tasks (0.828 vs.\ 0.866) but \textit{higher} confidence on analytical tasks (0.952 vs.\ 0.899). This crossover interaction suggests task-appropriate calibration: the chain-of-thought process enables appropriate uncertainty when analytical processing cannot improve upon intuition.
+
+\subsubsection{Statistical Summary}
+
+Table~\ref{tab:stats} summarizes all statistical comparisons between System~1 and System~2.
+
+\begin{table}[t]
+\caption{Statistical comparison of System~1 vs.\ System~2 (GPT-4o family).}
+\label{tab:stats}
+\centering
+\begin{tabular}{lccc}
+\toprule
+Comparison & $t$ & $df$ & $p$ \\
+\midrule
+Overall Accuracy & $-4.94$ & 1198 & $<.001$ \\
+Intuitive Accuracy & $-1.59$ & 398 & .113 \\
+Analytical Accuracy & $-2.04$ & 398 & .042 \\
+Conflict Accuracy & $-0.96$ & 398 & .338 \\
+Token Usage & $-156.2$ & 1198 & $<.001$ \\
+Confidence & $-2.89$ & 1198 & .004 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Factorial Ablation Results}
+\label{sec:factorial-results}
+
+% TODO: Update with actual factorial ablation results
+% Expected content:
+% - Main effects of model, temperature, and prompting on accuracy
+% - Two-way interactions (e.g., model x prompting)
+% - Three-way interaction
+% - ANOVA table
+% - Effect sizes for each factor
+% - Key finding: which factor contributes most to the S1/S2 difference?
+
+\TODO{Factorial ablation results to be added after experiment completion. Will include three-way ANOVA table with main effects and interactions for model, temperature, and prompting strategy.}
+
+\subsection{Multi-Model Validation Results}
+\label{sec:multimodel-results}
+
+% TODO: Update with actual multi-model results
+% Expected content:
+% - S1 vs S2 accuracy comparison across 4 model families
+% - Token efficiency comparison across families
+% - Confidence calibration across families
+% - Mixed-effects model results
+% - Key finding: do dual-process patterns generalize?
+
+\TODO{Multi-model validation results to be added. Will include performance comparisons across OpenAI, Anthropic, Google, and open-source model families.}
+
+\subsection{Novel Conflict Task Results}
+\label{sec:novel-conflict-results}
+
+% TODO: Update with actual novel conflict task results
+% Expected content:
+% - Classic vs novel conflict task accuracy
+% - Evidence for/against memorization hypothesis
+% - System 1 vs System 2 performance on novel items
+% - Comparison with classic CRT items
+
+\TODO{Novel conflict task results to be added. Will compare classic CRT items (near-ceiling) with novel structurally isomorphic items to assess memorization effects.}
+
+\subsection{Human Comparison}
+\label{sec:human-comparison}
+
+% TODO: Update with systematic human comparison
+% Expected content:
+% - Human performance on matched tasks (from literature or new data)
+% - LLM vs human comparison table
+% - Effect size comparison (human S1/S2 gap vs LLM S1/S2 gap)
+% - Qualitative comparison of error patterns
+
+\TODO{Systematic human comparison to be added. Will compare LLM dual-process patterns with human behavioral data on matched tasks.}
+
+%% ============================================================
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Dual-Process Architecture in LLMs}
+
+Our results indicate that LLMs can be configured to exhibit behavioral patterns consistent with dual-process cognition, including differential performance across task types, effort asymmetry, and distinct metacognitive signatures. System~2's advantage was largest where dual-process theory predicts analytical processing should help most (analytical tasks: +21.3\%), smaller on conflict tasks (+1.7\%), and absent where intuition should suffice (intuitive tasks: +6.3\%, n.s.).
+
+This finding suggests that the System~1/System~2 distinction may reflect computational trade-offs---between speed and accuracy, between efficiency and thoroughness---that apply to complex reasoning systems, whether biological or artificial. The observed patterns share surface-level similarities with human dual-process cognition. Our System~1 configuration, with high temperature and zero-shot prompting, produces rapid, variable responses analogous to automatic, associative processing~\cite{Sloman1996}. Our System~2 configuration generates sequential reasoning steps consuming more computational resources, paralleling serial, rule-based human computation~\cite{Evans2008}.
+
+% TODO: Expand with factorial ablation interpretation
+% - Which factors matter most?
+% - Is the dual-process pattern driven primarily by prompting, temperature, or model?
+% - What does this tell us about the nature of S1/S2 in LLMs?
+
+\subsection{Token Efficiency as Cognitive Effort}
+
+A key methodological contribution of this work is replacing wall-clock response time---which conflates model computation with network latency and server load---with token efficiency as the primary effort metric. System~2's $3.1\times$ token overhead provides a model-intrinsic measure of computational effort directly analogous to cognitive effort in dual-process theory. This metric is reproducible across hardware configurations and provides a meaningful basis for cross-model comparison.
+
+The effort-accuracy trade-off is consistent with constraints observed in human cognition: careful thinking is more accurate but cognitively expensive~\cite{Kahneman2011}. On intuitive tasks, System~2's additional token expenditure yielded only a 6.3\% improvement (not significant)---a poor return on investment. On analytical tasks, the same investment yielded 21.3\%---justifying the additional resources. This pattern suggests that defaulting to efficient processing when possible may reflect an adaptive strategy for managing limited computational resources.
+
+\subsection{Implications for Biomedical Decision Support}
+
+Our findings have direct implications for LLM-based clinical decision support systems. The dual-process framework provides a principled basis for configuring LLMs in medical settings:
+
+\textbf{Triage and screening:} For rapid, pattern-matching tasks (identifying normal vs.\ abnormal lab values, flagging critical results, initial symptom screening), System~1-like configurations (smaller models, zero-shot prompting) may be adequate and more cost-effective.
+
+\textbf{Diagnostic reasoning:} For complex differential diagnosis, interpreting ambiguous presentations, or evaluating rare conditions, System~2-like configurations (larger models, chain-of-thought prompting) are preferable despite higher computational cost. The better confidence calibration of System~2 is especially important: clinicians need reliable uncertainty estimates to inform their own decision-making~\cite{Croskerry2009}.
+
+\textbf{Metacognitive monitoring:} System~2's better confidence calibration (overconfidence gap of 9.1\% vs.\ 17.8\%) suggests that chain-of-thought configurations may be safer for clinical deployment, as they produce more reliable self-assessments of response quality. Overconfident AI systems in clinical settings could be especially dangerous, reinforcing human anchoring bias rather than mitigating it~\cite{Saposnik2016}.
+
+% TODO: Expand with multi-model implications
+% - Do some model families show better clinical reasoning patterns?
+% - Recommendations for model selection in biomedical applications
+
+\subsection{Addressing Methodological Concerns}
+
+Several methodological concerns from prior work are addressed in this study:
+
+\textbf{Variable confounding.} The initial design confounds model, temperature, and prompting. The $2 \times 2 \times 2$ factorial ablation (Section~\ref{sec:factorial}) isolates each factor's contribution.
+% TODO: Summarize factorial findings here
+
+\textbf{Conflict task ceiling effect.} Near-ceiling performance on classic CRT items (95--97\%) suggests possible memorization. Novel conflict tasks (Section~\ref{sec:novel-conflict}) address this by using items unlikely to appear in training data.
+% TODO: Summarize novel conflict findings here
+
+\textbf{Response time metric.} Wall-clock API response time conflates model computation with external factors. We replace it with token efficiency, a model-intrinsic metric.
+
+\textbf{Single model family.} Multi-model validation (Section~\ref{sec:multimodel}) tests generalizability across four LLM families.
+% TODO: Summarize multi-model findings here
+
+\textbf{Human comparison.} Rather than relying solely on cited literature values, we conduct systematic comparison with human behavioral data on matched tasks (Section~\ref{sec:human-comparison}).
+% TODO: Summarize human comparison findings here
+
+\subsection{Limitations}
+
+Several limitations remain. First, whether LLM dual-process patterns reflect genuine cognitive mechanisms versus statistical regularities remains open. The behavioral signatures we observe are consistent with dual-process theory but do not establish that the same computational principles underlie both human and LLM processing. Second, our framework tests a specific operationalization of System~1 and System~2; other parameter configurations might produce different patterns. Third, the task battery, while spanning three categories, does not cover all domains relevant to clinical reasoning (e.g., image-based diagnosis, temporal reasoning over patient histories). Fourth, confidence ratings are elicited through prompting rather than derived from model internals (e.g., token probabilities), which may limit their reliability as metacognitive measures.
+
+% TODO: Update limitations based on factorial and multi-model findings
+
+%% ============================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+We investigated whether LLMs can exhibit behavioral patterns consistent with dual-process cognition and examined the implications for biomedical decision support. Our results demonstrate that System~2 configurations significantly outperform System~1 on analytical tasks (+21.3\%) but show no advantage on intuitive tasks, with a $3\times$ token efficiency cost. System~2 also exhibits better confidence calibration. These findings indicate that the speed-accuracy trade-off central to human dual-process cognition can be observed in LLMs.
+
+% TODO: Add summary of factorial, multi-model, and novel conflict findings
+
+For biomedical informatics, these findings provide a principled framework for configuring LLM-based clinical tools. Routine pattern-matching tasks can use efficient System~1-like configurations, while complex diagnostic reasoning should employ System~2-like configurations with chain-of-thought prompting---not only for accuracy but for the better-calibrated confidence estimates essential in clinical decision-making. As LLMs become integral to healthcare workflows, understanding and controlling their cognitive modes is critical for safe and effective deployment.
+
+\section*{Acknowledgments}
+
+% TODO: Add acknowledgments
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}
