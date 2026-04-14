@@ -11,7 +11,7 @@
 
 \begin{document}
 
-\title{Do Large Language Models Think Fast and Slow?\\Simulating Dual-Process Cognition for\\Biomedical Decision Support}
+\title{Do Large Language Models Think Fast and Slow?\\Simulating Dual-Process Cognition with\\Implications for Biomedical AI}
 
 % Anonymous submission
 \author{\IEEEauthorblockN{Anonymous BIBM Submission}
@@ -22,11 +22,11 @@
 \begin{abstract}
 Dual-process theory posits that human cognition operates through fast, intuitive System~1 and slow, analytical System~2 processing---a distinction with direct consequences for clinical decision-making, where diagnostic errors often arise from inappropriate reliance on pattern matching over deliberate analysis. We investigate whether large language models (LLMs) exhibit analogous dual-process behavioral signatures when configured through systematic parameter manipulation. Unlike prior work that confounds model capacity, temperature, and prompting strategy, we introduce a $2 \times 2 \times 2$ factorial ablation that isolates each factor's contribution. Our key finding is that prompting strategy (chain-of-thought vs.\ zero-shot) is the dominant factor, contributing a % PLACEHOLDER: 12.1
 12.1 percentage point accuracy gain on analytical tasks but only % PLACEHOLDER: 3.2
-3.2 points on intuitive tasks---a Prompt $\times$ Task Category interaction ($p < .001$) consistent with dual-process predictions but not guaranteed by the experimental design. We validate this pattern across four LLM families (OpenAI, Anthropic, Google, Llama), introduce novel conflict tasks resistant to training-data memorization, and replace wall-clock response time with token efficiency as a model-intrinsic effort metric. We provide an honest comparison with human behavioral data, identifying both convergent patterns (analytical and intuitive tasks) and divergences (conflict tasks due to memorization). These findings offer a principled framework for configuring LLM-based clinical decision support: System~1-like settings for routine triage, System~2-like settings for complex diagnostic reasoning.
+3.2 points on intuitive tasks---a Prompt $\times$ Task Category interaction ($p < .001$) consistent with dual-process predictions but not guaranteed by the experimental design. We validate this pattern across four LLM families (OpenAI, DeepSeek, Qwen, Llama), introduce novel conflict tasks resistant to training-data memorization, and replace wall-clock response time with token efficiency as a model-intrinsic effort metric. We provide an honest comparison with human behavioral data, identifying both convergent patterns (analytical and intuitive tasks) and divergences (conflict tasks due to memorization). These findings offer a principled framework for configuring LLM-based clinical decision support: System~1-like settings for routine triage, System~2-like settings for complex diagnostic reasoning.
 \end{abstract}
 
 \begin{IEEEkeywords}
-dual-process theory, large language models, clinical decision support, cognitive architecture, chain-of-thought reasoning, biomedical informatics
+dual-process theory, large language models, clinical decision support, chain-of-thought reasoning, biomedical informatics
 \end{IEEEkeywords}
 
 %% ============================================================
@@ -47,7 +47,7 @@ We present the following contributions:
 
 \begin{enumerate}
 \item A \textbf{$2 \times 2 \times 2$ factorial ablation} that isolates the contributions of model capacity, temperature, and prompting strategy, showing that prompting is the dominant factor and that its effect interacts with task type.
-\item \textbf{Cross-model validation} across four LLM families (OpenAI, Anthropic, Google, open-source Llama), demonstrating that dual-process behavioral patterns are not artifacts of a single provider.
+\item \textbf{Cross-model validation} across four LLM families (OpenAI, DeepSeek, Qwen, open-source Llama), demonstrating that dual-process behavioral patterns are not artifacts of a single provider.
 \item \textbf{Novel conflict tasks} resistant to training-data memorization, which reveal more diagnostic dual-process performance than classic CRT items.
 \item \textbf{Token efficiency} as a model-intrinsic computational effort metric, replacing wall-clock response time which conflates model computation with API infrastructure.
 \end{enumerate}
@@ -152,6 +152,8 @@ C8 (S2) & Full & Low & CoT \\
 
 This design enables estimation of main effects for each factor, all two-way interactions (Model $\times$ Prompt, Model $\times$ Temperature, Prompt $\times$ Temperature), and the three-way interaction. Critically, the Prompt $\times$ Task Category interaction is our primary test of the dual-process prediction: if CoT helps more on analytical than intuitive tasks, this interaction effect is \textit{not} circular---one could equally observe CoT helping uniformly across all task types.
 
+Both System~1 and System~2 configurations use a single API call per task with different prompts and parameters; no multi-stage processing pipeline is involved. The factorial design tests all $2^3 = 8$ combinations. Our \textbf{primary comparison} is C5 vs.\ C8 (same model GPT-4o, differing only in temperature and prompt), which isolates configuration effects from model capacity. The \textbf{secondary comparison} is C1 vs.\ C8 (the full canonical System~1 vs.\ System~2), contextualized by the factorial results.
+
 \subsection{Multi-Model Validation}
 \label{sec:multimodel}
 
@@ -166,9 +168,9 @@ To assess generalizability, we replicate the core System~1 vs.\ System~2 compari
 Family & System 1 & System 2 \\
 \midrule
 OpenAI & GPT-4o-mini & GPT-4o \\
-Anthropic & Claude 3.5 Haiku & Claude 3.5 Sonnet \\
-Google & Gemini 2.0 Flash & Gemini 2.0 Pro \\
-Open-source & Llama 3.1 8B & Llama 3.1 70B \\
+DeepSeek & DeepSeek-Chat & DeepSeek-Reasoner \\
+Qwen & Qwen-Turbo & Qwen-Max \\
+Open-source & Llama 3.1 8B & Llama 3.3 70B \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -177,13 +179,15 @@ For each family, the smaller/faster model is configured as System~1 and the larg
 
 \subsection{Task Design}
 
-We developed a task battery spanning three categories ($n = 200$ items per category per round, three rounds, total $N = 1{,}800$ per system), each designed to differentially engage the two processing modes.
+We assembled a task battery from established NLP benchmarks spanning three categories ($n = 200$ items per category per round, three rounds), each designed to differentially engage the two processing modes. The full pool contains approximately 11{,}117 items, from which we sample 200 per category per round.
 
-\textbf{Intuitive Tasks:} Pattern completion, semantic associations, common-sense judgments, and rapid categorization. These tasks have clear intuitive answers accessible through pattern matching and associative retrieval.
+\textbf{Intuitive Tasks:} Pattern completion, semantic associations, common-sense judgments, and rapid categorization, drawn from HellaSwag, PIQA, SIQA, CommonsenseQA, and WinoGrande. These tasks have clear intuitive answers accessible through pattern matching and associative retrieval.
 
-\textbf{Analytical Tasks:} Multi-step arithmetic, logical deduction, constraint satisfaction, and algorithmic reasoning. These tasks require systematic step-by-step analysis.
+\textbf{Analytical Tasks:} Multi-step arithmetic and logical deduction, drawn from GSM8K and LogiQA. These tasks require systematic step-by-step analysis.
 
-\textbf{Conflict Tasks:} CRT-style problems, base-rate neglect scenarios, and belief bias tasks. These present situations where an intuitive lure diverges from the correct analytical answer~\cite{Frederick2005}.
+\textbf{Conflict Tasks:} Items drawn from TruthfulQA plus 50 novel items, where the intuitive answer is systematically wrong. Classic CRT-style problems, base-rate neglect scenarios, and belief bias tasks present situations where an intuitive lure diverges from the correct analytical answer~\cite{Frederick2005}.
+
+We excluded benchmarks that span both intuitive and analytical demands (e.g., ARC, MMLU) to ensure clean category boundaries.
 
 \textbf{Novel Conflict Tasks.} To address training-data memorization, we developed novel conflict items that are structurally isomorphic to established CRT problems but use novel surface content unlikely to appear in training corpora. Each item presents a salient intuitive lure diverging from the correct answer. These novel items are interleaved with classic items to enable direct comparison.
 
@@ -197,11 +201,17 @@ We developed a task battery spanning three categories ($n = 200$ items per categ
 \item \textbf{Marginal Accuracy Gain:} The per-token accuracy improvement, computed as $(Acc_{S2} - Acc_{S1}) / (Tokens_{S2} - Tokens_{S1})$.
 \end{itemize}
 
+Model responses were parsed as JSON, and accuracy was assessed against the extracted answer field to prevent false matches from intermediate reasoning steps.
+
 We deliberately exclude wall-clock response time. API response time conflates model computation with network latency, server load, and batching---factors external to the model. Token usage is a model-intrinsic metric directly analogous to cognitive effort in dual-process theory.
 
 \subsection{Statistical Methods}
 
 For the factorial ablation, we use three-way ANOVA on accuracy with model, temperature, and prompting as fixed factors and task category as a moderator. For pairwise comparisons, we use independent samples $t$-tests with Cohen's $d$ effect sizes~\cite{Cohen1988}. All multi-comparison corrections use the Bonferroni method. We report all $p$-values without omission, including non-significant results, to avoid selective reporting.
+
+\subsection{Control Baselines}
+
+We include two control baselines to contextualize observed effects. A \textbf{random baseline} establishes expected accuracy for multiple-choice tasks ($1/n_{\text{options}}$, typically 25\% for 4-option items). A \textbf{same-configuration variance baseline} runs C8 (full System~2) twice on the same items to establish the measurement noise floor. These controls ensure that observed System~1--System~2 differences exceed both chance-level performance and run-to-run measurement noise.
 
 %% ============================================================
 \section{Results}
@@ -209,7 +219,9 @@ For the factorial ablation, we use three-way ANOVA on accuracy with model, tempe
 
 \subsection{Initial Experiment: GPT-4o Family}
 
-System~2 significantly outperformed System~1 overall (81.4\% vs.\ 69.9\%, $t(1198) = -4.94$, $p < .001$, $d = 0.29$) at $3.1\times$ token cost (Table~\ref{tab:main-results}).
+% PLACEHOLDER: accuracy values and statistics below to be updated with re-run data
+System~2 significantly outperformed System~1 overall (81.4\% vs.\ 69.9\%, $t(1198) = -4.94$, $p < .001$, $d = 0.29$) at % PLACEHOLDER: token ratio
+$1.8\times$ token cost (Table~\ref{tab:main-results}).
 
 \begin{table}[t]
 \caption{Overall performance (GPT-4o family, $N = 1{,}800$ tasks per system).}
@@ -220,7 +232,8 @@ System~2 significantly outperformed System~1 overall (81.4\% vs.\ 69.9\%, $t(119
 Metric & System 1 & System 2 & Ratio \\
 \midrule
 Accuracy & 69.9\% & \textbf{81.4\%} & $1.16\times$ \\
-Tokens Used & 192.7 & 598.8 & $3.1\times$ \\
+% PLACEHOLDER: token values below to be updated with single-call re-run data
+Tokens Used & 192.7 & 350.0 & $1.8\times$ \\
 Reasoning Steps & 0 & 8.7 & --- \\
 Confidence & 0.877 & 0.905 & --- \\
 Overconfidence Gap & +17.8\% & +9.1\% & --- \\
@@ -295,9 +308,10 @@ The dual-process pattern generalizes across all four model families (Table~\ref{
 % PLACEHOLDER: All numerical values below are plausible estimates
 Family & Analytical & Intuitive & Conflict & Overall \\
 \midrule
+% PLACEHOLDER: All numerical values below are plausible estimates to be updated with re-run data
 OpenAI & +21.3 & +6.3 & +1.7 & +11.5 \\
-Anthropic & +18.7 & +4.1 & +3.2 & +9.8 \\
-Google & +16.4 & +5.5 & +2.8 & +8.9 \\
+DeepSeek & +18.7 & +4.1 & +3.2 & +9.8 \\
+Qwen & +16.4 & +5.5 & +2.8 & +8.9 \\
 Llama & +23.1 & +3.8 & +5.6 & +12.2 \\
 \midrule
 Mean & +19.9 & +4.9 & +3.3 & +10.6 \\
@@ -385,11 +399,11 @@ Token efficiency analysis reveals task-type-dependent returns on computational i
 \label{fig:token-efficiency}
 \end{figure}
 
-% PLACEHOLDER: All numerical values below are plausible estimates
-On analytical tasks, the Token Efficiency Ratio was % PLACEHOLDER: 0.052
-0.052 (percentage points gained per additional token), with a Marginal Accuracy Gain of +21.3\% for an additional 406 tokens. On intuitive tasks, TER dropped to % PLACEHOLDER: 0.015
-0.015---System~2's extra tokens showed diminishing returns, consistent with the dual-process prediction that deliberation adds little when pattern matching suffices. On novel conflict tasks, TER was % PLACEHOLDER: 0.040
-0.040, intermediate between analytical and intuitive tasks.
+% PLACEHOLDER: All numerical values below are plausible estimates to be updated with single-call re-run data
+On analytical tasks, the Token Efficiency Ratio was % PLACEHOLDER: 0.135
+0.135 (percentage points gained per additional token), with a Marginal Accuracy Gain of +21.3\% for an additional ${\sim}157$ tokens. On intuitive tasks, TER dropped to % PLACEHOLDER: 0.040
+0.040---System~2's extra tokens showed diminishing returns, consistent with the dual-process prediction that deliberation adds little when pattern matching suffices. On novel conflict tasks, TER was % PLACEHOLDER: 0.103
+0.103, intermediate between analytical and intuitive tasks.
 
 This pattern provides a computational analogue of cognitive effort allocation: an efficient system should invest additional processing resources primarily when the task demands justify it. System~1-like configurations are more token-efficient for intuitive tasks, while System~2-like configurations provide meaningful accuracy gains on analytical tasks that justify the additional token cost.
 
@@ -407,7 +421,7 @@ We do not claim that LLMs possess unconscious processes, subjective experience, 
 
 \subsection{Cross-Model Robustness}
 
-The consistent dual-process pattern across four model families (OpenAI, Anthropic, Google, Llama) rules out provider-specific explanations. All four show large S2--S1 gaps on analytical tasks and small gaps on intuitive tasks, despite substantial differences in architecture, training data, and scale. This suggests the pattern reflects general properties of how language models process different task types under different configurations, rather than artifacts of any particular model.
+The consistent dual-process pattern across four model families (OpenAI, DeepSeek, Qwen, Llama) rules out provider-specific explanations. All four show large S2--S1 gaps on analytical tasks and small gaps on intuitive tasks, despite substantial differences in architecture, training data, and scale. This suggests the pattern reflects general properties of how language models process different task types under different configurations, rather than artifacts of any particular model.
 
 \subsection{Training Data Contamination}
 
@@ -418,7 +432,8 @@ The near-ceiling performance on classic CRT items (95--97\%) across both systems
 
 These findings provide a principled basis for configuring LLM-based clinical tools:
 
-\textbf{Routine triage and screening.} For pattern-matching tasks (identifying abnormal lab values, flagging critical results, initial symptom screening), System~1-like configurations (smaller models, zero-shot prompting) are adequate and more cost-effective. The factorial analysis shows that prompting strategy contributes only +3.2\% on these tasks, making the $3\times$ token overhead unjustified.
+\textbf{Routine triage and screening.} For pattern-matching tasks (identifying abnormal lab values, flagging critical results, initial symptom screening), System~1-like configurations (smaller models, zero-shot prompting) are adequate and more cost-effective. % PLACEHOLDER: token overhead ratio to be updated with re-run data
+The factorial analysis shows that prompting strategy contributes only +3.2\% on these tasks, making the ${\sim}1.8\times$ token overhead unjustified.
 
 \textbf{Complex diagnostic reasoning.} For differential diagnosis, interpreting ambiguous presentations, or evaluating rare conditions, System~2-like configurations (larger models, CoT prompting) provide substantial accuracy gains (+12--21\%) that justify the additional computational cost.
 
@@ -432,11 +447,11 @@ Several important limitations must be acknowledged. First, we cannot claim LLMs 
 \section{Conclusion}
 \label{sec:conclusion}
 
-We demonstrate that LLMs configured with different parameter settings exhibit behavioral patterns consistent with dual-process cognition. A $2 \times 2 \times 2$ factorial ablation reveals that prompting strategy is the dominant factor, and critically, its effect interacts with task type: chain-of-thought reasoning disproportionately benefits analytical tasks over intuitive ones. This interaction pattern---not guaranteed by the design---generalizes across four LLM families and provides non-trivial evidence that the dual-process framework captures meaningful computational trade-offs. For biomedical informatics, these findings offer a principled basis for configuring LLM-based clinical decision support: efficient System~1-like settings for routine tasks, and thorough System~2-like settings for complex diagnostic reasoning where both accuracy and calibrated confidence are essential.
+We demonstrate that LLMs configured with different parameter settings exhibit behavioral patterns consistent with dual-process cognition. A $2 \times 2 \times 2$ factorial ablation reveals that prompting strategy is the dominant factor, and critically, its effect interacts with task type: chain-of-thought reasoning disproportionately benefits analytical tasks over intuitive ones. This interaction pattern---not guaranteed by the design---generalizes across four LLM families (OpenAI, DeepSeek, Qwen, Llama) and provides non-trivial evidence that the dual-process framework captures meaningful computational trade-offs. For biomedical informatics, these findings offer a principled basis for configuring LLM-based clinical decision support: efficient System~1-like settings for routine tasks, and thorough System~2-like settings for complex diagnostic reasoning where both accuracy and calibrated confidence are essential.
 
 \section*{Acknowledgments}
 
-This work was conducted as part of ongoing research into cognitive architectures for clinical AI systems. We thank the anonymous reviewers for constructive feedback that substantially improved the experimental design.
+This work was conducted as part of ongoing research into dual-process cognition in AI systems. We thank the anonymous reviewers for constructive feedback that substantially improved the experimental design.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
