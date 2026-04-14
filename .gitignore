@@ -95,3 +95,36 @@ tmp/
 temp/
 *.tmp
 
+
+# Data files (keep download script)
+data/raw/
+data/processed/*.json
+!data/download_data.py
+
+# IEEE manuscript build artifacts
+IEEE_manuscript/*.pdf
+IEEE_manuscript/*.synctex.gz
+IEEE_manuscript/*.aux
+IEEE_manuscript/*.bbl
+IEEE_manuscript/*.blg
+IEEE_manuscript/*.log
+IEEE_manuscript/*.out
+
+# Earlier manuscript build artifacts
+Do_Large_Language_Models_Think_Fast_and_Slow/*.pdf
+Do_Large_Language_Models_Think_Fast_and_Slow/*.aux
+Do_Large_Language_Models_Think_Fast_and_Slow/*.bbl
+Do_Large_Language_Models_Think_Fast_and_Slow/*.bcf
+Do_Large_Language_Models_Think_Fast_and_Slow/*.blg
+Do_Large_Language_Models_Think_Fast_and_Slow/*.fdb_latexmk
+Do_Large_Language_Models_Think_Fast_and_Slow/*.fls
+Do_Large_Language_Models_Think_Fast_and_Slow/*.log
+Do_Large_Language_Models_Think_Fast_and_Slow/*.out
+Do_Large_Language_Models_Think_Fast_and_Slow/*.run.xml
+Do_Large_Language_Models_Think_Fast_and_Slow/*.synctex.gz
+
+# Review PDFs (private)
+Reviews*.pdf
+
+# Plan docs (internal)
+docs/
