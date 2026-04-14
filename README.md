@@ -1,6 +1,6 @@
 # Dual Process Theory in Large Language Models
 
-This repository contains the code and experiments for investigating dual process theory (System 1 vs System 2 thinking) in Large Language Models.
+This repository contains the code and experiments for investigating dual process theory (System 1 vs System 2 thinking) in Large Language Models. Target venue: **IEEE BIBM 2026**.
 
 ## Overview
 
@@ -9,7 +9,7 @@ Dual Process Theory, proposed by Kahneman and Tversky, distinguishes between two
 - **System 1**: Fast, intuitive, automatic thinking
 - **System 2**: Slow, deliberate, analytical thinking
 
-This project implements and evaluates these two cognitive systems using LLMs, comparing their performance on various cognitive tasks and benchmarking against human cognitive psychology data.
+This project implements and evaluates these two cognitive systems using LLMs, comparing their performance on various cognitive tasks and benchmarking against human cognitive psychology data. Key contributions include a **2x2x2 factorial ablation** isolating model size, temperature, and prompting strategy, **multi-model validation** across 4 LLM families, and **novel conflict tasks** resistant to training data memorization.
 
 ## Project Structure
 
@@ -21,17 +21,29 @@ This project implements and evaluates these two cognitive systems using LLMs, co
 │   │   └── actr_buffers.py # ACT-R cognitive architecture components
 │   ├── tasks/             # Task definitions and loaders
 │   │   ├── crt_tasks.py   # Cognitive Reflection Test tasks
+│   │   ├── novel_conflict_tasks.py  # Novel conflict tasks (50+)
 │   │   ├── logical_reasoning.py
 │   │   ├── math_reasoning.py
 │   │   └── commonsense_tasks.py
+│   ├── experiments/       # BIBM 2026 experiment scripts
+│   │   ├── ablation_factorial.py    # 2x2x2 factorial ablation
+│   │   ├── multi_model.py           # Cross-model validation
+│   │   ├── human_comparison.py      # Human-LLM pattern comparison
+│   │   ├── statistical_analysis.py  # Comprehensive statistics
+│   │   └── run_all_bibm.py          # Master experiment runner
 │   ├── evaluation/        # Evaluation metrics and experiment runners
 │   │   ├── evaluator.py
 │   │   ├── metrics.py
 │   │   ├── visualizer.py
 │   │   └── experiment_runner.py
-│   ├── run_experiment.py  # Main experiment script
+│   ├── visualization/     # Publication figure generation
+│   │   └── bibm_figures.py
+│   ├── run_experiment.py  # Original experiment script
 │   └── run_parallel_experiment.py
+├── IEEE_manuscript/       # IEEE BIBM 2026 paper (target venue)
+├── data/                  # Task datasets
 ├── results/               # Experiment results and figures
+└── Do_Large_Language_Models_Think_Fast_and_Slow/  # CogSci submission (archived)
 ```
 
 ## Key Features
@@ -79,45 +91,42 @@ def get_model_config():
 
 ## Usage
 
-### Quick Test
+### BIBM 2026 Experiments (Recommended)
+
+```bash
+# Dry run — verify setup (1 sample per condition, no real cost)
+python -m src.experiments.run_all_bibm --all --dry_run
+
+# Run factorial ablation only
+python -m src.experiments.run_all_bibm --experiment ablation --n_samples 100
+
+# Run multi-model validation
+python -m src.experiments.run_all_bibm --experiment multi_model --n_samples 100
+
+# Run all experiments
+python -m src.experiments.run_all_bibm --all --n_samples 100
+
+# Post-hoc analysis only (no API calls)
+python -m src.experiments.run_all_bibm --analyze_only --input results/bibm_2026/
+```
+
+### Generate Publication Figures
+
+```bash
+# From experiment results
+python -m src.visualization.bibm_figures --input results/bibm_2026/ --output IEEE_manuscript/figures/
+
+# With sample data (for layout testing)
+python -m src.visualization.bibm_figures --sample --output IEEE_manuscript/figures/
+```
+
+### Legacy Experiments
+
 ```bash
 python src/run_experiment.py --experiment quick_test --n_samples 10
-```
-
-### Full Experiment
-```bash
 python src/run_experiment.py --experiment full --n_samples 100
-```
-
-### Paper-Level Experiments
-```bash
-# Quick validation
-python src/run_experiment.py --experiment paper --mode quick_validation
-
-# Full paper run (ICLR/NeurIPS standard)
-python src/run_experiment.py --experiment paper --mode full
-```
-
-### Ablation Study
-```bash
-python src/run_experiment.py --experiment ablation --n_samples 50
-```
-
-### Parallel Execution
-```bash
 python src/run_parallel_experiment.py --mode paper --workers 4
 ```
-
-## Experiment Types
-
-| Experiment | Description | Samples |
-|------------|-------------|---------|
-| `quick_test` | Fast validation | 10/category |
-| `full` | Complete experiment | 100/category |
-| `ablation` | Variable isolation | 50/category |
-| `category` | Per-category analysis | 100/category |
-| `stepped` | Factor contribution | 30/category |
-| `paper` | Publication-ready | 200/category |
 
 ## Results
 
@@ -140,11 +149,11 @@ We compare against established cognitive psychology benchmarks:
 If you use this code in your research, please cite:
 
 ```bibtex
-@article{anonymous2026dual,
-  title={Dual Process Theory in Large Language Models: 
-         Investigating System 1 and System 2 Thinking},
+@inproceedings{anonymous2026dual,
+  title={Do Large Language Models Think Fast and Slow? 
+         Simulating Dual-Process Cognition for Biomedical Decision Support},
   author={Anonymous},
-  journal={Under Review},
+  booktitle={IEEE International Conference on Bioinformatics and Biomedicine (BIBM)},
   year={2026}
 }
 ```
