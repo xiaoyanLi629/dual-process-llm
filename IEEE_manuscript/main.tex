@@ -330,31 +330,29 @@ Overall conflict category & 83.0 & 93.5 & +10.5 & .012 \\
 
 On conflict tasks, System~2 outperformed System~1 by 10.5 percentage points ($t(198) = 2.53$, $p = .012$, $d = 0.36$). The conflict category includes novel items designed to resist training-data memorization. These novel items, interleaved with classic items, help ensure that observed performance reflects genuine reasoning rather than memorization of widely-published CRT items.
 
-\subsection{Human--LLM Comparison}
+\subsection{Qualitative Comparison with Human Cognition}
 \label{sec:human-comparison}
 
-We compared LLM dual-process patterns with human behavioral data from the literature~\cite{Frederick2005, Pennycook2015} using matched task categories (Table~\ref{tab:human-comparison}).
+We offer a \textit{qualitative} comparison between LLM and human dual-process patterns (Table~\ref{tab:human-comparison}). This comparison is necessarily limited: the human data comes from published cognitive psychology studies~\cite{Frederick2005, Stanovich2000, Pennycook2015} using different tasks, populations, and operationalizations of System~1/System~2 (typically time-pressure vs.\ untimed conditions), whereas LLM ``System~1'' and ``System~2'' are defined by parameter configurations. We do not claim these are equivalent constructs. The comparison examines only whether the \textit{directional pattern}---where S2 helps most---is similar.
 
 \begin{table}[t]
-\caption{Human vs.\ LLM System~2 minus System~1 accuracy gaps (\%). Human S1/S2 values are from time-pressure (S1) vs.\ untimed (S2) conditions in cited studies. LLM values averaged across 4 families.}
+\caption{Directional comparison of human and LLM dual-process patterns. Human S2--S1 gaps are approximate ranges from published studies with different tasks and populations. LLM gaps averaged across 4 model families. This comparison is qualitative only.}
 \label{tab:human-comparison}
 \centering
-\begin{tabular}{lccc}
+\begin{tabular}{lccl}
 \toprule
-Task Category & Human $\Delta$ & LLM $\Delta$ & Pattern \\
+Category & Human $\Delta$ & LLM $\Delta$ & Direction \\
 \midrule
-Intuitive & +3.1 & +10.2 & Convergent \\
-Analytical & +24.6 & +41.0 & Convergent \\
-Conflict & +31.2 & +9.2 & Divergent \\
+Intuitive & $\sim$+3\% & +10.2\% & Same (both small) \\
+Analytical & $\sim$+25\% & +41.0\% & Same (both large) \\
+Conflict & $\sim$+31\% & +9.2\% & Opposite \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\textbf{Convergent patterns.} On both intuitive and analytical tasks, humans and LLMs show qualitatively similar dual-process patterns: moderate S2--S1 gaps on intuitive tasks (+10.2 points) and large gaps on analytical tasks (+41.0 points). The direction and relative magnitude are consistent, with analytical gaps substantially exceeding intuitive gaps in both humans and LLMs.
+Both humans and LLMs show the smallest S2 advantage on intuitive tasks and the largest on tasks requiring deliberate reasoning. However, the magnitudes differ substantially (e.g., LLM analytical gap is +41.0\% vs.\ human $\sim$+25\%), and the \textit{ordering} diverges on conflict tasks: humans show their largest S2--S1 gap on conflict tasks ($\sim$+31\%), whereas LLMs show a small gap (+9.2\%), likely because LLMs have encountered classic conflict items (e.g., CRT problems) during pre-training.
 
-\textbf{Divergent patterns.} On conflict tasks, humans show a large S2--S1 gap ($\sim$31 points), reflecting the difficulty of overriding strong intuitive lures under time pressure. LLMs show a smaller gap (+9.2 points), likely reflecting partial memorization of widely-published conflict items from training data, though the inclusion of 50 novel items in the conflict category mitigates this concern.
-
-We emphasize that human benchmarks are drawn from published studies with different populations, task formats, and operationalizations of System~1/System~2 (typically time-pressure vs.\ untimed conditions). This comparison is therefore qualitative---illustrating convergent and divergent patterns---rather than a precise quantitative match.
+This divergence is itself informative: it suggests that LLM ``dual-process'' patterns arise from different mechanisms than human cognition. A rigorous comparison would require testing humans and LLMs on \textit{identical} tasks under matched conditions, which we leave to future work.
 
 \subsection{Token Efficiency}
 \label{sec:token-efficiency}

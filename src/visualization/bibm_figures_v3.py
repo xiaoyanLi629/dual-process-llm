@@ -698,12 +698,12 @@ def _draw_source_heatmap(ax, matrix, row_labels, col_labels, title,
         if start > 0:
             ax.axhline(y=start - 0.5, color=COLORS['text'], linewidth=1.2,
                        linestyle='-', alpha=0.7, zorder=5)
-        # Category label on the right
+        # Category label on the left (outside the heatmap, avoids colorbar overlap)
         mid = (start + end) / 2
         color = cat_colors_map.get(cat_label, COLORS['text'])
-        ax.text(n_cols + 0.15, mid, cat_label, ha='left', va='center',
+        ax.text(-0.8, mid, cat_label, ha='right', va='center',
                 fontsize=7, fontweight='bold', color=color,
-                fontfamily='serif')
+                fontfamily='serif', clip_on=False)
 
     # Grid lines
     ax.set_xticks(np.arange(n_cols + 1) - 0.5, minor=True)
@@ -717,17 +717,17 @@ def _draw_source_heatmap(ax, matrix, row_labels, col_labels, title,
     # Group headers (e.g., GPT-4o-mini / GPT-4o brackets above columns)
     if group_headers:
         for label, center_x, x_left, x_right in group_headers:
-            ax.text(center_x, -1.6, label, ha='center', va='bottom',
+            ax.text(center_x, -2.2, label, ha='center', va='bottom',
                     fontsize=7, fontweight='bold', color=COLORS['dark'],
                     fontfamily='serif', clip_on=False)
     if group_brackets:
         for x_left, x_right, _ in group_brackets:
-            ax.plot([x_left, x_right], [-1.1, -1.1], color=COLORS['dark'],
+            ax.plot([x_left, x_right], [-1.5, -1.5], color=COLORS['dark'],
                     linewidth=0.8, clip_on=False, zorder=10)
 
     # Title
     ax.set_title(title, fontsize=9, fontweight='bold', fontfamily='serif',
-                 color=COLORS['text'], pad=25)
+                 color=COLORS['text'], pad=35)
 
     return im
 
@@ -891,11 +891,10 @@ def plot_fig7_trial_matrix(output_path: Path, results_path: str = None):
         ax_b.axvline(x=fi * 2 - 0.5, color=COLORS['text'], linewidth=1.0,
                      linestyle='-', alpha=0.4, zorder=5)
 
-    # Shared colorbar
-    cbar = fig.colorbar(im_a, ax=[ax_a, ax_b], shrink=0.7, pad=0.08, aspect=30)
-    cbar.set_label('Accuracy (%)', fontsize=8)
-    cbar.ax.tick_params(labelsize=7)
-    cbar.outline.set_linewidth(0.5)
+    # Shared colorbar — increase pad to prevent overlap with category labels
+    cbar = fig.colorbar(im_a, ax=[ax_a, ax_b], shrink=0.6, pad=0.12, aspect=25)
+    cbar.set_label('Accuracy (%)', fontsize=8, labelpad=10)
+    cbar.ax.tick_params(labelsize=6, pad=3)
 
     out_file = output_path / 'fig7_trial_matrix.pdf'
     fig.savefig(out_file, dpi=DPI, bbox_inches='tight', facecolor='white')
