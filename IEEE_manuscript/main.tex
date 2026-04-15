@@ -244,7 +244,7 @@ The task-specific pattern was consistent with dual-process predictions: System~2
 \subsection{Factorial Ablation: Main Effects}
 \label{sec:factorial-results}
 
-The factorial ablation reveals the relative contribution of each parameter (Fig.~\ref{fig:main-effects}, Table~\ref{tab:main-effects}).
+The factorial ablation reveals the relative contribution of each parameter (Table~\ref{tab:main-effects}).
 
 \begin{table}[t]
 \caption{Main effects from $2 \times 2 \times 2$ factorial ablation (accuracy gain, averaged over other factors). Effect sizes are partial $\eta^2$.}
@@ -261,12 +261,6 @@ Temp.\ (Low) & +1.8\% & +1.3\% & $-0.3$\% & +0.9\% & .008 \\
 \end{tabular}
 \end{table}
 
-\begin{figure}[t]
-\centerline{\includegraphics[width=\columnwidth]{figures/fig3_main_effects.png}}
-\caption{Main effects of each factor (prompting, model, temperature) on accuracy, broken down by task category. Prompting strategy shows the largest effect, particularly on analytical tasks.}
-\label{fig:main-effects}
-\end{figure}
-
 \textbf{Prompting strategy} is the dominant factor, contributing
 +16.6 percentage points overall ($F(1, 4792) = 42.1$, $p < .001$, $\eta^2_p = .081$). This effect is strongly moderated by task category: CoT yields
 +34.2 points on analytical tasks but only
@@ -276,13 +270,7 @@ Temp.\ (Low) & +1.8\% & +1.3\% & $-0.3$\% & +0.9\% & .008 \\
 
 \subsection{Factorial Ablation: Interactions}
 
-The Prompt $\times$ Task Category interaction is the central finding (Fig.~\ref{fig:factorial}).
-
-\begin{figure*}[t]
-\centerline{\includegraphics[width=\textwidth]{figures/fig2_factorial_heatmap.png}}
-\caption{Factorial ablation results. Left: accuracy across all 8 conditions by task category. Right: Prompt $\times$ Task Category interaction showing that CoT disproportionately benefits analytical tasks. Error bars show $\pm 1$ SE.}
-\label{fig:factorial}
-\end{figure*}
+The Prompt $\times$ Task Category interaction is the central finding.
 
 The Prompt $\times$ Task Category interaction was significant ($F(2, 4792) = 18.4$, $p < .001$, $\eta^2_p = .046$): CoT improved analytical accuracy by
 34.2 points but intuitive accuracy by only
@@ -346,7 +334,7 @@ On conflict tasks, System~2 outperformed System~1 by 10.5 percentage points ($t(
 \subsection{Human--LLM Comparison}
 \label{sec:human-comparison}
 
-We compared LLM dual-process patterns with human behavioral data from the literature~\cite{Frederick2005, Pennycook2015} using matched task categories (Table~\ref{tab:human-comparison}, Fig.~\ref{fig:human-comparison}).
+We compared LLM dual-process patterns with human behavioral data from the literature~\cite{Frederick2005, Pennycook2015} using matched task categories (Table~\ref{tab:human-comparison}).
 
 \begin{table}[t]
 \caption{Human vs.\ LLM System~2 minus System~1 accuracy gaps (\%). Human S1/S2 values are from time-pressure (S1) vs.\ untimed (S2) conditions in cited studies. LLM values averaged across 4 families.}
@@ -362,12 +350,6 @@ Conflict & +31.2 & +9.3 & Divergent \\
 \bottomrule
 \end{tabular}
 \end{table}
-
-\begin{figure}[t]
-\centerline{\includegraphics[width=\columnwidth]{figures/fig5_confidence_calibration.png}}
-\caption{Human vs.\ LLM dual-process gaps (S2 minus S1 accuracy). Patterns converge on intuitive and analytical tasks but diverge on classic conflict tasks. Novel conflict tasks bring LLMs closer to the human pattern.}
-\label{fig:human-comparison}
-\end{figure}
 
 \textbf{Convergent patterns.} On both intuitive and analytical tasks, humans and LLMs show qualitatively similar dual-process patterns: moderate S2--S1 gaps on intuitive tasks (+10.3 points) and large gaps on analytical tasks (+41.0 points). The direction and relative magnitude are consistent, with analytical gaps substantially exceeding intuitive gaps in both humans and LLMs.
 
@@ -392,6 +374,17 @@ On analytical tasks, the Token Efficiency Ratio was
 0.024, reflecting the smallest accuracy gain from additional computation.
 
 This pattern provides a computational analogue of cognitive effort allocation: an efficient system should invest additional processing resources primarily when the task demands justify it. System~1-like configurations are more token-efficient for intuitive tasks, while System~2-like configurations provide meaningful accuracy gains on analytical tasks that justify the additional token cost.
+
+\subsection{Trial-Level Visualization}
+
+Fig.~\ref{fig:trial-matrix} displays all 4,800 individual trial outcomes across the eight factorial conditions. Each row represents one task (sorted by category and source), and each column one condition. The barcode-like pattern reveals the CoT effect at the individual trial level: the Analytical section (GSM8K, LogiQA) transitions from predominantly red (incorrect) under zero-shot conditions to predominantly green (correct) under CoT conditions, while the Intuitive and Conflict sections show minimal change.
+
+\begin{figure*}[t]
+\centerline{\includegraphics[width=\textwidth]{figures/fig7_trial_matrix.png}}
+\caption{Trial-level outcomes for all 4,800 trials across 8 factorial conditions. Green = correct, red = incorrect. The dramatic color shift in the Analytical section (GSM8K, LogiQA) under CoT conditions visually confirms the selective effect of chain-of-thought prompting on reasoning-intensive tasks.}
+\label{fig:trial-matrix}
+\end{figure*}
+
 
 %% ============================================================
 \section{Discussion}
