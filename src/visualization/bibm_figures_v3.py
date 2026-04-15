@@ -712,12 +712,12 @@ def _draw_source_heatmap(ax, matrix, row_labels, col_labels, title,
     # Group headers (e.g., GPT-4o-mini / GPT-4o brackets above columns)
     if group_headers:
         for label, center_x, x_left, x_right in group_headers:
-            ax.text(center_x, -1.8, label, ha='center', va='bottom',
+            ax.text(center_x, -1.4, label, ha='center', va='bottom',
                     fontsize=6.5, fontweight='bold', color=COLORS['dark'],
                     fontfamily='serif', clip_on=False)
     if group_brackets:
         for x_left, x_right, _ in group_brackets:
-            ax.plot([x_left, x_right], [-1.2, -1.2], color=COLORS['dark'],
+            ax.plot([x_left, x_right], [-0.9, -0.9], color=COLORS['dark'],
                     linewidth=0.8, clip_on=False, zorder=10)
 
     # Title
