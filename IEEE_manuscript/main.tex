@@ -279,7 +279,7 @@ Temp.\ (Low) & +1.8\% & +1.3\% & $-0.3$\% & +0.9\% & .008 \\
 The Prompt $\times$ Task Category interaction is the central finding (Fig.~\ref{fig:factorial}).
 
 \begin{figure*}[t]
-\centerline{\includegraphics[width=\textwidth]{figures/fig2_factorial_ablation.png}}
+\centerline{\includegraphics[width=\textwidth]{figures/fig2_factorial_heatmap.png}}
 \caption{Factorial ablation results. Left: accuracy across all 8 conditions by task category. Right: Prompt $\times$ Task Category interaction showing that CoT disproportionately benefits analytical tasks. Error bars show $\pm 1$ SE.}
 \label{fig:factorial}
 \end{figure*}
@@ -364,7 +364,7 @@ Conflict & +31.2 & +9.3 & Divergent \\
 \end{table}
 
 \begin{figure}[t]
-\centerline{\includegraphics[width=\columnwidth]{figures/fig5_human_comparison.png}}
+\centerline{\includegraphics[width=\columnwidth]{figures/fig5_confidence_calibration.png}}
 \caption{Human vs.\ LLM dual-process gaps (S2 minus S1 accuracy). Patterns converge on intuitive and analytical tasks but diverge on classic conflict tasks. Novel conflict tasks bring LLMs closer to the human pattern.}
 \label{fig:human-comparison}
 \end{figure}
@@ -381,7 +381,7 @@ We emphasize that human benchmarks are drawn from published studies with differe
 Token efficiency analysis reveals task-type-dependent returns on computational investment (Fig.~\ref{fig:token-efficiency}).
 
 \begin{figure}[t]
-\centerline{\includegraphics[width=\columnwidth]{figures/fig6_token_efficiency.png}}
+\centerline{\includegraphics[width=\columnwidth]{figures/fig6_cot_interaction.png}}
 \caption{Token efficiency by task category. System~2's additional tokens yield high returns on analytical tasks but diminishing returns on intuitive tasks.}
 \label{fig:token-efficiency}
 \end{figure}
