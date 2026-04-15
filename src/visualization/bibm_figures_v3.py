@@ -244,14 +244,14 @@ def plot_fig3_main_effects(output_path: Path):
     cat_labels = ['Intuitive', 'Analytical', 'Conflict']
     cat_colors = [COLORS['intuitive'], COLORS['analytical'], COLORS['conflict']]
 
-    fig, ax = plt.subplots(figsize=(IEEE_SINGLE, 3.2))
+    fig, ax = plt.subplots(figsize=(IEEE_SINGLE, 3.0))
 
-    y_positions = np.array([2.4, 1.2, 0.0])
+    y_positions = np.array([2.0, 1.0, 0.0])
 
     label_offsets = {
-        'CoT':   [( 0.28, 'center', 0), ( 0.28, 'center', 0), ( 0.28, 'center', 0)],
-        'Model': [(-0.32, 'center', 0), (-0.32, 'center', 0), ( 0.28, 'center', 0)],
-        'Temp':  [( 0.30, 'center', 0), ( 0.30, 'center', 2.5), (-0.35, 'center', 0)],
+        'CoT':   [( 0.22, 'center', 0), ( 0.22, 'center', 0), ( 0.22, 'center', 0)],
+        'Model': [(-0.26, 'center', 0), (-0.26, 'center', 0), ( 0.22, 'center', 0)],
+        'Temp':  [( 0.24, 'center', 0), ( 0.24, 'center', 2.5), (-0.28, 'center', 0)],
     }
 
     for fi, (factor, y_pos) in enumerate(zip(factors, y_positions)):
@@ -297,12 +297,6 @@ def plot_fig3_main_effects(output_path: Path):
               fancybox=False, edgecolor=COLORS['grid'], framealpha=0.9,
               fontsize=6.5)
 
-    ax.annotate('', xy=(34.2, 2.65), xytext=(10.5, 2.65),
-                arrowprops=dict(arrowstyle='<->', color=COLORS['dark'],
-                                lw=0.8, connectionstyle='arc3,rad=0'))
-    ax.text(22.35, 2.82, 'largest spread', ha='center', va='bottom',
-            fontsize=5.5, fontstyle='italic', color=COLORS['dark'])
-
     fig.tight_layout()
 
     out_file = output_path / 'fig3_main_effects.png'
@@ -338,7 +332,7 @@ def plot_fig4_multi_model(output_path: Path):
         'Llama':    '^',
     }
 
-    fig, ax = plt.subplots(figsize=(IEEE_SINGLE, 3.0))
+    fig, ax = plt.subplots(figsize=(IEEE_SINGLE, 2.5))
 
     ax.axvspan(0.7, 1.3, color=COLORS['analytical'], alpha=0.06, zorder=0)
     ax.axhline(y=0, color=COLORS['text'], linewidth=0.5, linestyle='--', alpha=0.4, zorder=0)
@@ -406,7 +400,7 @@ def plot_fig5_confidence_calibration(output_path: Path):
     Calibration diagram: scatter with X = accuracy, Y = confidence.
     Perfect calibration = diagonal. Arrows show overconfidence gap.
     """
-    fig, ax = plt.subplots(figsize=(IEEE_SINGLE, 3.5))
+    fig, ax = plt.subplots(figsize=(IEEE_SINGLE, 2.8))
 
     lo, hi = 0.58, 0.96
 
@@ -609,178 +603,313 @@ def _get_source_sort_key(task_id):
     return parts[0]
 
 
+def _build_trial_image(trials_by_col, canonical_order, id_to_row, n_trials, n_cols):
+    """Build an RGBA image array from trial data.
+
+    Parameters
+    ----------
+    trials_by_col : list[list[dict]]
+        Each element is a list of trial dicts for one column.
+    canonical_order : list[str]
+        Ordered task_ids defining row positions.
+    id_to_row : dict[str, int]
+        Mapping from task_id to row index.
+    n_trials : int
+        Number of rows.
+    n_cols : int
+        Number of columns.
+
+    Returns
+    -------
+    np.ndarray of shape (n_trials, n_cols, 4)
+    """
+    color_correct = np.array([0.153, 0.682, 0.376, 0.85])
+    color_wrong   = np.array([0.906, 0.298, 0.235, 0.85])
+
+    img = np.ones((n_trials, n_cols, 4), dtype=np.float32)
+    for col_idx, trials in enumerate(trials_by_col):
+        for trial in trials:
+            row = id_to_row.get(trial['task_id'])
+            if row is not None:
+                img[row, col_idx] = color_correct if trial['is_correct'] else color_wrong
+    return img
+
+
+def _annotate_trial_panel(ax, n_cols, n_trials, cat_boundaries, source_boundaries,
+                          col_labels, group_headers, group_brackets, show_source_labels=True):
+    """Add category separators, source labels, column labels, and group headers to a trial panel."""
+    cat_labels_map = {'system1': 'Intuitive', 'system2': 'Analytical',
+                      'conflict': 'Conflict',
+                      'intuitive': 'Intuitive', 'analytical': 'Analytical'}
+    cat_colors_map = {'system1': COLORS['intuitive'], 'system2': COLORS['analytical'],
+                      'conflict': COLORS['conflict'],
+                      'intuitive': COLORS['intuitive'], 'analytical': COLORS['analytical']}
+
+    for start, end, cat in cat_boundaries:
+        if start > 0:
+            ax.axhline(y=start - 0.5, color=COLORS['text'], linewidth=1.0,
+                       linestyle='-', alpha=0.7, zorder=5)
+        mid = (start + end) / 2
+        label = cat_labels_map.get(cat, cat)
+        color = cat_colors_map.get(cat, COLORS['text'])
+        ax.text(n_cols - 0.3, mid, label, ha='left', va='center',
+                fontsize=6, fontweight='bold', color=color, rotation=-90,
+                fontfamily='serif')
+
+    if show_source_labels:
+        for start, end, src in source_boundaries:
+            mid = (start + end) / 2
+            if (end - start) > 5:
+                ax.text(-0.7, mid, src, ha='right', va='center',
+                        fontsize=4, color=COLORS['text'], fontfamily='sans-serif',
+                        alpha=0.8)
+            if start > 0:
+                ax.axhline(y=start - 0.5, color=COLORS['grid'], linewidth=0.3,
+                           linestyle='-', alpha=0.5, zorder=4)
+
+    ax.set_xticks(range(n_cols))
+    ax.set_xticklabels(col_labels, fontsize=5, ha='center', fontfamily='monospace')
+    ax.xaxis.tick_top()
+    ax.xaxis.set_label_position('top')
+
+    # Group headers with brackets
+    for label, center_x, x_left, x_right, y_text, y_bracket in group_headers:
+        ax.text(center_x, y_text, label, ha='center', va='bottom',
+                fontsize=7, fontweight='bold', color=COLORS['dark'],
+                fontfamily='serif', clip_on=False)
+    for x_left, x_right, y_bracket in group_brackets:
+        ax.plot([x_left, x_right], [y_bracket, y_bracket], color=COLORS['dark'],
+                linewidth=0.8, clip_on=False, zorder=10)
+
+    ax.set_yticks([])
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+
+
 def plot_fig7_trial_matrix(output_path: Path, results_path: str = None):
     """
-    Create a large-scale trial matrix showing all 4,800 individual trials.
-    Each column is one condition (C1-C8), each row is one trial (600 per condition).
-    Green = correct, red = incorrect. Sorted by category, then source, then task_id.
+    Dual-panel trial matrix.
+    Panel (a): Factorial ablation — 8 conditions (C1-C8), 600 rows each (4,800 trials).
+    Panel (b): Multi-model validation — 8 columns (S1/S2 for 4 families), 300 rows each (2,400 trials).
     """
     if results_path is None:
         results_path = str(PROJECT_ROOT / 'results' / 'bibm_2026' /
                            'main_experiment_v2' / 'ablation_factorial_20260415_034946.json')
 
-    with open(results_path) as f:
-        data = json.load(f)
+    multi_model_path = str(PROJECT_ROOT / 'results' / 'bibm_2026' /
+                           'multi_model' / 'multi_model_20260415_072827.json')
 
+    with open(results_path) as f:
+        ablation_data = json.load(f)
+
+    with open(multi_model_path) as f:
+        mm_data = json.load(f)
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # Panel (a): Factorial ablation — same as before
+    # ══════════════════════════════════════════════════════════════════════════
     conditions = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8']
     cat_order = {'system1': 0, 'system2': 1, 'conflict': 2}
 
-    # ── Sort trials using C1 as the canonical row order ───────────────────────
-    c1_trials = data['conditions']['C1']['trials']
+    c1_trials = ablation_data['conditions']['C1']['trials']
     c1_sorted = sorted(c1_trials,
                        key=lambda t: (cat_order.get(t['task_category'], 3),
                                       _get_source_sort_key(t['task_id']),
                                       t['task_id']))
-    canonical_order = [t['task_id'] for t in c1_sorted]
-    id_to_row = {tid: i for i, tid in enumerate(canonical_order)}
-    n_trials = len(canonical_order)
+    abl_canonical = [t['task_id'] for t in c1_sorted]
+    abl_id_to_row = {tid: i for i, tid in enumerate(abl_canonical)}
+    abl_n = len(abl_canonical)
 
-    # ── Compute category and source boundaries from canonical order ───────────
-    cat_boundaries = []   # (start_row, end_row, label)
-    source_boundaries = []  # (start_row, end_row, label)
-    prev_cat = None
-    prev_src = None
-    cat_start = 0
-    src_start = 0
-
+    # Category / source boundaries for panel (a)
+    abl_cat_bounds = []
+    abl_src_bounds = []
+    prev_cat = prev_src = None
+    cat_start = src_start = 0
     for row_idx, trial in enumerate(c1_sorted):
         cat = trial['task_category']
         src = _get_source_label(trial['task_id'])
-
         if cat != prev_cat:
             if prev_cat is not None:
-                cat_boundaries.append((cat_start, row_idx - 1, prev_cat))
+                abl_cat_bounds.append((cat_start, row_idx - 1, prev_cat))
             cat_start = row_idx
             prev_cat = cat
-            # Also reset source tracking at category boundary
             if prev_src is not None:
-                source_boundaries.append((src_start, row_idx - 1, prev_src))
+                abl_src_bounds.append((src_start, row_idx - 1, prev_src))
             src_start = row_idx
             prev_src = src
         elif src != prev_src:
             if prev_src is not None:
-                source_boundaries.append((src_start, row_idx - 1, prev_src))
+                abl_src_bounds.append((src_start, row_idx - 1, prev_src))
             src_start = row_idx
             prev_src = src
+    abl_cat_bounds.append((cat_start, abl_n - 1, prev_cat))
+    abl_src_bounds.append((src_start, abl_n - 1, prev_src))
 
-    # Final entries
-    cat_boundaries.append((cat_start, n_trials - 1, prev_cat))
-    source_boundaries.append((src_start, n_trials - 1, prev_src))
+    abl_trials_by_col = []
+    for cid in conditions:
+        abl_trials_by_col.append(ablation_data['conditions'][cid]['trials'])
+    abl_img = _build_trial_image(abl_trials_by_col, abl_canonical, abl_id_to_row,
+                                 abl_n, len(conditions))
 
-    # ── Build image array ─────────────────────────────────────────────────────
-    # Use an RGBA image for efficiency instead of 4800 individual patches
-    n_conds = len(conditions)
-    img = np.ones((n_trials, n_conds, 4), dtype=np.float32)  # RGBA, white default
+    # ══════════════════════════════════════════════════════════════════════════
+    # Panel (b): Multi-model validation
+    # ══════════════════════════════════════════════════════════════════════════
+    families = ['openai', 'deepseek', 'qwen', 'llama']
+    family_display = {'openai': 'OpenAI', 'deepseek': 'DeepSeek',
+                      'qwen': 'Qwen', 'llama': 'Llama'}
+    systems = ['system1', 'system2']
+    system_labels = {'system1': 'S1', 'system2': 'S2'}
+    mm_cat_order = {'intuitive': 0, 'analytical': 1, 'conflict': 2}
 
-    color_correct = np.array([0.153, 0.682, 0.376, 0.85])    # #27AE60 with alpha
-    color_wrong   = np.array([0.906, 0.298, 0.235, 0.85])    # #E74C3C with alpha
+    # Build canonical row order from first family's S1 data
+    first_family = families[0]
+    first_sys = mm_data['families'][first_family]['system1']
+    mm_all_trials = []
+    for cat in ['intuitive', 'analytical', 'conflict']:
+        for trial in first_sys['results_by_category'][cat]['trials']:
+            mm_all_trials.append((cat, trial['task_id']))
 
-    for col_idx, cid in enumerate(conditions):
-        trials = data['conditions'][cid]['trials']
-        for trial in trials:
-            row = id_to_row.get(trial['task_id'])
-            if row is not None:
-                img[row, col_idx] = color_correct if trial['is_correct'] else color_wrong
+    mm_all_trials.sort(key=lambda x: (mm_cat_order[x[0]],
+                                       _get_source_sort_key(x[1]),
+                                       x[1]))
+    mm_canonical = [t[1] for t in mm_all_trials]
+    mm_id_to_row = {tid: i for i, tid in enumerate(mm_canonical)}
+    mm_n = len(mm_canonical)
 
-    # ── Create figure ─────────────────────────────────────────────────────────
-    fig, ax = plt.subplots(figsize=(IEEE_DOUBLE, 5), dpi=DPI)
+    # Category boundaries for panel (b)
+    mm_cat_bounds = []
+    mm_src_bounds = []
+    prev_cat = prev_src = None
+    cat_start = src_start = 0
+    for row_idx, (cat, tid) in enumerate(mm_all_trials):
+        src = _get_source_label(tid)
+        if cat != prev_cat:
+            if prev_cat is not None:
+                mm_cat_bounds.append((cat_start, row_idx - 1, prev_cat))
+            cat_start = row_idx
+            prev_cat = cat
+            if prev_src is not None:
+                mm_src_bounds.append((src_start, row_idx - 1, prev_src))
+            src_start = row_idx
+            prev_src = src
+        elif src != prev_src:
+            if prev_src is not None:
+                mm_src_bounds.append((src_start, row_idx - 1, prev_src))
+            src_start = row_idx
+            prev_src = src
+    mm_cat_bounds.append((cat_start, mm_n - 1, prev_cat))
+    mm_src_bounds.append((src_start, mm_n - 1, prev_src))
 
-    ax.imshow(img, aspect='auto', interpolation='nearest',
-              extent=[-0.5, n_conds - 0.5, n_trials - 0.5, -0.5])
+    # Build columns: OpenAI-S1, OpenAI-S2, DeepSeek-S1, ...
+    mm_col_labels = []
+    mm_trials_by_col = []
+    for fam in families:
+        for sys_key in systems:
+            fam_disp = family_display[fam]
+            sys_disp = system_labels[sys_key]
+            mm_col_labels.append(f'{fam_disp}\n{sys_disp}')
+            # Gather all trials across categories
+            all_trials = []
+            for cat in ['intuitive', 'analytical', 'conflict']:
+                all_trials.extend(
+                    mm_data['families'][fam][sys_key]['results_by_category'][cat]['trials'])
+            mm_trials_by_col.append(all_trials)
 
-    # ── Category separator lines ──────────────────────────────────────────────
-    cat_labels_map = {'system1': 'Intuitive', 'system2': 'Analytical', 'conflict': 'Conflict'}
-    cat_colors_map = {'system1': COLORS['intuitive'], 'system2': COLORS['analytical'],
-                      'conflict': COLORS['conflict']}
+    mm_n_cols = len(mm_col_labels)
+    mm_img = _build_trial_image(mm_trials_by_col, mm_canonical, mm_id_to_row,
+                                mm_n, mm_n_cols)
 
-    for start, end, cat in cat_boundaries:
-        # Horizontal separator line at category boundary
-        if start > 0:
-            ax.axhline(y=start - 0.5, color=COLORS['text'], linewidth=1.0,
-                       linestyle='-', alpha=0.7, zorder=5)
-        # Category label on the right
-        mid = (start + end) / 2
-        label = cat_labels_map.get(cat, cat)
-        color = cat_colors_map.get(cat, COLORS['text'])
-        ax.text(n_conds - 0.3, mid, label, ha='left', va='center',
-                fontsize=7, fontweight='bold', color=color, rotation=-90,
-                fontfamily='serif')
+    # ══════════════════════════════════════════════════════════════════════════
+    # Create dual-panel figure
+    # ══════════════════════════════════════════════════════════════════════════
+    height_ratio_a = abl_n   # 600
+    height_ratio_b = mm_n    # 300
+    fig, (ax_a, ax_b) = plt.subplots(
+        2, 1, figsize=(IEEE_DOUBLE, 7.0), dpi=DPI,
+        gridspec_kw={'height_ratios': [height_ratio_a, height_ratio_b],
+                     'hspace': 0.25})
 
-    # ── Source labels on the left margin ──────────────────────────────────────
-    for start, end, src in source_boundaries:
-        mid = (start + end) / 2
-        # Only label if the band is wide enough (>5 trials)
-        if (end - start) > 5:
-            ax.text(-0.7, mid, src, ha='right', va='center',
-                    fontsize=4.5, color=COLORS['text'], fontfamily='sans-serif',
-                    alpha=0.8)
-        # Subtle source separator
-        if start > 0:
-            ax.axhline(y=start - 0.5, color=COLORS['grid'], linewidth=0.3,
-                       linestyle='-', alpha=0.5, zorder=4)
+    # ── Panel (a) ─────────────────────────────────────────────────────────────
+    ax_a.imshow(abl_img, aspect='auto', interpolation='nearest',
+                extent=[-0.5, len(conditions) - 0.5, abl_n - 0.5, -0.5])
 
-    # ── Condition labels at the top ───────────────────────────────────────────
-    condition_labels = []
+    abl_col_labels = []
     for cid in conditions:
         d = DATA[cid]
         prompt_str = d['prompt']
         temp_str = 't=' + ('1.0' if d['temp'] == 'high' else '0.2')
-        condition_labels.append(f'{cid}\n{prompt_str}, {temp_str}')
+        abl_col_labels.append(f'{cid}\n{prompt_str}, {temp_str}')
 
-    ax.set_xticks(range(n_conds))
-    ax.set_xticklabels(condition_labels, fontsize=5.5, ha='center',
-                       fontfamily='monospace')
-    ax.xaxis.tick_top()
-    ax.xaxis.set_label_position('top')
+    abl_group_headers = [
+        ('GPT-4o-mini', 1.5, 0, 3, -30, -22),
+        ('GPT-4o',      5.5, 4, 7, -30, -22),
+    ]
+    abl_group_brackets = [
+        (0, 3, -22),
+        (4, 7, -22),
+    ]
 
-    # ── Model group headers ───────────────────────────────────────────────────
-    # GPT-4o-mini over C1-C4, GPT-4o over C5-C8
-    ax.text(1.5, -30, 'GPT-4o-mini', ha='center', va='bottom',
-            fontsize=8, fontweight='bold', color=COLORS['dark'],
-            fontfamily='serif')
-    ax.text(5.5, -30, 'GPT-4o', ha='center', va='bottom',
-            fontsize=8, fontweight='bold', color=COLORS['dark'],
-            fontfamily='serif')
+    _annotate_trial_panel(ax_a, len(conditions), abl_n,
+                          abl_cat_bounds, abl_src_bounds,
+                          abl_col_labels, abl_group_headers, abl_group_brackets,
+                          show_source_labels=True)
 
-    # Bracket lines for model groups
-    ax.plot([0, 3], [-22, -22], color=COLORS['dark'], linewidth=0.8,
-            clip_on=False, zorder=10)
-    ax.plot([4, 7], [-22, -22], color=COLORS['dark'], linewidth=0.8,
-            clip_on=False, zorder=10)
+    ax_a.axvline(x=3.5, color=COLORS['text'], linewidth=1.2, linestyle='-',
+                 alpha=0.5, zorder=5)
+    ax_a.set_ylabel('Trials (n=600 per condition)', fontsize=7, labelpad=30)
 
-    # Vertical separator between models
-    ax.axvline(x=3.5, color=COLORS['text'], linewidth=1.2, linestyle='-',
-               alpha=0.5, zorder=5)
+    # Panel title
+    ax_a.text(0.5, 1.10, '(a) Factorial Ablation (4,800 trials)',
+              transform=ax_a.transAxes, ha='center', va='bottom',
+              fontsize=9, fontweight='bold', fontfamily='serif',
+              color=COLORS['text'])
 
-    # ── Y-axis ────────────────────────────────────────────────────────────────
-    ax.set_yticks([])
-    ax.set_ylabel('Individual trials (n = 600 per condition)', fontsize=8,
-                  labelpad=35)
+    # ── Panel (b) ─────────────────────────────────────────────────────────────
+    ax_b.imshow(mm_img, aspect='auto', interpolation='nearest',
+                extent=[-0.5, mm_n_cols - 0.5, mm_n - 0.5, -0.5])
 
-    # ── Legend ─────────────────────────────────────────────────────────────────
+    # Family group headers with brackets
+    mm_group_headers = []
+    mm_group_brackets_list = []
+    for fi, fam in enumerate(families):
+        x_left = fi * 2
+        x_right = fi * 2 + 1
+        center = (x_left + x_right) / 2
+        mm_group_headers.append(
+            (family_display[fam], center, x_left, x_right, -18, -12))
+        mm_group_brackets_list.append((x_left, x_right, -12))
+
+    _annotate_trial_panel(ax_b, mm_n_cols, mm_n,
+                          mm_cat_bounds, mm_src_bounds,
+                          mm_col_labels, mm_group_headers, mm_group_brackets_list,
+                          show_source_labels=True)
+
+    # Vertical separators between families
+    for fi in range(1, len(families)):
+        ax_b.axvline(x=fi * 2 - 0.5, color=COLORS['text'], linewidth=1.0,
+                     linestyle='-', alpha=0.4, zorder=5)
+
+    ax_b.set_ylabel('Trials (n=300 per column)', fontsize=7, labelpad=30)
+
+    # Panel title
+    ax_b.text(0.5, 1.10, '(b) Multi-Model Validation (2,400 trials)',
+              transform=ax_b.transAxes, ha='center', va='bottom',
+              fontsize=9, fontweight='bold', fontfamily='serif',
+              color=COLORS['text'])
+
+    # ── Shared legend ─────────────────────────────────────────────────────────
     legend_elements = [
         mpatches.Patch(facecolor='#27AE60', edgecolor='none', alpha=0.85,
                        label='Correct'),
         mpatches.Patch(facecolor='#E74C3C', edgecolor='none', alpha=0.85,
                        label='Incorrect'),
     ]
-    ax.legend(handles=legend_elements, loc='lower right', frameon=True,
-              fancybox=False, edgecolor=COLORS['grid'], framealpha=0.95,
-              fontsize=6.5, ncol=2,
-              bbox_to_anchor=(0.98, -0.02))
+    ax_b.legend(handles=legend_elements, loc='lower right', frameon=True,
+                fancybox=False, edgecolor=COLORS['grid'], framealpha=0.95,
+                fontsize=6, ncol=2,
+                bbox_to_anchor=(0.98, -0.02))
 
-    # ── Clean up spines ───────────────────────────────────────────────────────
-    for spine in ax.spines.values():
-        spine.set_visible(False)
-
-    # ── Total trial count annotation ──────────────────────────────────────────
-    total = n_trials * n_conds
-    ax.text(0.5, 1.09, f'All {total:,} individual trial outcomes',
-            transform=ax.transAxes, ha='center', va='bottom',
-            fontsize=9, fontweight='bold', fontfamily='serif',
-            color=COLORS['text'])
-
-    fig.subplots_adjust(left=0.12, right=0.93, top=0.88, bottom=0.04)
+    fig.subplots_adjust(left=0.10, right=0.93, top=0.92, bottom=0.02)
 
     out_file = output_path / 'fig7_trial_matrix.png'
     fig.savefig(out_file, dpi=DPI, bbox_inches='tight', facecolor='white')
