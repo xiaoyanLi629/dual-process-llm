@@ -302,8 +302,8 @@ def _parse_ablation_format(raw: dict, source: str) -> dict:
                 return k
         return None
 
-    intuitive_key  = _find_cat_key(c1, ["intuitive", "system1_tasks"]) or "intuitive"
-    analytical_key = _find_cat_key(c1, ["analytical", "system2_tasks"]) or "analytical"
+    intuitive_key  = _find_cat_key(c1, ["intuitive", "system1_tasks", "system1"]) or "intuitive"
+    analytical_key = _find_cat_key(c1, ["analytical", "system2_tasks", "system2"]) or "analytical"
     conflict_key   = _find_cat_key(c1, ["conflict", "conflict_tasks"])  or "conflict"
 
     def _build_cat(cat_key: str) -> dict:
