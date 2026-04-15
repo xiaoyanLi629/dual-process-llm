@@ -698,12 +698,7 @@ def _draw_source_heatmap(ax, matrix, row_labels, col_labels, title,
         if start > 0:
             ax.axhline(y=start - 0.5, color=COLORS['text'], linewidth=1.2,
                        linestyle='-', alpha=0.7, zorder=5)
-        # Category label on the right, well past the last column (between heatmap and colorbar)
-        mid = (start + end) / 2
-        color = cat_colors_map.get(cat_label, COLORS['text'])
-        ax.text(n_cols + 0.6, mid, cat_label, ha='left', va='center',
-                fontsize=6, fontweight='bold', color=color,
-                fontfamily='serif', clip_on=False)
+        # Category labels removed per user request
 
     # Grid lines
     ax.set_xticks(np.arange(n_cols + 1) - 0.5, minor=True)
