@@ -355,11 +355,13 @@ def plot_fig4_multi_model(output_path: Path):
     cat_labels = ['Intuitive', 'Analytical', 'Conflict']
     x_pos = np.array([0, 1, 2])
 
+    # Sample 4 colors from RdYlGn colormap to match heatmap figures
+    _cmap = plt.cm.RdYlGn
     family_colors = {
-        'OpenAI':   COLORS['dark'],
-        'DeepSeek': COLORS['system1'],
-        'Qwen':     COLORS['conflict'],
-        'Llama':    COLORS['warning'],
+        'OpenAI':   _cmap(0.85),   # dark green
+        'Qwen':     _cmap(0.65),   # yellow-green
+        'Llama':    _cmap(0.45),   # yellow-orange
+        'DeepSeek': _cmap(0.15),   # red
     }
     family_markers = {
         'OpenAI':   'o',
