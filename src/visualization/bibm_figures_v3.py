@@ -255,7 +255,7 @@ def plot_fig2_factorial_heatmap(output_path: Path):
 
     fig.tight_layout()
 
-    out_file = output_path / 'fig2_factorial_heatmap.png'
+    out_file = output_path / 'fig2_factorial_heatmap.pdf'
     fig.savefig(out_file, dpi=DPI, bbox_inches='tight', facecolor='white')
     plt.close(fig)
     print(f'  Saved {out_file}')
@@ -333,7 +333,7 @@ def plot_fig3_main_effects(output_path: Path):
 
     fig.tight_layout()
 
-    out_file = output_path / 'fig3_main_effects.png'
+    out_file = output_path / 'fig3_main_effects.pdf'
     fig.savefig(out_file, dpi=DPI, bbox_inches='tight', facecolor='white')
     plt.close(fig)
     print(f'  Saved {out_file}')
@@ -421,7 +421,7 @@ def plot_fig4_multi_model(output_path: Path):
 
     fig.tight_layout()
 
-    out_file = output_path / 'fig4_multi_model.png'
+    out_file = output_path / 'fig4_multi_model.pdf'
     fig.savefig(out_file, dpi=DPI, bbox_inches='tight', facecolor='white')
     plt.close(fig)
     print(f'  Saved {out_file}')
@@ -510,7 +510,7 @@ def plot_fig5_confidence_calibration(output_path: Path):
 
     fig.tight_layout()
 
-    out_file = output_path / 'fig5_confidence_calibration.png'
+    out_file = output_path / 'fig5_confidence_calibration.pdf'
     fig.savefig(out_file, dpi=DPI, bbox_inches='tight', facecolor='white')
     plt.close(fig)
     print(f'  Saved {out_file}')
@@ -605,7 +605,7 @@ def plot_fig6_cot_interaction(output_path: Path):
 
     fig.tight_layout()
 
-    out_file = output_path / 'fig6_cot_interaction.png'
+    out_file = output_path / 'fig6_cot_interaction.pdf'
     fig.savefig(out_file, dpi=DPI, bbox_inches='tight', facecolor='white')
     plt.close(fig)
     print(f'  Saved {out_file}')
@@ -897,7 +897,7 @@ def plot_fig7_trial_matrix(output_path: Path, results_path: str = None):
     cbar.ax.tick_params(labelsize=7)
     cbar.outline.set_linewidth(0.5)
 
-    out_file = output_path / 'fig7_trial_matrix.png'
+    out_file = output_path / 'fig7_trial_matrix.pdf'
     fig.savefig(out_file, dpi=DPI, bbox_inches='tight', facecolor='white')
     plt.close(fig)
     print(f'  Saved {out_file}')
@@ -1159,7 +1159,7 @@ def plot_fig8_example_cases(output_path: Path, results_path: str = None):
                  fontsize=9, fontweight='bold', fontfamily='serif',
                  color=COLORS['text'], y=0.98)
 
-    out_file = output_path / 'fig8_example_cases.png'
+    out_file = output_path / 'fig8_example_cases.pdf'
     fig.savefig(out_file, dpi=DPI, bbox_inches='tight', facecolor='white')
     plt.close(fig)
     print(f'  Saved {out_file}')

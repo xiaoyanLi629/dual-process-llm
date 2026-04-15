@@ -53,7 +53,7 @@ We present the following contributions:
 \end{enumerate}
 
 \begin{figure}[t]
-\centerline{\includegraphics[width=\columnwidth]{figures/fig0_architecture.png}}
+\centerline{\includegraphics[width=\columnwidth]{figures/fig0_architecture.pdf}}
 \caption{Experimental framework for dual-process simulation in LLMs. The pipeline processes task items through parallel System~1 (high temperature, zero-shot) and System~2 (low temperature, chain-of-thought) pathways across three randomized rounds, recording accuracy, confidence, token usage, and reasoning steps.}
 \label{fig:architecture}
 \end{figure}
@@ -302,7 +302,7 @@ Mean & +41.0 & +10.3 & +9.3 & +20.2 \\
 \end{table}
 
 \begin{figure}[t]
-\centerline{\includegraphics[width=\columnwidth]{figures/fig4_multi_model.png}}
+\centerline{\includegraphics[width=\columnwidth]{figures/fig4_multi_model.pdf}}
 \caption{System~2 minus System~1 accuracy gaps across four model families. All families show the predicted pattern: large gaps on analytical tasks, small gaps on intuitive tasks.}
 \label{fig:multimodel}
 \end{figure}
@@ -363,7 +363,7 @@ We emphasize that human benchmarks are drawn from published studies with differe
 Token efficiency analysis reveals task-type-dependent returns on computational investment (Fig.~\ref{fig:token-efficiency}).
 
 \begin{figure}[t]
-\centerline{\includegraphics[width=\columnwidth]{figures/fig6_cot_interaction.png}}
+\centerline{\includegraphics[width=\columnwidth]{figures/fig6_cot_interaction.pdf}}
 \caption{Token efficiency by task category. System~2's additional tokens yield high returns on analytical tasks but diminishing returns on intuitive tasks.}
 \label{fig:token-efficiency}
 \end{figure}
@@ -380,7 +380,7 @@ This pattern provides a computational analogue of cognitive effort allocation: a
 Fig.~\ref{fig:trial-matrix} displays all 4,800 individual trial outcomes across the eight factorial conditions. Each row represents one task (sorted by category and source), and each column one condition. The barcode-like pattern reveals the CoT effect at the individual trial level: the Analytical section (GSM8K, LogiQA) transitions from predominantly red (incorrect) under zero-shot conditions to predominantly green (correct) under CoT conditions, while the Intuitive and Conflict sections show minimal change.
 
 \begin{figure*}[t]
-\centerline{\includegraphics[width=\textwidth]{figures/fig7_trial_matrix.png}}
+\centerline{\includegraphics[width=\textwidth]{figures/fig7_trial_matrix.pdf}}
 \caption{Trial-level outcomes for all 4,800 trials across 8 factorial conditions. Green = correct, red = incorrect. The dramatic color shift in the Analytical section (GSM8K, LogiQA) under CoT conditions visually confirms the selective effect of chain-of-thought prompting on reasoning-intensive tasks.}
 \label{fig:trial-matrix}
 \end{figure*}
