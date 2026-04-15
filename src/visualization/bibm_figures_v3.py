@@ -698,12 +698,14 @@ def _draw_source_heatmap(ax, matrix, row_labels, col_labels, title,
         if start > 0:
             ax.axhline(y=start - 0.5, color=COLORS['text'], linewidth=1.2,
                        linestyle='-', alpha=0.7, zorder=5)
-        # Category label on the left (outside the heatmap, avoids colorbar overlap)
+        # Category label on the right, just past the last column
         mid = (start + end) / 2
         color = cat_colors_map.get(cat_label, COLORS['text'])
-        ax.text(-0.8, mid, cat_label, ha='right', va='center',
-                fontsize=7, fontweight='bold', color=color,
-                fontfamily='serif', clip_on=False)
+        ax.text(n_cols - 0.5, mid, cat_label, ha='left', va='center',
+                fontsize=6, fontweight='bold', color=color,
+                fontfamily='serif', clip_on=False,
+                bbox=dict(boxstyle='round,pad=0.1', facecolor='white',
+                          edgecolor='none', alpha=0.7))
 
     # Grid lines
     ax.set_xticks(np.arange(n_cols + 1) - 0.5, minor=True)
@@ -717,17 +719,17 @@ def _draw_source_heatmap(ax, matrix, row_labels, col_labels, title,
     # Group headers (e.g., GPT-4o-mini / GPT-4o brackets above columns)
     if group_headers:
         for label, center_x, x_left, x_right in group_headers:
-            ax.text(center_x, -2.2, label, ha='center', va='bottom',
-                    fontsize=7, fontweight='bold', color=COLORS['dark'],
+            ax.text(center_x, -1.8, label, ha='center', va='bottom',
+                    fontsize=6.5, fontweight='bold', color=COLORS['dark'],
                     fontfamily='serif', clip_on=False)
     if group_brackets:
         for x_left, x_right, _ in group_brackets:
-            ax.plot([x_left, x_right], [-1.5, -1.5], color=COLORS['dark'],
+            ax.plot([x_left, x_right], [-1.2, -1.2], color=COLORS['dark'],
                     linewidth=0.8, clip_on=False, zorder=10)
 
     # Title
     ax.set_title(title, fontsize=9, fontweight='bold', fontfamily='serif',
-                 color=COLORS['text'], pad=35)
+                 color=COLORS['text'], pad=30)
 
     return im
 

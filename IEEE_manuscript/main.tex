@@ -223,7 +223,7 @@ System~2 significantly outperformed System~1 overall (87.3\% vs.\ 74.7\%, $t(119
 $2.35\times$ token cost (Table~\ref{tab:main-results}).
 
 \begin{table}[t]
-\caption{Overall performance (GPT-4o family, $N = 1{,}800$ tasks per system).}
+\caption{Overall performance (GPT-4o family, C5 vs.\ C8, $N = 600$ tasks per condition).}
 \label{tab:main-results}
 \centering
 \begin{tabular}{lccc}
@@ -315,20 +315,20 @@ Across all families, the S2--S1 gap was largest on analytical tasks (range:
 Classic CRT items showed high performance for both systems (S1: 83.0\%, S2: 93.5\%), with System~2 still outperforming. The conflict category includes 50 novel items interleaved with 817 TruthfulQA items, allowing comparison of memorization-resistant and standard items (Table~\ref{tab:novel-conflict}).
 
 \begin{table}[t]
-\caption{Conflict task accuracy (\%) by system configuration.}
+\caption{Conflict task accuracy (\%) under different comparisons.}
 \label{tab:novel-conflict}
 \centering
 \begin{tabular}{lcccc}
 \toprule
-Task Type & S1 & S2 & $\Delta$ & $p$ \\
+Comparison & S1 & S2 & $\Delta$ & $p$ \\
 \midrule
-Classic CRT (in conflict) & 83.0 & 93.5 & +10.5 & .012 \\
-Overall conflict category & 83.0 & 93.5 & +10.5 & .012 \\
+C1 vs.\ C8 (canonical) & 83.0 & 93.5 & +10.5 & .001 \\
+C5 vs.\ C8 (same model) & 95.0 & 93.5 & $-1.5$ & .521 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-On conflict tasks, System~2 outperformed System~1 by 10.5 percentage points ($t(198) = 2.53$, $p = .012$, $d = 0.36$). The conflict category includes novel items designed to resist training-data memorization. These novel items, interleaved with classic items, help ensure that observed performance reflects genuine reasoning rather than memorization of widely-published CRT items.
+The conflict task results depend on the comparison. In the canonical comparison (C1 vs.\ C8), System~2 outperformed System~1 by 10.5 points ($t(398) = -3.30$, $p = .001$, $d = 0.330$), but much of this gap is attributable to model capacity rather than CoT: in the same-model comparison (C5 vs.\ C8), the gap is negligible ($-1.5$ points, $p = .521$). Both configurations achieve near-ceiling performance ($>93\%$), consistent with partial memorization of classic conflict items. The inclusion of 50 novel items helps mitigate this concern, though the ceiling effect remains.
 
 \subsection{Qualitative Comparison with Human Cognition}
 \label{sec:human-comparison}
