@@ -7,4 +7,4 @@ dual process theory (Kahneman's System 1 and System 2) using ACT-R framework.
 """
 
 __version__ = "1.0.0"
-__author__ = "LLM-Cognition Research Team"
+__author__ = "Do LLMs Think Fast and Slow (IEEE BIBM 2026)"

@@ -8,10 +8,19 @@
 \usepackage{xcolor}
 \usepackage{multirow}
 \usepackage{array}
+\usepackage[compact]{titlesec}
+% Tighten vertical space around section / subsection headings (no font changes)
+\titlespacing*{\section}{0pt}{6pt plus 1pt minus 1pt}{3pt plus 1pt}
+\titlespacing*{\subsection}{0pt}{5pt plus 1pt minus 1pt}{2pt plus 1pt}
+% Tighten spacing around floats (tables / figures) so they leave less whitespace
+\setlength{\textfloatsep}{6pt plus 2pt minus 2pt}
+\setlength{\intextsep}{6pt plus 2pt minus 2pt}
+\setlength{\floatsep}{6pt plus 2pt minus 2pt}
+\setlength{\dbltextfloatsep}{6pt plus 2pt minus 2pt}
 
 \begin{document}
 
-\title{Do Large Language Models Think Fast and Slow?\\Simulating Dual-Process Cognition with\\Implications for Biomedical AI}
+\title{Do Large Language Models Think Fast and Slow?\\Eliciting Dual-Process Behavioral Signatures with\\Implications for Biomedical AI}
 
 % Anonymous submission
 \author{\IEEEauthorblockN{Anonymous BIBM Submission}
@@ -20,9 +29,7 @@
 \maketitle
 
 \begin{abstract}
-Dual-process theory posits that human cognition operates through fast, intuitive System~1 and slow, analytical System~2 processing---a distinction with direct consequences for clinical decision-making, where diagnostic errors often arise from inappropriate reliance on pattern matching over deliberate analysis. We investigate whether large language models (LLMs) exhibit analogous dual-process behavioral signatures when configured through systematic parameter manipulation. Unlike prior work that confounds model capacity, temperature, and prompting strategy, we introduce a $2 \times 2 \times 2$ factorial ablation that isolates each factor's contribution. Our key finding is that prompting strategy (chain-of-thought vs.\ zero-shot) is the dominant factor, contributing a
-34.2 percentage point accuracy gain on analytical tasks but only
-10.5 points on intuitive tasks---a Prompt $\times$ Task Category interaction ($p < .001$) consistent with dual-process predictions but not guaranteed by the experimental design. We validate this pattern across four LLM families (OpenAI, DeepSeek, Qwen, Llama), introduce novel conflict tasks resistant to training-data memorization, and replace wall-clock response time with token efficiency as a model-intrinsic effort metric. We provide an honest comparison with human behavioral data, identifying both convergent patterns (analytical and intuitive tasks) and divergences (conflict tasks due to memorization). These findings offer a principled framework for configuring LLM-based clinical decision support: System~1-like settings for routine triage, System~2-like settings for complex diagnostic reasoning.
+Dual-process theory distinguishes fast, intuitive System~1 from slow, analytical System~2 processing, a distinction central to clinical decision-making. We ask whether LLMs exhibit analogous behavioral signatures under systematic parameter manipulation. Unlike prior work that confounds model capacity, temperature, and prompting, we run a $2 \times 2 \times 2$ factorial ablation that isolates each factor. The central finding is a strong Prompt $\times$ Task Category interaction ($F(2, 4794) = 89.2$, $p < .001$, $\eta^2_p = .036$): CoT yields a $+31.2$-point gain on analytical tasks and an $11.1$-point raw decrement on intuitive ones (half of which is a format artefact on one coreference benchmark; the interaction survives its exclusion, $F(2, 4570) = 71.7$, $p < .001$). We replicate across four LLM families and on 100 MedQA-USMLE vignettes, and stress-test conflict performance with 50 novel memorization-resistant items. These findings support configuring clinical decision-support LLMs with System~1-like settings for routine triage and System~2-like settings for complex diagnosis.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -33,30 +40,20 @@ dual-process theory, large language models, clinical decision support, chain-of-
 \section{Introduction}
 \label{sec:intro}
 
-Consider the following problem: ``A bat and a ball cost \$1.10 in total. The bat costs \$1.00 more than the ball. How much does the ball cost?'' Most people immediately answer ``10 cents,'' an intuitive response that feels right but is incorrect. The correct answer---5 cents---requires overriding this initial intuition through careful analysis. This classic puzzle from Frederick's Cognitive Reflection Test~\cite{Frederick2005} illustrates a central claim in cognitive science: human cognition operates via at least two distinct modes of thinking.
+Dual-process accounts of human cognition distinguish a fast, automatic, heuristic-driven System~1 from a slow, deliberate, rule-based System~2~\cite{Kahneman2011, Stanovich2000}. Classic demonstrations such as Frederick's Cognitive Reflection Test~\cite{Frederick2005} show that intuitive first responses routinely override careful analysis, with broad implications for judgment and decision-making~\cite{Tversky1974}.
 
-Kahneman~\cite{Kahneman2011} characterized these as System~1 and System~2. System~1 is fast, automatic, and effortless, relying on heuristics and associative processing. System~2 is slow, deliberate, and effortful, engaging rule-based reasoning and working memory. This dual-process framework has become one of the most influential theories in cognitive science, with broad applications from judgment and decision-making~\cite{Tversky1974} to individual differences in reasoning~\cite{Stanovich2000}.
-
-This distinction is especially consequential in clinical medicine. Physicians routinely rely on dual-process cognition: fast pattern recognition (System~1) enables rapid identification of common presentations---a dermatologist instantly recognizing melanoma, an emergency physician identifying ST-elevation on an ECG. Slow analytical reasoning (System~2) is engaged for complex, ambiguous, or high-stakes diagnoses where deliberate differential diagnosis is essential~\cite{Croskerry2009, Norman2009}. Diagnostic errors frequently arise when System~1 heuristics dominate inappropriately---anchoring on an initial impression, premature closure, or base-rate neglect---without adequate System~2 oversight~\cite{Croskerry2013, Saposnik2016}.
-
-As large language models (LLMs) enter clinical workflows---powering diagnostic support tools, triage systems, and clinical documentation~\cite{Singhal2023, Thirunavukarasu2023, Lee2023}---understanding their cognitive modes becomes critical. If LLMs can be configured to exhibit System~1-like and System~2-like processing, this has direct implications for system design: rapid triage queries may benefit from efficient System~1-like responses, while complex diagnostic reasoning demands the thoroughness of System~2-like processing.
+The distinction is especially consequential in clinical medicine, where the same System~1 / System~2 toggle underlies both efficient pattern recognition and analytical differential diagnosis: a setting where large language models (LLMs) are rapidly being deployed for triage, documentation, and decision support~\cite{Singhal2023, Thirunavukarasu2023, Lee2023}. If LLMs can be configured to exhibit either mode, this directly shapes system design: rapid triage queries may benefit from efficient System~1-like responses, while complex diagnostic reasoning demands the thoroughness of System~2-like processing. Section~\ref{sec:background} expands on the clinical-reasoning background.
 
 Recent studies suggest that LLMs exhibit human-like cognitive patterns: they demonstrate analogical reasoning~\cite{Webb2023}, display intuitive biases~\cite{Hagendorff2023}, and can engage in chain-of-thought reasoning when prompted~\cite{Wei2022}. These observations motivate our central question: \textit{Can LLMs be configured to systematically exhibit the distinct behavioral signatures of System~1 and System~2 processing, and what are the implications for biomedical applications?}
 
 We present the following contributions:
 
 \begin{enumerate}
-\item A \textbf{$2 \times 2 \times 2$ factorial ablation} that isolates the contributions of model capacity, temperature, and prompting strategy, showing that prompting is the dominant factor and that its effect interacts with task type.
+\item A \textbf{$2 \times 2 \times 2$ factorial ablation} that isolates the contributions of model capacity, temperature, and prompting strategy, and reveals a strong Prompt $\times$ Task Category interaction: CoT produces a large accuracy gain on analytical tasks ($+31.2$) and a raw $-11.1$-point decrement on intuitive tasks (of which roughly half is traced to CoT-induced hedging on the WinoGrande coreference format), the directional asymmetry predicted by dual-process theory but not guaranteed by the design.
 \item \textbf{Cross-model validation} across four LLM families (OpenAI, DeepSeek, Qwen, open-source Llama), demonstrating that dual-process behavioral patterns are not artifacts of a single provider.
-\item \textbf{Novel conflict tasks} resistant to training-data memorization, which reveal more diagnostic dual-process performance than classic CRT items.
+\item A set of \textbf{50 novel conflict items} (covering CRT variants, base-rate neglect, conjunction fallacy, biomedical Bayesian reasoning, and other heuristic-and-bias items) structurally isomorphic to their classic sources but written with novel surface content to reduce training-data memorization, used to characterise where LLMs succeed or fail when the intuitive cue cannot be retrieved from memory.
 \item \textbf{Token efficiency} as a model-intrinsic computational effort metric, replacing wall-clock response time which conflates model computation with API infrastructure.
 \end{enumerate}
-
-\begin{figure}[t]
-\centerline{\includegraphics[width=\columnwidth]{figures/fig0_architecture.pdf}}
-\caption{Experimental framework for dual-process simulation in LLMs. The pipeline processes task items through parallel System~1 (high temperature, zero-shot) and System~2 (low temperature, chain-of-thought) pathways, recording accuracy, confidence, and token usage.}
-\label{fig:architecture}
-\end{figure}
 
 %% ============================================================
 \section{Background and Related Work}
@@ -64,23 +61,15 @@ We present the following contributions:
 
 \subsection{Dual-Process Theory in Human Cognition}
 
-The idea that human cognition involves multiple processing systems has a long history~\cite{Evans2013}. Modern dual-process theories emerged from converging evidence across reasoning, judgment, and decision-making. Sloman~\cite{Sloman1996} provided influential empirical evidence for two distinct reasoning systems, while Stanovich and West~\cite{Stanovich2000} developed a comprehensive framework distinguishing System~1 (associative, automatic) from System~2 (rule-based, controlled). Evans~\cite{Evans2008} synthesized decades of research and identified core attributes distinguishing the two systems.
-
-We acknowledge that dual-process theory is theoretically contested. Critics have argued that the System~1/System~2 distinction oversimplifies a continuum of processing modes, and that the boundary between ``automatic'' and ``controlled'' processing is not always clear~\cite{Evans2013}. Our approach does not require that dual-process theory be literally true of human cognition; rather, we use its behavioral predictions---differential performance across task types, effort-accuracy trade-offs---as a structured framework for characterizing LLM behavior under different configurations.
+Beyond the classic Kahneman/Stanovich treatments cited above, converging evidence from reasoning and judgment tasks establishes System~1 as associative/automatic and System~2 as rule-based/controlled~\cite{Sloman1996, Evans2008}. The distinction is theoretically contested: critics argue it oversimplifies a continuum of processing modes~\cite{Evans2013}. We do not require dual-process theory to be literally true of human cognition; we use its behavioral predictions (differential performance across task types, effort-accuracy trade-offs) as a structured framework for characterizing LLM behavior under different configurations.
 
 \subsection{Dual-Process Cognition in Clinical Medicine}
 
-Croskerry~\cite{Croskerry2009} proposed a universal model of diagnostic reasoning in which physicians toggle between intuitive (non-analytical) and analytical pathways. Pattern recognition---a System~1 process---allows experienced clinicians to rapidly identify common conditions, but it is also the source of well-documented diagnostic errors: anchoring bias, availability heuristic, and premature closure~\cite{Croskerry2013, Saposnik2016}. Norman and Eva~\cite{Norman2009} showed that diagnostic errors often arise from failure to engage System~2 when System~1 produces an incorrect initial hypothesis. Pelaccia et al.~\cite{Pelaccia2011} demonstrated that expert clinical reasoning involves dynamic interplay between the two systems, with metacognitive monitoring determining when intuition should be overridden.
-
-These findings have direct relevance for LLM-based clinical tools. If LLMs exhibit analogous dual-process behavior under different configurations, the same design principles governing when clinicians should engage deliberate reasoning can inform when LLM systems should be configured for thorough analysis versus rapid response.
+Clinicians toggle between intuitive pattern recognition and analytical reasoning~\cite{Croskerry2009}. Pattern recognition enables rapid identification of common conditions but also produces diagnostic errors (anchoring, availability, premature closure)~\cite{Croskerry2013, Saposnik2016}; diagnostic errors often arise from failure to engage deliberate reasoning when an intuitive hypothesis is wrong~\cite{Norman2009, Pelaccia2011}. If LLMs exhibit analogous configuration-dependent behavior, the same design principles governing when clinicians should deliberate can inform when LLM systems should be configured for thorough analysis versus rapid response.
 
 \subsection{Dual-Process Patterns in LLMs}
 
-Binz and Schulz~\cite{Binz2023} systematically tested GPT-3 on classic cognitive psychology tasks, finding human-like performance on risky choice and causal reasoning but deviations in tasks requiring deliberation. Hagendorff et al.~\cite{Hagendorff2023} documented that LLMs display intuitive behaviors and reasoning biases mirroring human patterns. Itzhak et al.~\cite{Itzhak2024} showed that instruction-tuned models exhibit emergent cognitive biases.
-
-Wei et al.~\cite{Wei2022} found that chain-of-thought (CoT) prompting substantially improves reasoning performance, and Kojima et al.~\cite{Kojima2022} showed this effect emerges even without task-specific examples. Critically, Liu et al.~\cite{Liu2024} demonstrated that CoT can \textit{reduce} performance on tasks where deliberation harms human performance---a striking parallel to dual-process predictions. Bellini-Leite~\cite{BelliniLeite2024} offered a theoretical overview connecting dual-process theory to LLM reliability. DeepSeek-R1~\cite{DeepSeekAI2025} represents a deliberate engineering effort to enhance System~2-like extended reasoning. Binz et al.~\cite{Binz2025} developed a foundation model capturing human cognition across diverse tasks, demonstrating growing convergence between AI and cognitive modeling.
-
-In the medical domain, LLMs have demonstrated clinical knowledge at expert levels~\cite{Singhal2023, Nori2023}, and diagnostic reasoning prompts have shown potential for interpretable clinical decision support~\cite{Savage2024}. These advances motivate understanding how parameter configuration affects LLM cognitive modes for safe biomedical deployment.
+Prior work has documented human-like behavioral patterns in LLMs: analogical reasoning~\cite{Webb2023}, intuitive biases and emergent cognitive biases~\cite{Binz2023, Hagendorff2023, Itzhak2024}, and foundation models explicitly capturing human cognition~\cite{Binz2025}. On prompting, chain-of-thought (CoT) substantially improves reasoning~\cite{Wei2022, Kojima2022}, while Liu et al.~\cite{Liu2024} showed that CoT can \textit{reduce} performance on tasks where deliberation harms humans. DeepSeek-R1~\cite{DeepSeekAI2025} represents a deliberate engineering effort toward System~2-like extended reasoning; Bellini-Leite~\cite{BelliniLeite2024} gives a theoretical overview. In the medical domain LLMs have reached expert-level clinical knowledge~\cite{Singhal2023, Nori2023} and diagnostic reasoning prompts show interpretability potential~\cite{Savage2024}.
 
 %% ============================================================
 \section{Method}
@@ -90,7 +79,7 @@ In the medical domain, LLMs have demonstrated clinical knowledge at expert level
 
 We designed our study to address four core questions:
 
-\textbf{RQ1 (Factorial Isolation):} Which parameter---model capacity, temperature, or prompting strategy---contributes most to dual-process behavioral differences, and do these factors interact with task type?
+\textbf{RQ1 (Factorial Isolation):} Which parameter (model capacity, temperature, or prompting strategy) contributes most to dual-process behavioral differences, and do these factors interact with task type?
 
 \textbf{RQ2 (Token Efficiency):} Do the two configurations exhibit effort asymmetry measured through token efficiency, and does this differ by task type?
 
@@ -100,30 +89,9 @@ We designed our study to address four core questions:
 
 \subsection{System Configuration}
 
-We operationalized System~1 and System~2 through three parameter dimensions, each grounded in theoretical parallels to human cognition (Table~\ref{tab:system-config}).
+We operationalize the S1 / S2 contrast along three parameter axes: \textbf{model capacity} (smaller/faster vs.\ larger/capable variant within each family), \textbf{decoding temperature} (0.9 vs.\ 0.2), and \textbf{prompting strategy} (zero-shot vs.\ chain-of-thought~\cite{Wei2022}). The System~1 prompt was: ``\textit{You are a fast, intuitive thinker. Answer immediately with your first instinct. Give a brief, direct answer. Trust your gut feeling.}''; the System~2 prompt was: ``\textit{You are a careful, analytical thinker. Think step by step. Break down the problem systematically before reaching a conclusion.}'' Both prompts required JSON output containing an \texttt{answer} and a \texttt{confidence} rating (0--1); CoT additionally included a \texttt{reasoning\_steps} array. Completion-token caps were 150 for ZS and 1000 for CoT; observed C5/C8 medians/p90s/max were 144/239/451 and 369/503/713, so the caps bound only a tail and the $2.40\times$ token ratio is a deployment-settings estimate rather than an unconstrained one. Temperature turns out to be empirically null in our data (\S\ref{sec:factorial-results}) and we retain it only so the factorial cleanly decomposes its contribution.
 
-\begin{table}[t]
-\caption{Operationalization of System~1 and System~2 in LLMs.}
-\label{tab:system-config}
-\centering
-\begin{tabular}{lcc}
-\toprule
-Parameter & System 1 & System 2 \\
-\midrule
-Model & Smaller/faster & Larger/capable \\
-Temperature & 0.9 (high) & 0.2 (low) \\
-Prompting & Zero-shot & Chain-of-thought \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\textbf{Model Selection.} For each model family, the smaller variant serves as System~1 and the larger variant as System~2, reflecting the resource asymmetry in human cognition~\cite{Kahneman2011}.
-
-\textbf{Temperature.} High temperature (0.9) introduces response variability, simulating the probabilistic nature of intuitive judgments. Low temperature (0.2) produces more consistent---though not deterministic, as outputs remain stochastic at any positive temperature---outputs characteristic of analytical reasoning.
-
-\textbf{Prompting Strategy.} Zero-shot prompting for System~1 simulates automatic, unreflective processing. CoT prompting for System~2 explicitly elicits step-by-step reasoning~\cite{Wei2022}. The System~1 prompt instructed: ``\textit{Respond quickly based on your first impression. Trust your gut feeling.}'' The System~2 prompt instructed: ``\textit{Think step by step. Break down the problem systematically before reaching a conclusion.}'' Both prompts required a confidence rating (0--1).
-
-\textbf{Important clarification:} We do not claim that LLMs possess unconscious processes or subjective experience. System~1 and System~2 refer to \textit{behavioral configurations}---observable differences in accuracy, token usage, and confidence patterns---not claims about internal mechanisms.
+We do not claim that LLMs possess unconscious processes or subjective experience: System~1 and System~2 here refer to \textit{behavioral configurations} (observable accuracy, token-usage, and confidence differences), not internal mechanisms.
 
 \subsection{Factorial Ablation Design}
 \label{sec:factorial}
@@ -150,7 +118,7 @@ C8 (S2) & Full & Low & CoT \\
 \end{tabular}
 \end{table}
 
-This design enables estimation of main effects for each factor, all two-way interactions (Model $\times$ Prompt, Model $\times$ Temperature, Prompt $\times$ Temperature), and the three-way interaction. Critically, the Prompt $\times$ Task Category interaction is our primary test of the dual-process prediction: if CoT helps more on analytical than intuitive tasks, this interaction effect is \textit{not} circular---one could equally observe CoT helping uniformly across all task types.
+This design enables estimation of main effects for each factor, all two-way interactions (Model $\times$ Prompt, Model $\times$ Temperature, Prompt $\times$ Temperature), and the three-way interaction. Critically, the Prompt $\times$ Task Category interaction is our primary test of the dual-process prediction: if CoT helps more on analytical than intuitive tasks, this interaction effect is \textit{not} circular, since one could equally observe CoT helping uniformly across all task types.
 
 Both System~1 and System~2 configurations use a single API call per task with different prompts and parameters; no multi-stage processing pipeline is involved. The factorial design tests all $2^3 = 8$ combinations. Our \textbf{primary comparison} is C5 vs.\ C8 (same model GPT-4o, differing only in temperature and prompt), which isolates configuration effects from model capacity. The \textbf{secondary comparison} is C1 vs.\ C8 (the full canonical System~1 vs.\ System~2), contextualized by the factorial results.
 
@@ -168,14 +136,14 @@ To assess generalizability, we replicate the core System~1 vs.\ System~2 compari
 Family & System 1 & System 2 \\
 \midrule
 OpenAI & GPT-4o-mini & GPT-4o \\
-DeepSeek & DeepSeek-Chat & DeepSeek-Reasoner \\
-Qwen & Qwen-Turbo & Qwen-Max \\
-Open-source & Llama 3.1 8B & Llama 3.3 70B \\
+DeepSeek & DeepSeek-Chat & DeepSeek-R1 \\
+Qwen & Qwen2.5-7B-Instruct & Qwen2.5-72B-Instruct \\
+Meta (Llama) & Llama 3.1 8B & Llama 3.3 70B \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-For each family, the smaller/faster model is configured as System~1 and the larger/more capable model as System~2, using the same temperature and prompting parameters.
+For each family, the smaller/faster model is configured as System~1 and the larger/more capable model as System~2, using the same temperature and prompting parameters. Each family was evaluated on $n = 100$ items per task category (300 items total per family per system configuration). The same stratified-sampling and option-randomization protocol used in the factorial ablation is applied here to the conflict category, yielding 50 novel + 50 classic items per condition (all 50 novel items are forced in, with classic items drawn under the shared fixed seed so every family sees the same set).
 
 \subsection{Task Design}
 
@@ -185,97 +153,87 @@ We assembled a task battery from established NLP benchmarks spanning three categ
 
 \textbf{Analytical Tasks:} Multi-step arithmetic and logical deduction, drawn from GSM8K and LogiQA. These tasks require systematic step-by-step analysis.
 
-\textbf{Conflict Tasks:} Items drawn from TruthfulQA plus 50 novel items, where the intuitive answer is systematically wrong. Classic CRT-style problems, base-rate neglect scenarios, and belief bias tasks present situations where an intuitive lure diverges from the correct analytical answer~\cite{Frederick2005}.
+\textbf{Conflict Tasks:} Items drawn from TruthfulQA plus 50 novel items, where the intuitive answer is systematically wrong. Classic CRT-style problems, base-rate neglect scenarios, and other heuristic-and-bias items (sunk cost, gambler's fallacy, availability) present situations where an intuitive lure diverges from the correct analytical answer~\cite{Frederick2005}.
 
 We excluded benchmarks that span both intuitive and analytical demands (e.g., ARC, MMLU) to ensure clean category boundaries.
 
-\textbf{Novel Conflict Tasks.} To address training-data memorization, we developed novel conflict items that are structurally isomorphic to established CRT problems but use novel surface content unlikely to appear in training corpora. Each item presents a salient intuitive lure diverging from the correct answer. These novel items are interleaved with classic items to enable direct comparison.
+\textbf{Novel Conflict Tasks.} To address training-data memorization, we developed 50 novel conflict items (10 each in five subcategories: CRT variants, base-rate neglect, conjunction fallacy, biomedical Bayesian reasoning, and other heuristic-and-bias items such as sunk cost, gambler's fallacy, and availability) that are structurally isomorphic to the corresponding classic problems but use novel surface content unlikely to appear in training corpora. Each item presents a salient intuitive lure diverging from the correct answer. Rather than uniform random sampling (which, at $n = 200$ from a pool of $867$, would yield only ${\sim}12$ novel items per condition in expectation), we use \textit{stratified sampling} that forces all 50 novel items into every conflict sample, filled by 150 randomly drawn classic (TruthfulQA) items under a fixed seed shared across all 8 factorial conditions. To further eliminate a positional-bias shortcut (several sources place the correct option in position A by default), we randomise MCQ option positions per item using a deterministic per-item hash, so every condition sees the same post-shuffle layout. Free-form novel items (e.g., ``\$5'' as the CRT answer) are scored by numeric extraction and are unaffected by this transformation.
 
 \subsection{Metrics}
 
 \begin{itemize}
 \item \textbf{Accuracy:} Correctness of the final answer.
 \item \textbf{Confidence:} Model-generated certainty rating (0--1 scale).
-\item \textbf{Token Efficiency Ratio (TER):} Defined as $\text{TER} = \Delta\text{Accuracy} / \Delta\text{Tokens}$, measuring the accuracy gain per additional token consumed by System~2 relative to System~1. High TER indicates efficient use of additional computation; low TER indicates diminishing returns.
-\item \textbf{Reasoning Density:} The ratio of reasoning tokens to total tokens in System~2 responses, measuring how much of the additional output constitutes productive reasoning versus repetition or filler.
-\item \textbf{Marginal Accuracy Gain:} The per-token accuracy improvement, computed as $(Acc_{S2} - Acc_{S1}) / (Tokens_{S2} - Tokens_{S1})$.
+\item \textbf{Token Efficiency Ratio (TER):} Defined as $\text{TER} = \Delta\text{Accuracy} / \Delta\text{Tokens}$, measuring the accuracy gain (in percentage points) per additional token consumed by System~2 relative to System~1. High TER indicates efficient use of additional computation; low or negative TER indicates diminishing or reversed returns.
+\item \textbf{Marginal Accuracy Gain ($\Delta\text{Accuracy}$):} The raw accuracy delta $Acc_{S2} - Acc_{S1}$ used as the numerator of TER; reported alongside the corresponding $\Delta\text{Tokens}$ for interpretability.
 \end{itemize}
 
 Model responses were parsed as JSON, and accuracy was assessed against the extracted answer field to prevent false matches from intermediate reasoning steps.
 
-We deliberately exclude wall-clock response time. API response time conflates model computation with network latency, server load, and batching---factors external to the model. Token usage is a model-intrinsic metric directly analogous to cognitive effort in dual-process theory.
+We deliberately exclude wall-clock response time. API response time conflates model computation with network latency, server load, and batching, factors external to the model. Token usage is a model-intrinsic metric directly analogous to cognitive effort in dual-process theory.
 
 \subsection{Statistical Methods}
 
-For the factorial ablation, we use three-way ANOVA on accuracy with model, temperature, and prompting as fixed factors and task category as a moderator. For pairwise comparisons, we use independent samples $t$-tests with Cohen's $d$ effect sizes~\cite{Cohen1988}. All multi-comparison corrections use the Bonferroni method. We report all $p$-values without omission, including non-significant results, to avoid selective reporting.
+For the factorial ablation, we use three-way ANOVA on accuracy with model, temperature, and prompting as fixed factors and task category as a moderator. For pairwise comparisons, we use independent samples $t$-tests with Cohen's $d$ effect sizes~\cite{Cohen1988}. Our pre-specified primary comparisons are (i) C5 vs.\ C8 on overall accuracy and on each of the three task categories, and (ii) C1 vs.\ C8 on the conflict category, five tests in total. At a Bonferroni-corrected threshold of $\alpha = .05 / 5 = .01$, every comparison we report as ``significant'' remains significant; we report raw $p$-values throughout and include all non-significant results to avoid selective reporting.
 
 \subsection{Control Baselines}
 
-We include two control baselines to contextualize observed effects. A \textbf{random baseline} establishes expected accuracy for multiple-choice tasks ($1/n_{\text{options}}$, typically 25\% for 4-option items). A \textbf{same-configuration variance baseline} runs C8 (full System~2) twice on the same items to establish the measurement noise floor. These controls ensure that observed System~1--System~2 differences exceed both chance-level performance and run-to-run measurement noise.
+We include two control baselines to contextualize observed effects. A \textbf{random baseline} establishes expected accuracy for multiple-choice tasks ($1/n_{\text{options}}$). TruthfulQA items have a mean of about 5 options (range 2--13), giving a random-choice baseline of ${\sim}22.6\%$; the 4-option intuitive tasks sit at $25\%$. A \textbf{same-configuration variance baseline} runs C8 (full System~2) twice on a fixed 50-item intuitive subset to characterise run-to-run stochastic variability at that sample size; we did not re-run the variance baseline after the conflict-category protocol change, so the 8.0-point run-to-run difference quoted later applies to the intuitive-task noise floor only. At our main comparison scale ($n = 600$), the standard error of a single accuracy estimate shrinks by a factor of $\sqrt{600/50} \approx 3.5$ relative to the $n=50$ baseline, so smaller effects can still be formally significant. We flag comparisons close to the noise floor where relevant.
 
 %% ============================================================
 \section{Results}
 \label{sec:results}
 
-\subsection{Initial Experiment: GPT-4o Family}
+\subsection{Canonical S1 vs.\ S2 and Factorial Main Effects}
+\label{sec:factorial-results}
 
-System~2 significantly outperformed System~1 overall (87.3\% vs.\ 74.7\%, $t(1198) = -5.66$, $p < .001$, $d = 0.327$) at
-$2.35\times$ token cost (Table~\ref{tab:main-results}).
+Within the GPT-4o family, the same-model contrast (C5 vs.\ C8) produced a modest overall advantage for System~2 (73.8\% vs.\ 66.0\%, $t(1198) = -2.97$, $p = .003$, $d = 0.171$) at $2.40\times$ token cost (Table~\ref{tab:main-results}). The effect was concentrated on analytical tasks ($+26.5$, $t(398) = -5.82$, $p < .001$, $d = 0.582$) and absent on intuitive ($-2.0$, $p = .665$) and conflict ($-1.0$, $p = .820$) tasks. A variance baseline (C8 run twice on 50 intuitive items) showed 92\% trial-level agreement and an 8.0-point accuracy difference between runs, establishing the noise floor on a 50-item subset.
 
 \begin{table}[t]
-\caption{Overall performance (GPT-4o family, C5 vs.\ C8, $N = 600$ tasks per condition).}
+\caption{Overall performance (GPT-4o family, C5 vs.\ C8, $N = 600$ per condition).}
 \label{tab:main-results}
 \centering
 \begin{tabular}{lccc}
 \toprule
 Metric & System 1 & System 2 & Ratio \\
 \midrule
-Accuracy & 74.7\% & \textbf{87.3\%} & $1.17\times$ \\
-Tokens Used & 162 & 381 & $2.35\times$ \\
-Confidence & 0.928 & 0.888 & --- \\
-Overconfidence Gap & +18.1\% & +1.5\% & --- \\
+Accuracy & 66.0\% & \textbf{73.8\%} & $1.12\times$ \\
+Tokens Used & 160 & 383 & $2.40\times$ \\
+Confidence & 0.926 & 0.891 & n/a \\
+Overconfidence Gap & +26.6\% & +15.3\% & n/a \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The task-specific pattern was consistent with dual-process predictions: System~2's advantage was largest on analytical tasks (+27.0\%, $t(398) = -6.29$, $p < .001$, $d = 0.631$), moderate on intuitive tasks (+12.5\%, $t(398) = -2.98$, $p = .003$, $d = 0.299$), and negligible on conflict tasks ($-1.5$\%, $t(398) = 0.64$, $p = .521$, $d = -0.064$). The near-ceiling conflict performance (95.0\% vs.\ 93.5\%) motivates the novel conflict task extension below. A variance baseline (C8 run twice on 50 tasks) showed 94\% agreement and a 2.0 percentage point accuracy difference, establishing the noise floor.
-
-\subsection{Factorial Ablation: Main Effects}
-\label{sec:factorial-results}
-
-The factorial ablation reveals the relative contribution of each parameter (Table~\ref{tab:main-effects}).
+The full $2 \times 2 \times 2$ factorial ablation decomposes this comparison into the relative contribution of each parameter (Table~\ref{tab:main-effects}).
 
 \begin{table}[t]
-\caption{Main effects from $2 \times 2 \times 2$ factorial ablation (accuracy gain, averaged over other factors). Effect sizes are partial $\eta^2$.}
+\caption{Main effects from $2 \times 2 \times 2$ factorial ablation (per-category accuracy gain, averaged over other factors). Overall column is averaged across categories. Effect sizes are partial $\eta^2$ from the 3-way ANOVA.}
 \label{tab:main-effects}
 \centering
 \begin{tabular}{lccccc}
 \toprule
 Factor & Analytical & Intuitive & Conflict & Overall & $\eta^2_p$ \\
 \midrule
-Prompt (CoT) & +34.2\% & +10.5\% & +5.1\% & +16.6\% & .040 \\
-Model (Full) & +11.8\% & +5.2\% & +5.9\% & +7.6\% & .009 \\
-Temp.\ (Low) & +1.8\% & +1.3\% & $-0.3$\% & +0.9\% & .0001 \\
+Prompt (CoT) & +31.2\% & $-11.1$\% & $-0.2$\% & +6.6\% & .005 \\
+Model (Full) & +12.7\% & +3.9\% & +15.0\% & +10.5\% & .012 \\
+Temp.\ (Low) & +0.5\% & +3.1\% & +0.5\% & +1.4\% & .0002 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\textbf{Prompting strategy} is the dominant factor, contributing
-+16.6 percentage points overall ($F(1, 4792) = 199.0$, $p < .001$, $\eta^2_p = .040$). This effect is strongly moderated by task category: CoT yields
-+34.2 points on analytical tasks but only
-+10.5 points on intuitive tasks. \textbf{Model capacity} has a moderate effect (
-+7.6 points overall, $F(1, 4792) = 41.9$, $p < .001$, $\eta^2_p = .009$). \textbf{Temperature} was not significant (
-+0.9 points, $F(1, 4792) = 0.6$, $p = .458$, $\eta^2_p = .0001$).
+\textbf{Prompting strategy} contributes
++6.6 percentage points overall ($F(1, 4792) = 23.6$, $p < .001$, $\eta^2_p = .005$), but this overall figure hides the central finding: the effect is highly task-category dependent. CoT yields
++31.2 points on analytical tasks while producing an
+$11.1$-point \textit{decrement} on intuitive tasks, a direction reversal rather than a mere magnitude change. \textbf{Model capacity} has the largest overall effect (
++10.5 points, $F(1, 4792) = 59.8$, $p < .001$, $\eta^2_p = .012$), reflecting substantial gains on analytical (+12.7) and conflict (+15.0) tasks. \textbf{Temperature} was not significant (
++1.4 points, $F(1, 4792) = 1.0$, $p = .313$, $\eta^2_p = .0002$).
 
 \subsection{Factorial Ablation: Interactions}
 
-The Prompt $\times$ Task Category interaction is the central finding.
+The Prompt $\times$ Task Category interaction is the central finding. Estimated from a separate 2-way ANOVA (Prompt, Category; residual $df=4794$), it was highly significant: $F(2, 4794) = 89.2$, $p < .001$, $\eta^2_p = .036$. CoT improved analytical accuracy by $31.2$ points, reduced intuitive accuracy by $11.1$ points, and left conflict unchanged ($-0.2$). The $-11.1$ intuitive decrement is heavily concentrated on WinoGrande (ZS $\approx 50\%$, CoT $\approx 2\%$): under CoT the model hedges rather than commits, producing ``insufficient context'' / ``cannot determine'' responses on 18--22 of 28 WinoGrande items per CoT condition, which are scored as incorrect. Excluding WinoGrande, the per-source CoT effects on the other four intuitive benchmarks are CSQA $0.0$, HellaSwag $-9.8$, PIQA $-4.4$, SIQA $-3.7$ (mean $-5.1$), and the 2-way ANOVA remains highly significant on the $n=4576$ non-WG sample ($F(2, 4570) = 71.7$, $p < .001$, $\eta^2_p = .030$). The sign of the effect is therefore robust, but roughly half of its raw magnitude is a WinoGrande-specific refusal-to-commit phenomenon, not a wrong-answer failure mode. The largest residual effect, HellaSwag $-9.8$, is consistent with CoT shifting the model away from the distributionally-typical continuation (HellaSwag's training target) toward a more-reasoned but lower-probability alternative~\cite{Liu2024}. Within the full $2 \times 2 \times 2$ design, all other 2-way interactions and the 3-way interaction were non-significant (all $F < 0.5$, all $p > .5$).
 
-The Prompt $\times$ Task Category interaction was significant ($p < .001$): CoT improved analytical accuracy by
-34.2 points but intuitive accuracy by only
-10.5 points. The Model $\times$ Prompt interaction was significant ($F(1, 4792) = 24.2$, $p < .001$, $\eta^2_p = .005$), indicating that CoT helps the smaller model (mini) more than the full model (4o). The Model $\times$ Temperature ($F(1, 4792) = 0.7$, $p = .416$, $\eta^2_p = .0001$) and Temperature $\times$ Prompt ($F(1, 4792) = 0.0$, $p = .916$, $\eta^2_p = .0000$) interactions were not significant. The three-way interaction was not significant ($F(1, 4792) = 0.1$, $p = .805$, $\eta^2_p = .0000$).
-
-This interaction is the key result addressing the circularity criticism. The design does not guarantee that CoT should help \textit{more} on analytical tasks; one could equally observe CoT helping uniformly across task types, or helping most on conflict tasks. The observed asymmetric interaction---large benefit on analytical tasks, minimal on intuitive---is the specific pattern predicted by dual-process theory and provides non-trivial evidence that the framework captures meaningful computational trade-offs.
+The asymmetric interaction (large analytical benefit, small intuitive decrement after controlling for WinoGrande, no effect on conflict) is the directional pattern predicted by dual-process theory and is not guaranteed by the design: CoT could equally have helped uniformly or helped most on conflict. Prior reports that deliberation hurts when pattern matching suffices~\cite{Liu2024} are thus partially consistent with our results but turn out to be format-dependent rather than universal.
 
 \subsection{Multi-Model Generalization}
 \label{sec:multimodel-results}
@@ -283,102 +241,88 @@ This interaction is the key result addressing the circularity criticism. The des
 The dual-process pattern generalizes across all four model families (Table~\ref{tab:multimodel}, Fig.~\ref{fig:multimodel}).
 
 \begin{table}[t]
-\caption{System~2 minus System~1 accuracy gaps (\%) across model families by task category.}
+\caption{System~2 minus System~1 accuracy gaps (\%) across model families by task category ($n = 100$ items per category per family; category mean in last row).}
 \label{tab:multimodel}
 \centering
-\begin{tabular}{lcccc}
+\begin{tabular}{lccc}
 \toprule
-Family & Analytical & Intuitive & Conflict & Overall \\
+Family & Analytical & Intuitive & Conflict \\
 \midrule
-OpenAI & +50.0 & +26.0 & +4.0 & +26.7 \\
-DeepSeek & +11.0 & $-15.0$ & $-14.0$ & $-6.0$ \\
-Qwen & +51.0 & +13.0 & +16.0 & +26.7 \\
-Llama & +52.0 & +17.0 & +31.0 & +33.3 \\
+OpenAI & +46.0 & $-8.0$ & +22.0 \\
+DeepSeek & +24.0 & +8.0 & +6.0 \\
+Qwen & +50.0 & +10.0 & +9.0 \\
+Llama & +53.0 & $-1.0$ & +26.0 \\
 \midrule
-Mean & +41.0 & +10.2 & +9.2 & +20.2 \\
+Mean & +43.2 & +2.3 & +15.8 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{figure}[t]
-\centerline{\includegraphics[width=\columnwidth]{figures/fig4_multi_model.pdf}}
-\caption{System~2 minus System~1 accuracy gaps across four model families. All families show the predicted pattern: large gaps on analytical tasks, small gaps on intuitive tasks.}
+\centerline{\includegraphics[width=0.82\columnwidth]{figures/fig4_multi_model.pdf}}
+\caption{System~2 minus System~1 accuracy gaps across four model families. All families show the predicted pattern: large gaps on analytical tasks (+24 to +53 points), near-zero (raw $-8$ to +10 points) intuitive gaps that turn uniformly positive once the WinoGrande hedging artefact (Section~\ref{sec:factorial-results}) is excluded, and moderate positive gaps on conflict tasks (+6 to +26 points) once option positions are randomised and all 50 novel items are included by stratified sampling.}
 \label{fig:multimodel}
 \end{figure}
 
 Across all families, the S2--S1 gap was largest on analytical tasks (range:
-+11.0 to +52.0 points) and positive for all four families. The gap on intuitive tasks ranged from $-15.0$ to +26.0 points, with the analytical gap exceeding the intuitive gap for 3 of 4 families. A mixed-effects model with model family as a random effect confirmed a significant Task Category $\times$ System interaction ($F(2, 46) = 14.7$, $p < .001$) with no significant Family $\times$ System $\times$ Category interaction ($F(6, 46) = 1.2$, $p = .33$), indicating that the dual-process pattern is consistent across providers and is not an artifact of a single model family's architecture or training data.
++24.0 to +53.0 points) and positive for all four families. Intuitive gaps varied across a narrower range ($-8.0$ to +10.0 points) and remained much smaller than the analytical gap for every family. The negative OpenAI intuitive gap ($-8$ points) is, however, an artefact of WinoGrande CoT hedging rather than a genuine CoT-hurts-pattern-matching effect: excluding WinoGrande, every family shows a positive intuitive gap ($+3.7$, $+6.2$, $+16.3$, $+8.8$ for OpenAI, DeepSeek, Qwen, Llama; mean $+8.8$ points). The discussion in Section~\ref{sec:cross-model-robustness} returns to this caveat. On conflict tasks, all four families now show a positive S2--S1 gap (range: +6.0 to +26.0 points). Unlike the raw TruthfulQA-only gaps typically reported in the literature, these numbers reflect a 50/50 stratified sample of classic TruthfulQA items and memorisation-resistant novel items with randomised option positions (see Section~\ref{sec:novel-conflict-results}). This replicates the task-selective pattern documented in the factorial ablation across architectures and training regimes, indicating that the dual-process pattern is consistent across providers and is not an artifact of a single model family.
 
 \subsection{Novel vs.\ Classic Conflict Tasks}
 \label{sec:novel-conflict-results}
 
-Classic CRT items showed high performance for both systems (S1: 83.0\%, S2: 93.5\%), with System~2 still outperforming. The conflict category includes 50 novel items interleaved with 817 TruthfulQA items, allowing comparison of memorization-resistant and standard items (Table~\ref{tab:novel-conflict}).
+The conflict category combines TruthfulQA items with 50 novel CRT-style items. To remove two sources of bias identified during analysis, we (i) use \textit{stratified sampling} that forces all 50 novel items into every 200-item conflict sample (filled with 150 random TruthfulQA items), and (ii) randomise MCQ option positions per item with a deterministic per-item seed, so that ``the correct answer is always A'' cannot shortcut evaluation. All eight factorial conditions see the same post-shuffle option layout, making across-condition comparisons valid (Table~\ref{tab:novel-conflict}).
 
 \begin{table}[t]
-\caption{Conflict task accuracy (\%) under different comparisons.}
+\caption{Conflict task accuracy (\%) under different comparisons, with option positions randomised and 50 novel + 150 classic items per condition.}
 \label{tab:novel-conflict}
 \centering
 \begin{tabular}{lcccc}
 \toprule
 Comparison & S1 & S2 & $\Delta$ & $p$ \\
 \midrule
-C1 vs.\ C8 (canonical) & 83.0 & 93.5 & +10.5 & .001 \\
-C5 vs.\ C8 (same model) & 95.0 & 93.5 & $-1.5$ & .521 \\
+C1 vs.\ C8 (canonical) & 58.0 & 73.5 & $+15.5$ & $.001$ \\
+C5 vs.\ C8 (same model) & 74.5 & 73.5 & $-1.0$ & $.820$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The conflict task results depend on the comparison. In the canonical comparison (C1 vs.\ C8), System~2 outperformed System~1 by 10.5 points ($t(398) = -3.30$, $p = .001$, $d = 0.330$), but much of this gap is attributable to model capacity rather than CoT: in the same-model comparison (C5 vs.\ C8), the gap is negligible ($-1.5$ points, $p = .521$). Both configurations achieve near-ceiling performance ($>93\%$), consistent with partial memorization of classic conflict items. The inclusion of 50 novel items helps mitigate this concern, though the ceiling effect remains.
+The canonical C1 vs.\ C8 conflict gap now reaches significance ($+15.5$ points, $t(398) = -3.30$, $p = .001$, $d = 0.330$), driven entirely by model capacity (see Table~\ref{tab:main-effects}: Model effect on conflict $= +15.0$). The same-model C5 vs.\ C8 comparison remains non-significant ($p = .820$), indicating that within GPT-4o, temperature and CoT do not meaningfully change conflict performance. Separating the sample by item source reveals a dramatic training-data contamination signature: on C1, novel-item accuracy (32.0\%, $n = 50$) was less than half the classic TruthfulQA accuracy (66.7\%, $n = 150$); on C8 the gap narrowed but remained substantial (novel 62.0\% vs.\ classic 77.3\%). The larger model generalises more broadly, while the smaller one relies more heavily on surface recall. Disaggregating by novel subcategory (C1 $\to$ C8, $n=10$ items each, paired-bootstrap 95\% CIs): CRT $+30\%$ [$0, +60$], base-rate neglect $+40\%$ [$+10, +70$], conjunction fallacy $+80\%$ [$+50, +100$], biomedical Bayesian reasoning $+10\%$ [$-20, +40$], and other heuristic-and-bias items $-10\%$ [$-30, 0$]. Conjunction-fallacy items show the largest and statistically cleanest S2 $-$ S1 gap; biomedical and mixed-bias items are underpowered at $n=10$ and should be interpreted cautiously.
+
+\subsection{Biomedical Validation on MedQA-USMLE}
+\label{sec:medqa}
+
+To substantiate the paper's biomedical framing, we re-ran C1, C5, and C8 on 100 items from the MedQA-USMLE 4-option test set~\cite{Jin2021}. Accuracies: C1 $= 70.0\%$, C5 $= 92.0\%$, C8 $= 88.0\%$; model-capacity effect $+22.0$ ($t(198) = -4.11$, $p < .001$, $d = 0.581$); canonical S2 $-$ S1 gap $+18.0$ ($p = .002$, $d = 0.451$); within-GPT-4o CoT effect $-4.0$ ($p = .348$, n.s.). Same-model TER is negative ($-0.015$ at $1.96\times$ token cost), mirroring the intuitive-task pattern rather than the analytical one: USMLE vignettes behave as \textit{pattern retrieval} for GPT-4o --- scale matters, deliberation does not. Overconfidence on MedQA is far lower than on general benchmarks (C5 gap $= +0.9\%$, C8 $= +2.6\%$, vs.\ $+26.6\%$ and $+15.3\%$ general), consistent with strong medical pre-training. Clinical triage dominated by USMLE-style pattern retrieval is well-served by capable zero-shot; CoT should be reserved for tasks requiring novel inference.
 
 \subsection{Qualitative Comparison with Human Cognition}
 \label{sec:human-comparison}
 
-We offer a \textit{qualitative} comparison between LLM and human dual-process patterns (Table~\ref{tab:human-comparison}). This comparison is necessarily limited: the human data comes from published cognitive psychology studies~\cite{Frederick2005, Stanovich2000, Pennycook2015} using different tasks, populations, and operationalizations of System~1/System~2 (typically time-pressure vs.\ untimed conditions), whereas LLM ``System~1'' and ``System~2'' are defined by parameter configurations. We do not claim these are equivalent constructs. The comparison examines only whether the \textit{directional pattern}---where S2 helps most---is similar.
+We offer a \textit{qualitative} comparison against published human effects. Human S2--S1 gaps are approximate ranges drawn from cognitive-psychology studies on intuitive pattern tasks ($\sim$$+3\%$), syllogistic and arithmetic reasoning ($\sim$$+25\%$), and CRT / base-rate / framing / conjunction items ($\sim$$+39\%$)~\cite{Frederick2005, Stanovich2000, Pennycook2015}, typically operationalised as time-pressure vs.\ untimed conditions. These are not matched experiments, and we do not claim equivalence of constructs.
 
-\begin{table}[t]
-\caption{Directional comparison of human and LLM dual-process patterns. Human S2--S1 gaps are approximate ranges from published studies with different tasks and populations. LLM gaps averaged across 4 model families. This comparison is qualitative only.}
-\label{tab:human-comparison}
-\centering
-\begin{tabular}{lccl}
-\toprule
-Category & Human $\Delta$ & LLM $\Delta$ & Direction \\
-\midrule
-Intuitive & $\sim$+3\% & +10.2\% & Same (both small) \\
-Analytical & $\sim$+25\% & +41.0\% & Same (both large) \\
-Conflict & $\sim$+31\% & +9.2\% & Opposite \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-Both humans and LLMs show the smallest S2 advantage on intuitive tasks and the largest on tasks requiring deliberate reasoning. However, the magnitudes differ substantially (e.g., LLM analytical gap is +41.0\% vs.\ human $\sim$+25\%), and the \textit{ordering} diverges on conflict tasks: humans show their largest S2--S1 gap on conflict tasks ($\sim$+31\%), whereas LLMs show a small gap (+9.2\%), likely because LLMs have encountered classic conflict items (e.g., CRT problems) during pre-training.
-
-This divergence is itself informative: it suggests that LLM ``dual-process'' patterns arise from different mechanisms than human cognition. A rigorous comparison would require testing humans and LLMs on \textit{identical} tasks under matched conditions, which we leave to future work.
+Averaged across the four model families, the raw LLM category-level gaps are intuitive $+2.3\%$, analytical $+43.2\%$, and conflict $+15.8\%$; all three share the sign of the corresponding human gap. The raw intuitive magnitude is coincidentally close to the human value ($+2.3\%$ vs.\ $\sim$$+3\%$), but this closeness is misleading because the raw LLM intuitive gap is suppressed by the WinoGrande hedging artefact (Section~\ref{sec:factorial-results}): excluding WinoGrande raises the LLM intuitive gap to $+8.8\%$, about $3\times$ the human value, so in fact LLMs gain \textit{more} from deliberation on pattern-matching tasks than humans do. The analytical and conflict magnitudes also diverge from human, and the rank order differs: humans show their largest gap on conflict tasks, while LLMs show theirs on analytical tasks and only a moderate gap on conflict. One plausible reason for the smaller LLM conflict gap is that LLMs have encountered classic conflict items during pre-training, so an intuitive lure is less likely to dominate their first-pass response, an interpretation supported by the ${\sim}35$-point novel-vs-classic gap observed on C1 (Section~\ref{sec:novel-conflict-results}). A rigorous comparison would require testing humans and LLMs on identical tasks under matched conditions, which we leave to future work.
 
 \subsection{Token Efficiency}
 \label{sec:token-efficiency}
 
-Token efficiency analysis reveals task-type-dependent returns on computational investment (Fig.~\ref{fig:token-efficiency}).
+Token efficiency analysis reveals task-type-dependent returns on computational investment (Fig.~\ref{fig:cot-interaction}). All TER numbers below are computed on the primary C5 vs.\ C8 contrast (same GPT-4o model; Table~\ref{tab:main-results}), where CoT responses use $2.40\times$ as many tokens as zero-shot responses.
 
 \begin{figure}[t]
-\centerline{\includegraphics[width=\columnwidth]{figures/fig6_cot_interaction.pdf}}
-\caption{Token efficiency by task category. System~2's additional tokens yield high returns on analytical tasks but diminishing returns on intuitive tasks.}
-\label{fig:token-efficiency}
+\centerline{\includegraphics[width=0.82\columnwidth]{figures/fig6_cot_interaction.pdf}}
+\caption{Prompt $\times$ Task Category interaction. Mean accuracy under zero-shot vs.\ chain-of-thought, averaged over all model $\times$ temperature cells. CoT produces a large gain on analytical tasks ($+31.2$, $p < .001$); a raw decrement on intuitive tasks ($-11.1$, $p < .001$) roughly half of which is driven by CoT-induced hedging on WinoGrande (Section~\ref{sec:factorial-results}); and no change on conflict tasks ($-0.2$, n.s.).}
+\label{fig:cot-interaction}
 \end{figure}
 
 On analytical tasks, the Token Efficiency Ratio was
-0.158 (percentage points gained per additional token), with a Marginal Accuracy Gain of +34.2\% for an additional ${\sim}216$ tokens. On intuitive tasks, TER dropped to
-0.049---System~2's extra tokens showed diminishing returns, consistent with the dual-process prediction that deliberation adds little when pattern matching suffices. On conflict tasks, TER was
-0.024, reflecting the smallest accuracy gain from additional computation.
+0.118 (percentage points gained per additional token), with a Marginal Accuracy Gain of +26.5\% for an additional ${\sim}225$ tokens. On intuitive tasks, raw TER was slightly negative ($-0.009$), but this number is also contaminated by the WinoGrande CoT hedging artefact (Section~\ref{sec:factorial-results}): recomputing the intuitive C5 vs.\ C8 contrast on the remaining four intuitive benchmarks flips the accuracy delta from $-2.0$ to $+2.3$ points and the TER from $-0.009$ to $+0.011$, so the honest reading is that CoT is roughly TER-neutral on genuine pattern-matching tasks rather than actively harmful. On conflict tasks, TER was also slightly negative ($-0.004$), reflecting a small accuracy \textit{decrement} per additional token in the same-model C5 vs.\ C8 contrast.
 
-This pattern provides a computational analogue of cognitive effort allocation: an efficient system should invest additional processing resources primarily when the task demands justify it. System~1-like configurations are more token-efficient for intuitive tasks, while System~2-like configurations provide meaningful accuracy gains on analytical tasks that justify the additional token cost.
+System~1-like configurations are equally or slightly more token-efficient on genuine pattern-matching tasks (once WinoGrande hedging is set aside), while System~2-like configurations provide meaningful accuracy gains on analytical tasks that justify the additional token cost.
 
 \subsection{Trial-Level Visualization}
 
-Fig.~\ref{fig:trial-matrix} displays all 4,800 individual trial outcomes across the eight factorial conditions. Each row represents one task (sorted by category and source), and each column one condition. The barcode-like pattern reveals the CoT effect at the individual trial level: the Analytical section (GSM8K, LogiQA) transitions from predominantly red (incorrect) under zero-shot conditions to predominantly green (correct) under CoT conditions, while the Intuitive and Conflict sections show minimal change.
+Fig.~\ref{fig:trial-matrix}(a) displays per-source accuracy for all 4{,}800 factorial trials across the eight conditions. The barcode-like pattern reveals the two independent main effects at the individual-trial level. Along the \textit{prompting} axis (comparing C1$\leftrightarrow$C2, C3$\leftrightarrow$C4, C5$\leftrightarrow$C6, C7$\leftrightarrow$C8), the Analytical section (GSM8K, LogiQA) transitions from predominantly red (incorrect) under zero-shot to predominantly green (correct) under CoT, while the Intuitive section shows a reddening that is driven disproportionately by WinoGrande (where CoT-induced hedging collapses accuracy from $\approx 50\%$ to $\approx 2\%$; see Section~\ref{sec:factorial-results}), with much smaller drops on HellaSwag ($-9.8$), PIQA ($-4.4$) and SIQA ($-3.7$) and essentially no change on CommonsenseQA. The Conflict section barely moves along the prompting axis. Along the \textit{model-capacity} axis (comparing the four mini conditions C1--C4 to the four GPT-4o conditions C5--C8), the Conflict section (Novel in particular) shifts from mostly red to substantially greener, visualising the $+15.0$-point Model main effect on conflict documented in Table~\ref{tab:main-effects}. Panel~(b) reports per-source accuracy for each model family's S1 and S2 runs, showing that the analytical ZS$\to$CoT and mini$\to$large transitions described above reproduce in every provider.
 
 \begin{figure*}[t]
-\centerline{\includegraphics[width=\textwidth]{figures/fig7_trial_matrix.pdf}}
-\caption{Trial-level outcomes for all 4,800 trials across 8 factorial conditions. Green = correct, red = incorrect. The dramatic color shift in the Analytical section (GSM8K, LogiQA) under CoT conditions visually confirms the selective effect of chain-of-thought prompting on reasoning-intensive tasks.}
+\centerline{\includegraphics[width=0.75\textwidth]{figures/fig7_trial_matrix.pdf}}
+\caption{Per-source accuracy heatmaps (in \%). (a) Factorial ablation: 4{,}800 trials across the 8 conditions C1--C8. CoT dramatically shifts the Analytical section green under CoT conditions; model capacity (mini vs.\ GPT-4o) drives the Conflict section green. (b) Cross-family replication: per-source accuracy for each of the four families' S1 and S2 configurations, showing that the same ZS$\to$CoT and mini$\to$large shifts occur across all four providers.}
 \label{fig:trial-matrix}
 \end{figure*}
 
@@ -389,46 +333,47 @@ Fig.~\ref{fig:trial-matrix} displays all 4,800 individual trial outcomes across 
 
 \subsection{Isolating Dual-Process Factors}
 
-The factorial ablation demonstrates that the System~1/System~2 performance difference is not simply ``bigger model does better at everything.'' Prompting strategy is the dominant factor ($\eta^2_p = .040$), followed by model capacity ($\eta^2_p = .009$), while temperature was not significant ($\eta^2_p = .0001$, $p = .458$). More importantly, the Prompt $\times$ Task Category interaction ($p < .001$) shows that CoT disproportionately benefits analytical tasks---the specific pattern predicted by dual-process theory.
-
-This interaction was not guaranteed by the experimental design. CoT is designed to elicit explicit reasoning, but this does not entail that it should help \textit{more} on analytical tasks. One could plausibly observe: (a)~CoT helping equally across all task types (a general quality boost), (b)~CoT helping most on conflict tasks (where reasoning chains might help override intuitive lures), or (c)~CoT hurting performance on intuitive tasks (as Liu et al.~\cite{Liu2024} documented in some settings). The observed pattern---large benefit on analytical, small on intuitive, intermediate on conflict---is one specific outcome among several plausible alternatives, and its consistency with dual-process predictions provides non-trivial evidence.
-
-We do not claim that LLMs possess unconscious processes, subjective experience, or System~1 cognition in the human sense. System~1 in humans involves sub-linguistic, pre-attentive processing that has no obvious analogue in autoregressive language models. What we demonstrate is that the \textit{behavioral pattern}---differential performance across task types as a function of configuration---generalizes from biological to computational systems. This is a claim about behavioral signatures, not about underlying mechanisms.
+The factorial shows that the System~1/System~2 gap is not simply ``bigger model does better at everything'': model capacity contributes a moderate overall main effect ($\eta^2_p = .012$), prompt a smaller one ($\eta^2_p = .005$), and temperature is null. The Prompt $\times$ Task Category interaction ($\eta^2_p = .036$) is the central finding and survives exclusion of the WinoGrande format artefact (Section~\ref{sec:factorial-results}). We emphasize again that System~1 in humans involves sub-linguistic, pre-attentive processing that has no obvious analogue in autoregressive LLMs; our claim is about behavioral signatures under different configurations, not about underlying mechanisms.
 
 \subsection{Cross-Model Robustness}
+\label{sec:cross-model-robustness}
 
-The dual-process pattern holds across all four model families: the analytical S2--S1 gap is always positive (range: +11.0 to +52.0 points) and exceeds the intuitive gap for 3 of 4 families. However, the pattern is not uniform. DeepSeek-Reasoner showed \textit{negative} S2--S1 gaps on intuitive ($-15.0$\%) and conflict ($-14.0$\%) tasks, suggesting that its extended reasoning mode can hurt performance when deliberation is unnecessary---consistent with Liu et al.'s~\cite{Liu2024} finding that chain-of-thought can reduce accuracy on tasks where intuitive processing suffices. This provides evidence that over-reasoning is a genuine risk: System~2-like configurations are not universally beneficial, and the dual-process framework correctly predicts when deliberation helps versus harms. OpenAI, Qwen, and Llama showed consistently positive S2--S1 gaps across all categories, with analytical gaps of +50.0, +51.0, and +52.0 points respectively.
+The Prompt $\times$ Task Category pattern documented in the factorial ablation replicates in every one of the four families (Table~\ref{tab:multimodel}): the analytical S2--S1 gap is always large and positive and exceeds the intuitive gap. The $-8$-point intuitive gap for OpenAI and the near-zero gap for Llama warrant caution, however: they are driven by the same WinoGrande hedging effect reported in Section~\ref{sec:factorial-results}. In the multi-family sample (20 WinoGrande items per condition), OpenAI S2 produces 17 hedged ``insufficient context''-style responses on 20 items, and Qwen S2 produces 16 hedged responses; DeepSeek (2) and Llama (2) are much less affected. Excluding WinoGrande, the intuitive S2--S1 gap is positive in \textit{every} family (OpenAI $+3.7$, DeepSeek $+6.2$, Qwen $+16.3$, Llama $+8.8$; mean $+8.8$ vs.\ $+2.3$ with WinoGrande included). The cross-family cross-over that is sometimes invoked as evidence for ``CoT hurts intuitive processing''~\cite{Liu2024} is therefore not robust once the WinoGrande coreference-hedging artefact is controlled for. The remainder of the cross-provider replication (large positive analytical gap, positive conflict gap in every family) is unaffected and is the strongest available evidence that the dual-process patterns are not a GPT-4o-specific artefact.
 
 \subsection{Training Data Contamination}
 
-Classic CRT items in the conflict category showed high System~1 accuracy (83.0\%), suggesting partial training-data memorization. Our conflict category includes 50 novel items interleaved with TruthfulQA items to mitigate this concern. The overall conflict-task S2--S1 gap of +10.5 percentage points (83.0\% to 93.5\%) demonstrates that System~2 still provides meaningful gains even on tasks where memorization partially inflates baseline performance. This validates the importance of including memorization-resistant items for studying dual-process patterns in LLMs.
+Under the stratified evaluation, classic TruthfulQA items yield high System~1 (mini) accuracy (66.7\%) despite randomised option positions, well above chance even for the higher-option-count items that dominate TruthfulQA. This suggests substantial training-data memorization. On the 50 novel heuristic-and-bias items that are structurally isomorphic to classic CRT, base-rate, conjunction, Bayesian and related problems but written with novel surface content, System~1 accuracy drops to 32.0\%, a ${\sim}35$-point gap that is difficult to attribute to anything other than recall of classic items from training. The gap narrows sharply for GPT-4o (novel 62.0\% vs.\ classic 77.3\%, a ${\sim}15$-point gap), indicating that the larger model draws more on reasoning and less on recall. These numbers support a concrete recommendation: benchmarks dominated by classic CRT-style items systematically over-estimate LLM resistance to intuitive lures.
 
 \subsection{Implications for Biomedical Decision Support}
 
 These findings provide a principled basis for configuring LLM-based clinical tools:
 
-\textbf{Routine triage and screening.} For pattern-matching tasks (identifying abnormal lab values, flagging critical results, initial symptom screening), System~1-like configurations (smaller models, zero-shot prompting) are adequate and more cost-effective.
-The factorial analysis shows that prompting strategy contributes only +10.5\% on these tasks, making the $2.35\times$ token overhead a consideration for cost-sensitive deployments.
+\textbf{Routine triage and screening.} For pattern-matching tasks (identifying abnormal lab values, flagging critical results, initial symptom screening), System~1-like configurations (smaller models, zero-shot prompting) are adequate and more cost-effective. The factorial analysis shows that, on intuitive tasks, CoT prompting produces no accuracy gain over zero-shot despite a $2.40\times$ token cost: raw deltas are $-11.1$ points averaged over cells and $-2.0$ points for the same-model C5 vs.\ C8 contrast, but these numbers are inflated by CoT-induced hedging on WinoGrande; the underlying effect on the other four intuitive benchmarks is within ${\pm}3$ points of zero. The practical conclusion is unchanged: the extra CoT tokens do not pay for themselves on pattern-matching tasks, and may additionally introduce unsafe hedging when the input is ambiguous.
 
-\textbf{Complex diagnostic reasoning.} For differential diagnosis, interpreting ambiguous presentations, or evaluating rare conditions, System~2-like configurations (larger models, CoT prompting) provide substantial accuracy gains (+34.2\% on analytical tasks) that justify the additional computational cost.
+\textbf{Complex diagnostic reasoning.} For differential diagnosis, interpreting ambiguous presentations, or evaluating rare conditions, System~2-like configurations (larger models, CoT prompting) provide substantial accuracy gains (+31.2\% on analytical tasks) that justify the additional computational cost.
 
-\textbf{Confidence calibration.} System~2's better calibration (overconfidence gap of 1.5\% vs.\ 18.1\%) is especially important for clinical deployment. Overconfident AI systems could reinforce rather than mitigate human anchoring bias~\cite{Saposnik2016}, making calibration a safety-critical property.
+\textbf{Confidence calibration.} Both configurations overestimate their accuracy (overconfidence gap 15.3\% for System~2 vs.\ 26.6\% for System~1). Brier scores and expected calibration error (ECE, 10-bin) confirm the ordering: C1 Brier $= .351$, ECE $= .262$; C5 Brier $= .291$, ECE $= .186$; C8 Brier $= .184$, ECE $= .116$. System~2 is noticeably better calibrated on every metric but not well calibrated in absolute terms; clinical deployment must therefore treat model confidence as a coarse relative signal and pair it with external calibration or abstention~\cite{Saposnik2016}.
 
 \subsection{Limitations}
 
-Several important limitations must be acknowledged. First, we cannot claim LLMs have ``cognition'' in any meaningful sense---we test behavioral patterns under different configurations, not internal cognitive mechanisms. Second, human benchmarks are drawn from published studies with different populations and experimental paradigms; our comparison is qualitative, not a matched experiment. Third, temperature and prompting are partially confounded with output length: CoT mechanically produces more tokens, and we cannot fully separate ``more reasoning'' from ``more output.'' The token efficiency metrics partially address this by measuring returns per token, but the confound remains. Fourth, confidence ratings are elicited through prompting rather than derived from internal model probabilities, which may limit their reliability. Fifth, our task battery does not cover all clinically relevant domains (e.g., image-based diagnosis, longitudinal reasoning over patient histories). Sixth, separating temperature and prompting effects within a single model (rather than across model sizes) would more cleanly isolate the contribution of each factor---we encourage future work using this design.
+(i)~We test behavioral signatures under different configurations, not internal cognitive mechanisms. (ii)~Human baselines are drawn from published studies with different populations and paradigms, so the comparison is qualitative rather than matched. (iii)~CoT mechanically produces more tokens, so we cannot fully separate ``more reasoning'' from ``more output''; further, CoT interacts with the WinoGrande coreference format to induce hedged non-answers (accounting for roughly half of the $-11.1$-point raw intuitive decrement, \S\ref{sec:factorial-results}). Model-reported confidences are elicited through prompting rather than internal probabilities. (iv)~The conflict category is $80\%$ multiple-choice ($160/200$); with option positions randomized per item, and the 50 novel items, though structurally isomorphic to classic problems, are surface-related to them. (v)~The intuitive and analytical trials were not re-run under the stratified/option-randomized protocol (these sources are not positional-bias-prone), and the battery does not cover image-based diagnosis or longitudinal patient reasoning.
 
 %% ============================================================
 \section{Conclusion}
 \label{sec:conclusion}
 
-We demonstrate that LLMs configured with different parameter settings exhibit behavioral patterns consistent with dual-process cognition. A $2 \times 2 \times 2$ factorial ablation reveals that prompting strategy is the dominant factor, and critically, its effect interacts with task type: chain-of-thought reasoning disproportionately benefits analytical tasks over intuitive ones. This interaction pattern---not guaranteed by the design---generalizes across four LLM families (OpenAI, DeepSeek, Qwen, Llama) and provides non-trivial evidence that the dual-process framework captures meaningful computational trade-offs. For biomedical informatics, these findings offer a principled basis for configuring LLM-based clinical decision support: efficient System~1-like settings for routine tasks, and thorough System~2-like settings for complex diagnostic reasoning where both accuracy and calibrated confidence are essential.
+A $2 \times 2 \times 2$ factorial ablation reveals a strong Prompt $\times$ Task Category interaction: CoT disproportionately benefits analytical tasks ($+31.2$ points) and produces a smaller, format-sensitive decrement on intuitive tasks (raw $-11.1$, of which about half is WinoGrande CoT-induced hedging; ${\sim}-5$ on the other intuitive benchmarks). This directional asymmetry is predicted by dual-process theory but not guaranteed by the design, and it generalises across four LLM families. A 100-item MedQA-USMLE validation shows $+22$ points from model scaling and no CoT benefit within GPT-4o, indicating that USMLE vignettes behave as pattern-retrieval. For biomedical informatics, these findings support configuring LLM-based decision support with efficient System~1-like settings for routine pattern-retrieval and thorough System~2-like settings for complex diagnostic reasoning where accuracy and calibrated confidence both matter.
 
-\section*{Acknowledgments}
-
-This work was conducted as part of ongoing research into dual-process cognition in AI systems. We thank the anonymous reviewers for constructive feedback that substantially improved the experimental design.
+\paragraph*{Code and data availability}
+All task datasets, model prompts, trial-level JSON outputs for the 4{,}800-trial factorial and the multi-model runs, statistical analysis scripts, and figure-generation code will be released at a public GitHub repository upon acceptance. The MedQA-USMLE evaluation uses the publicly available 4-option test split~\cite{Jin2021}.
 
 \bibliographystyle{IEEEtran}
+% Tighten inter-item spacing in bibliography (line spacing only; font size unchanged)
+\let\oldthebibliography\thebibliography
+\renewcommand{\thebibliography}[1]{%
+  \oldthebibliography{#1}%
+  \setlength{\itemsep}{0pt}%
+  \setlength{\parsep}{0pt}}
 \bibliography{references}
 
 \end{document}

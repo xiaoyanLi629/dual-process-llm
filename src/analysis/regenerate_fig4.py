@@ -12,8 +12,14 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 # Paths
-results_dir = Path("results/paper_parallel_20260125_214106/round_1")
-figures_dir = Path("Do Large Language Models Think Fast and Slow/figures")
+# Anchor every path to the project root so these scripts work from any cwd.
+# (They used to use bare relative paths, which only resolved when run from the
+#  project root -- but run_all_experiments.sh cd's into src/ first.)
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+results_dir = PROJECT_ROOT / "results" / "paper_parallel_20260125_214106" / "round_1"
+figures_dir = PROJECT_ROOT / "IEEE_manuscript" / "figures"
+figures_dir.mkdir(parents=True, exist_ok=True)
 
 # Load detailed results
 with open(results_dir / "round_1_detailed.json", "r") as f:

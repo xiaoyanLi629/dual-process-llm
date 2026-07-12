@@ -21,7 +21,6 @@ This project implements and evaluates these two cognitive systems using LLMs, co
 │   │   └── actr_buffers.py # ACT-R cognitive architecture components
 │   ├── tasks/             # Task definitions and loaders
 │   │   ├── crt_tasks.py   # Cognitive Reflection Test tasks
-│   │   ├── novel_conflict_tasks.py  # Novel conflict tasks (50+)
 │   │   ├── logical_reasoning.py
 │   │   ├── math_reasoning.py
 │   │   └── commonsense_tasks.py
@@ -43,7 +42,6 @@ This project implements and evaluates these two cognitive systems using LLMs, co
 ├── IEEE_manuscript/       # IEEE BIBM 2026 paper (target venue)
 ├── data/                  # Task datasets
 ├── results/               # Experiment results and figures
-└── Do_Large_Language_Models_Think_Fast_and_Slow/  # CogSci submission (archived)
 ```
 
 ## Key Features
@@ -61,7 +59,7 @@ This project implements and evaluates these two cognitive systems using LLMs, co
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/dual-process-llm.git
+# (repository URL not published yet)
 cd dual-process-llm
 
 # Create virtual environment
@@ -74,20 +72,19 @@ pip install -r requirements.txt
 
 ## Configuration
 
-Create an `api_config.py` file in the project root with your OpenAI API configuration:
+`api_config.py` already exists and reads every key from the environment — do **not**
+hardcode credentials into it. Copy the template and fill in your keys:
 
-```python
-from openai import OpenAI
-
-def get_openai_client():
-    return OpenAI(api_key="your-api-key")
-
-def get_model_config():
-    return {
-        "system1_model": "gpt-4o-mini",
-        "system2_model": "gpt-4o"
-    }
+```bash
+cp .env.example .env
+$EDITOR .env          # .env is gitignored
 ```
+
+`.env` supports OpenRouter (a single key for OpenAI / DeepSeek / Qwen / Llama) as
+well as per-provider keys. See `.env.example` for the full list.
+
+> An earlier version of this section told you to create `api_config.py` and paste
+> your API key into it as a string literal. Don't — that file is tracked by git.
 
 ## Usage
 
@@ -151,7 +148,7 @@ If you use this code in your research, please cite:
 ```bibtex
 @inproceedings{anonymous2026dual,
   title={Do Large Language Models Think Fast and Slow? 
-         Simulating Dual-Process Cognition for Biomedical Decision Support},
+         Eliciting Dual-Process Behavioral Signatures with Implications for Biomedical AI},
   author={Anonymous},
   booktitle={IEEE International Conference on Bioinformatics and Biomedicine (BIBM)},
   year={2026}

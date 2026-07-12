@@ -62,7 +62,7 @@ class TaskLoader:
         """
         if data_dir is None:
             # Data is in data/ folder within the project
-            project_root = Path(__file__).parent.parent.parent  # idea1_dual_process/
+            project_root = Path(__file__).parent.parent.parent  # Do_LLM_Fast_Slow/
             data_dir = project_root / "data" / "processed"
         self.data_dir = Path(data_dir)
         
@@ -149,8 +149,12 @@ class TaskLoader:
         # Process the correct answer
         correct_answer = item.get("correct_answer", item.get("answer", ""))
 
-        # If the answer is a numeric index (int or str digit), convert to option letter.
-        # Handles both 0-indexed (PIQA, TruthfulQA) and 1-indexed (SIQA, WinoGrande).
+        # Convert numeric answer to option letter. Must dispatch by source because
+        # PIQA / TruthfulQA / HellaSwag are 0-indexed while SIQA / WinoGrande are
+        # 1-indexed, and the two conventions overlap for idx values in
+        # [1, len(options)-1].
+        source = str(item.get("source", "")).lower()
+        _ONE_INDEXED_SOURCES = {"siqa", "winogrande"}
         if options:
             idx = None
             if isinstance(correct_answer, int):
@@ -159,12 +163,14 @@ class TaskLoader:
                 idx = int(correct_answer.strip())
 
             if idx is not None:
-                # 0-indexed: idx in [0, len(options))
-                if 0 <= idx < len(options):
-                    correct_answer = chr(65 + idx)
-                # 1-indexed: idx in [1, len(options)]
-                elif 1 <= idx <= len(options):
-                    correct_answer = chr(65 + idx - 1)
+                if source in _ONE_INDEXED_SOURCES:
+                    if 1 <= idx <= len(options):
+                        correct_answer = chr(65 + idx - 1)
+                else:
+                    if 0 <= idx < len(options):
+                        correct_answer = chr(65 + idx)
+                    elif 1 <= idx <= len(options):
+                        correct_answer = chr(65 + idx - 1)
         
         return Task(
             id=item.get("id", ""),
@@ -227,6 +233,129 @@ class TaskLoader:
     def get_conflict_tasks(self, n: int = None, **kwargs) -> List[Task]:
         """Get conflict tasks."""
         return self.get_tasks("conflict_tasks", n=n, **kwargs)
+
+    @staticmethod
+    def shuffle_task_options(task: Task, seed_salt: str = "opt_shuffle") -> Task:
+        """
+        Return a new Task with its MCQ options shuffled deterministically.
+
+        The shuffle is seeded by hash(task.id + seed_salt), so the same task
+        always gets the same shuffled order across runs and conditions. This
+        removes the positional bias where e.g. TruthfulQA and novel_conjunction
+        items always have the correct answer in position A.
+
+        Args:
+            task: Task to shuffle (must have options and a letter correct_answer).
+            seed_salt: Salt mixed into the per-item seed; change if you need
+                a different shuffle permutation.
+
+        Returns:
+            A new Task with options permuted, question text rebuilt with the
+            new A/B/C/... labels, correct_answer remapped to the new letter,
+            and metadata['option_permutation'] recording the mapping
+            new_index -> old_index.
+        """
+        if not task.options:
+            return task
+
+        old_correct = str(task.correct_answer).strip().upper()
+        if not (len(old_correct) == 1 and "A" <= old_correct <= "Z"):
+            return task
+        old_idx = ord(old_correct) - ord("A")
+        if not (0 <= old_idx < len(task.options)):
+            return task
+
+        import hashlib
+        seed = int(hashlib.md5(f"{task.id}|{seed_salt}".encode()).hexdigest(), 16) % (2 ** 32)
+        rng = random.Random(seed)
+        permutation = list(range(len(task.options)))
+        rng.shuffle(permutation)
+
+        new_options = [task.options[i] for i in permutation]
+        new_correct_idx = permutation.index(old_idx)
+        new_correct_letter = chr(65 + new_correct_idx)
+
+        base_question = task.question
+        if "\n\nOptions:\n" in base_question:
+            base_question = base_question.split("\n\nOptions:\n", 1)[0]
+        # Some source items (e.g. novel_conjunction) embed their options inline
+        # in the question stem ("...Which is more probable?\nA. ...\nB. ..."),
+        # which _parse_task then duplicates under an "Options:" block. After
+        # shuffling, the inline listing and the block would disagree. Strip
+        # trailing inline "A. ... / B. ..." lines so only the shuffled block
+        # remains.
+        import re as _re
+        lines = base_question.split("\n")
+        while lines and _re.match(r"^[A-Z]\.\s+\S", lines[-1].strip()):
+            lines.pop()
+        while lines and not lines[-1].strip():
+            lines.pop()
+        base_question = "\n".join(lines)
+        options_text = "\n".join(f"{chr(65 + i)}. {opt}" for i, opt in enumerate(new_options))
+        new_question = f"{base_question}\n\nOptions:\n{options_text}"
+
+        new_metadata = dict(task.metadata)
+        new_metadata["option_permutation"] = permutation
+        new_metadata["original_correct_letter"] = old_correct
+
+        return Task(
+            id=task.id,
+            question=new_question,
+            correct_answer=new_correct_letter,
+            task_type=task.task_type,
+            source=task.source,
+            options=new_options,
+            context=task.context,
+            metadata=new_metadata,
+        )
+
+    def get_stratified_conflict_tasks(self,
+                                      n: int,
+                                      force_all_novel: bool = True,
+                                      seed: Optional[int] = None,
+                                      randomize_options: bool = True) -> List[Task]:
+        """
+        Return a conflict-task sample that guarantees all novel items are included.
+
+        Uniform random sampling of 200 out of 867 yields only ~12 novel items per
+        condition in expectation, which destroys statistical power for the
+        novel-vs-classic comparison. This sampler forces all 50 novel items into
+        the sample and fills the remaining `n - 50` slots by random draw from
+        classic (TruthfulQA) items.
+
+        Args:
+            n: Total sample size. Must be >= number of novel items.
+            force_all_novel: If True, all novel items are always included.
+            seed: Optional RNG seed for reproducibility of the classic-item draw.
+
+        Returns:
+            List[Task] of size n, starting with novel items (in file order) then
+            classic items (shuffled).
+        """
+        if not self.loaded:
+            self.load()
+
+        all_conflict = self.dataset.get("conflict_tasks", [])
+        novel = [t for t in all_conflict if t.source.startswith("novel")]
+        classic = [t for t in all_conflict if not t.source.startswith("novel")]
+
+        if not force_all_novel:
+            return self.get_conflict_tasks(n=n, shuffle=True)
+
+        if n < len(novel):
+            raise ValueError(
+                f"Stratified sample requires n >= {len(novel)} (number of novel items); got n={n}."
+            )
+
+        rng = random.Random(seed)
+        classic_pool = classic.copy()
+        rng.shuffle(classic_pool)
+        classic_sample = classic_pool[: n - len(novel)]
+
+        sample = list(novel) + classic_sample
+        if randomize_options:
+            sample = [self.shuffle_task_options(t) for t in sample]
+        return sample
     
     def get_mixed_tasks(self, n_per_category: int = 100, shuffle: bool = True) -> List[Task]:
         """

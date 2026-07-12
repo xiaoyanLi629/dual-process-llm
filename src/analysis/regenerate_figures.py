@@ -27,7 +27,12 @@ plt.rcParams.update({
 })
 
 # Load results
-results_path = Path("results/paper_parallel_20260125_214106/paper_results.json")
+# Anchor every path to the project root so these scripts work from any cwd.
+# (They used to use bare relative paths, which only resolved when run from the
+#  project root -- but run_all_experiments.sh cd's into src/ first.)
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+results_path = PROJECT_ROOT / "results" / "paper_parallel_20260125_214106" / "paper_results.json"
 with open(results_path) as f:
     data = json.load(f)
 
@@ -35,7 +40,8 @@ results = data["main_experiment"]
 category_results = data["category_breakdown"]
 
 # Output directory
-figures_dir = Path("Do Large Language Models Think Fast and Slow/figures")
+figures_dir = PROJECT_ROOT / "IEEE_manuscript" / "figures"
+figures_dir.mkdir(parents=True, exist_ok=True)
 figures_dir.mkdir(exist_ok=True)
 
 # Colors

@@ -22,8 +22,11 @@ from typing import Dict, List, Any, Optional
 from tqdm import tqdm
 
 project_root = Path(__file__).parent.parent.parent
-sys.path.append(str(project_root))
-sys.path.append(str(project_root / "src"))
+# Insert at front so project-local packages (tasks, evaluation, ...) shadow any
+# pip-installed package of the same name (e.g. the `tasks` package that depends
+# on `invoke`).
+sys.path.insert(0, str(project_root))
+sys.path.insert(1, str(project_root / "src"))
 
 from api_config import (
     get_openai_client, get_deepseek_client,
@@ -180,6 +183,12 @@ def run_trial(
     """
     system_prompt = ZERO_SHOT_PROMPT if prompt_mode == "zero_shot" else COT_PROMPT
 
+    # When routing through OpenRouter, ask for automatic provider fallbacks
+    # so a single broken upstream (e.g. the default provider for
+    # qwen/qwen-2.5-7b-instruct) doesn't kill the whole family.
+    use_openrouter = "openrouter.ai" in str(getattr(client, "base_url", ""))
+    extra_body = {"provider": {"sort": "throughput", "allow_fallbacks": True}} if use_openrouter else None
+
     def _call_api():
         call_kwargs: Dict[str, Any] = dict(
             model=model,
@@ -191,6 +200,8 @@ def run_trial(
         )
         if not no_temperature:
             call_kwargs["temperature"] = temperature
+        if extra_body is not None:
+            call_kwargs["extra_body"] = extra_body
 
         # First try with json_object response format
         try:
@@ -224,6 +235,17 @@ def run_trial(
             "raw_content": "",
         }
 
+    # Defensive: OpenRouter can return choices=None or choices=[] for some
+    # provider-side failures, which would otherwise crash the script.
+    if not getattr(response, "choices", None):
+        err_info = getattr(response, "error", None) or getattr(response, "model_extra", {}).get("error")
+        return {
+            "answer": f"ERROR: empty choices (provider error: {err_info})",
+            "confidence": 0.5,
+            "tokens_used": getattr(getattr(response, "usage", None), "total_tokens", 0) or 0,
+            "parse_error": True,
+            "raw_content": "",
+        }
     raw_content: str = response.choices[0].message.content or ""
     tokens_used: int = response.usage.total_tokens if response.usage else 0
 
@@ -330,6 +352,8 @@ def run_family(
             parse_errors = 0
             trial_records: List[Dict] = []
 
+            consecutive_errors = 0
+            aborted = False
             for task in tqdm(
                 cat_tasks,
                 desc=f"    {system_key}/{cat_name}",
@@ -345,6 +369,22 @@ def run_family(
                     max_tokens=max_tokens,
                     no_temperature=no_temperature,
                 )
+                # Early abort: if the first 10 trials all hit API errors, bail
+                # out so we don't burn money on a broken route / exhausted quota.
+                is_api_error = (
+                    trial.get("parse_error")
+                    and isinstance(trial.get("answer"), str)
+                    and trial["answer"].startswith("ERROR:")
+                )
+                if is_api_error:
+                    consecutive_errors += 1
+                else:
+                    consecutive_errors = 0
+                if consecutive_errors >= 10 and total_count < 15:
+                    print(f"\n    ABORT: first {consecutive_errors} trials all failed "
+                          f"({model}). Skipping remainder of this category.")
+                    aborted = True
+                    break
 
                 # Evaluate
                 is_correct = False
@@ -550,6 +590,7 @@ def run_experiment(
     n_samples: int = 50,
     output_dir: str = "results/multi_model/",
     dry_run: bool = False,
+    only_conflict: bool = False,
 ) -> Dict[str, Any]:
     """
     Orchestrate the multi-model validation experiment.
@@ -611,9 +652,20 @@ def run_experiment(
     if not loaded:
         print("WARNING: Dataset could not be loaded. Results may be empty.")
 
-    s1_tasks = loader.get_system1_tasks(n=n_samples, shuffle=True)
-    s2_tasks = loader.get_system2_tasks(n=n_samples, shuffle=True)
-    conflict_tasks = loader.get_conflict_tasks(n=n_samples, shuffle=True)
+    # Stratified: force all 50 novel conflict items; same seed across families.
+    # For dry runs (n_samples < 50) fall back to random sampling + option shuffle.
+    if n_samples >= 50:
+        conflict_tasks = loader.get_stratified_conflict_tasks(n=n_samples, seed=20260417)
+    else:
+        conflict_tasks = [
+            loader.shuffle_task_options(t)
+            for t in loader.get_conflict_tasks(n=n_samples, shuffle=True)
+        ]
+    if only_conflict:
+        s1_tasks, s2_tasks = [], []
+    else:
+        s1_tasks = loader.get_system1_tasks(n=n_samples, shuffle=True)
+        s2_tasks = loader.get_system2_tasks(n=n_samples, shuffle=True)
 
     tasks = {
         "intuitive": s1_tasks,
@@ -709,6 +761,11 @@ def _parse_args() -> argparse.Namespace:
         action="store_true",
         help="Run 1 sample per category to verify the pipeline.",
     )
+    parser.add_argument(
+        "--only_conflict",
+        action="store_true",
+        help="Run conflict category only (skip intuitive and analytical).",
+    )
     return parser.parse_args()
 
 
@@ -721,4 +778,5 @@ if __name__ == "__main__":
         n_samples=args.n_samples,
         output_dir=args.output,
         dry_run=args.dry_run,
+        only_conflict=args.only_conflict,
     )

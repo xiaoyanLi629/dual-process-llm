@@ -2,7 +2,8 @@
 # Project 1: Dual Process Theory - Run All Experiments
 # This script runs all experiments sequentially
 
-cd /root/autodl-fs/LLM-Cognition/idea1_dual_process/src
+# Resolved relative to this script so the project can be moved freely.
+cd "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/src"
 
 echo "============================================================"
 echo "Project 1: Dual Process Theory - All Experiments"

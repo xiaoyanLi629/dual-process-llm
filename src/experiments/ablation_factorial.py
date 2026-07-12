@@ -545,6 +545,7 @@ def run_experiment(
     dry_run: bool = False,
     condition_ids: List[str] = None,
     with_variance_baseline: bool = True,
+    only_conflict: bool = False,
 ) -> Dict[str, Any]:
     """
     Run the full 2x2x2 factorial ablation experiment (main experiment).
@@ -581,9 +582,22 @@ def run_experiment(
     loader = TaskLoader()
     loader.load()
 
-    s1_tasks = loader.get_system1_tasks(n=n_samples, shuffle=True)
-    s2_tasks = loader.get_system2_tasks(n=n_samples, shuffle=True)
-    conflict_tasks = loader.get_conflict_tasks(n=n_samples, shuffle=True)
+    # Stratified: force all 50 novel conflict items into the sample to preserve
+    # statistical power for the novel-vs-classic comparison. Seed fixed so all
+    # 8 factorial conditions see the same classic-item draw. For dry runs
+    # (n_samples < 50) fall back to simple random sampling with shuffled options.
+    if n_samples >= 50:
+        conflict_tasks = loader.get_stratified_conflict_tasks(n=n_samples, seed=20260417)
+    else:
+        conflict_tasks = [
+            loader.shuffle_task_options(t)
+            for t in loader.get_conflict_tasks(n=n_samples, shuffle=True)
+        ]
+    if only_conflict:
+        s1_tasks, s2_tasks = [], []
+    else:
+        s1_tasks = loader.get_system1_tasks(n=n_samples, shuffle=True)
+        s2_tasks = loader.get_system2_tasks(n=n_samples, shuffle=True)
     all_tasks = s1_tasks + s2_tasks + conflict_tasks
 
     tasks_by_category = {
@@ -740,6 +754,12 @@ def _parse_args() -> argparse.Namespace:
         action="store_true",
         help="Disable the same-config variance baseline (C8 run twice). Enabled by default.",
     )
+    parser.add_argument(
+        "--only_conflict",
+        action="store_true",
+        help="Run conflict category only (skip intuitive and analytical). Useful for "
+             "targeted re-runs after changing the conflict sampling or shuffling logic.",
+    )
     return parser.parse_args()
 
 
@@ -762,4 +782,5 @@ if __name__ == "__main__":
         dry_run=args.dry_run,
         condition_ids=condition_ids,
         with_variance_baseline=not args.no_variance_baseline,
+        only_conflict=args.only_conflict,
     )

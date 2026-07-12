@@ -129,22 +129,59 @@ class DualProcessEvaluator:
         answer_clean = answer_text.lower().strip()
         correct_clean = str(correct_answer).lower().strip()
 
-        # Step 3: Direct match
+        # Step 3: Direct exact match
         if correct_clean == answer_clean:
             return True
-        if correct_clean in answer_clean or answer_clean in correct_clean:
-            return True
 
-        # Step 4: Multiple choice (strict)
+        # Step 4: Single-letter multiple-choice answer — require strict letter match.
+        # (A loose substring check here would wrongly accept any text that happens
+        # to contain the correct letter, e.g. "vacation" contains "c".)
+        if len(correct_clean) == 1 and correct_clean in 'abcde':
+            return self._check_letter_answer(answer_clean, correct_clean)
+
+        # Step 5: Multiple choice with options list (strict)
         if options is not None:
             return self._check_multiple_choice(answer_clean, correct_answer, options)
 
-        # Step 5: Numeric (on extracted answer only)
-        if self._is_numeric_task(task_type):
-            return self._check_numeric(answer_clean, correct_clean)
+        # Step 6: Numeric — extract numbers and compare
+        if self._is_numeric_task(task_type) or self._looks_numeric(correct_clean):
+            if self._check_numeric(answer_clean, correct_clean):
+                return True
 
-        # Step 6: No fuzzy fallback — if we can't match cleanly, it's wrong
+        # Step 7: Substring match only safe when correct answer is a full phrase
+        # (length > 1 char). Use word-boundary containment.
+        if len(correct_clean) > 1:
+            if correct_clean in answer_clean or answer_clean in correct_clean:
+                return True
+
         return False
+
+    def _check_letter_answer(self, answer: str, correct_letter: str) -> bool:
+        """Strictly verify a single-letter multiple-choice answer."""
+        a = answer.strip().rstrip('.').strip()
+        if not a:
+            return False
+        # Exact letter
+        if a == correct_letter:
+            return True
+        # "A" or "A." or "A)" or "A:" or "A. text..."
+        if a[0] == correct_letter and (len(a) == 1 or a[1] in '.): ,-'):
+            return True
+        # "Answer: A" style
+        import re as _re
+        m = _re.search(r'\b([a-e])\b', a)
+        if m and m.group(1) == correct_letter and len(a) <= 30:
+            return True
+        return False
+
+    def _looks_numeric(self, s: str) -> bool:
+        """Heuristic: does the string look like a number?"""
+        s = s.replace(',', '').replace('$', '').replace('%', '').strip()
+        try:
+            float(s)
+            return True
+        except (ValueError, TypeError):
+            return False
     
     def _check_multiple_choice(self,
                                answer: str,
@@ -179,8 +216,11 @@ class DualProcessEvaluator:
     
     def _check_numeric(self, answer: str, correct: str) -> bool:
         """Check a numeric answer (matches last number in extracted answer field only)."""
-        response_nums = re.findall(r'-?\d+\.?\d*', answer)
-        correct_nums = re.findall(r'-?\d+\.?\d*', correct)
+        # Strip common formatting (commas, $) so "$5.00" matches 5 and "114,200" matches 114200
+        def _clean(s):
+            return s.replace(',', '').replace('$', '').replace('%', '')
+        response_nums = re.findall(r'-?\d+\.?\d*', _clean(answer))
+        correct_nums = re.findall(r'-?\d+\.?\d*', _clean(correct))
 
         if not response_nums or not correct_nums:
             return False

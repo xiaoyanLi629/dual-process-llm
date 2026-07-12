@@ -63,16 +63,18 @@ SINGLE_COL_PARAMS = {
 }
 
 # Per-source accuracy data for Fig 7 panel (a) — factorial ablation
+# (conflict category: stratified 50-novel + 150-classic sampling, MCQ options
+# shuffled per-task to remove positional bias; intuitive/analytical unchanged)
 SOURCE_ACCURACY_ABLATION = {
-    'CSQA':       [69.0, 69.0, 72.4, 65.5, 72.4, 79.3, 79.3, 82.8],
-    'HellaSwag':  [82.4, 84.3, 84.3, 78.4, 94.1, 90.2, 94.1, 96.1],
-    'PIQA':       [77.8, 93.3, 77.8, 91.1, 88.9, 95.6, 91.1, 97.8],
-    'SIQA':       [46.8, 55.3, 51.1, 55.3, 51.1, 55.3, 51.1, 55.3],
-    'WinoGrande': [21.4, 82.1, 25.0, 100.0, 28.6, 50.0, 35.7, 82.1],
-    'GSM8K':      [31.8, 85.3, 32.6, 84.5, 52.7, 91.5, 57.4, 86.8],
-    'LogiQA':     [60.6, 77.5, 57.7, 83.1, 69.0, 87.3, 73.2, 83.1],
-    'Novel':      [55.6, 55.6, 55.6, 66.7, 66.7, 55.6, 66.7, 55.6],
-    'TruthfulQA': [84.3, 95.8, 80.6, 94.8, 96.3, 92.7, 95.3, 95.3],
+    'CSQA':       [58.6, 55.2, 58.6, 51.7, 58.6, 65.5, 65.5, 69.0],
+    'HellaSwag':  [76.5, 70.6, 84.3, 64.7, 86.3, 72.5, 82.4, 82.4],
+    'PIQA':       [75.6, 64.4, 75.6, 68.9, 77.8, 75.6, 84.4, 86.7],
+    'SIQA':       [80.9, 76.6, 83.0, 76.6, 76.6, 76.6, 78.7, 74.5],
+    'WinoGrande': [53.6,  3.6, 57.1,  0.0, 32.1,  0.0, 57.1,  3.6],
+    'GSM8K':      [31.0, 83.7, 29.5, 85.3, 51.2, 94.6, 56.6, 87.6],
+    'LogiQA':     [53.5, 52.1, 52.1, 59.2, 56.3, 67.6, 62.0, 64.8],
+    'Novel':      [32.0, 44.0, 34.0, 46.0, 72.0, 62.0, 74.0, 62.0],
+    'TruthfulQA': [66.7, 63.3, 65.3, 64.0, 75.3, 74.7, 74.0, 77.3],
 }
 
 # Source-to-category mapping (for horizontal separators)
@@ -92,40 +94,45 @@ SOURCE_CATEGORY = {
 
 DATA = {
     'C1': {'label': 'S1 canonical', 'model': 'mini', 'temp': 'high', 'prompt': 'ZS',
-           'intuitive': 62.5, 'analytical': 42.0, 'conflict': 83.0, 'overall': 62.5, 'tokens': 159},
+           'intuitive': 71.5, 'analytical': 39.0, 'conflict': 58.0, 'overall': 56.2, 'tokens': 157},
     'C2': {'label': 'mini+high+CoT', 'model': 'mini', 'temp': 'high', 'prompt': 'CoT',
-           'intuitive': 77.0, 'analytical': 82.5, 'conflict': 94.0, 'overall': 84.5, 'tokens': 371},
+           'intuitive': 59.0, 'analytical': 72.5, 'conflict': 58.5, 'overall': 63.3, 'tokens': 377},
     'C3': {'label': 'mini+low+ZS',   'model': 'mini', 'temp': 'low',  'prompt': 'ZS',
-           'intuitive': 65.0, 'analytical': 41.5, 'conflict': 79.5, 'overall': 62.0, 'tokens': 159},
+           'intuitive': 74.5, 'analytical': 37.5, 'conflict': 57.5, 'overall': 56.5, 'tokens': 158},
     'C4': {'label': 'mini+low+CoT',  'model': 'mini', 'temp': 'low',  'prompt': 'CoT',
-           'intuitive': 77.0, 'analytical': 84.0, 'conflict': 93.5, 'overall': 84.8, 'tokens': 369},
+           'intuitive': 57.5, 'analytical': 76.0, 'conflict': 59.5, 'overall': 64.3, 'tokens': 372},
     'C5': {'label': '4o+high+ZS',    'model': '4o',   'temp': 'high', 'prompt': 'ZS',
-           'intuitive': 70.5, 'analytical': 58.5, 'conflict': 95.0, 'overall': 74.7, 'tokens': 162},
+           'intuitive': 70.5, 'analytical': 53.0, 'conflict': 74.5, 'overall': 66.0, 'tokens': 160},
     'C6': {'label': '4o+high+CoT',   'model': '4o',   'temp': 'high', 'prompt': 'CoT',
-           'intuitive': 76.0, 'analytical': 90.0, 'conflict': 91.0, 'overall': 85.7, 'tokens': 384},
+           'intuitive': 63.0, 'analytical': 85.0, 'conflict': 71.5, 'overall': 73.2, 'tokens': 383},
     'C7': {'label': '4o+low+ZS',     'model': '4o',   'temp': 'low',  'prompt': 'ZS',
-           'intuitive': 73.0, 'analytical': 63.0, 'conflict': 94.0, 'overall': 76.7, 'tokens': 162},
+           'intuitive': 76.0, 'analytical': 58.5, 'conflict': 74.0, 'overall': 69.5, 'tokens': 160},
     'C8': {'label': 'S2 canonical',  'model': '4o',   'temp': 'low',  'prompt': 'CoT',
-           'intuitive': 83.0, 'analytical': 85.5, 'conflict': 93.5, 'overall': 87.3, 'tokens': 381},
+           'intuitive': 68.5, 'analytical': 79.5, 'conflict': 73.5, 'overall': 73.8, 'tokens': 383},
 }
 
+# Per-category main effect of each factor (averages-over-other-factors, in %).
+# Overall column = per-category effect averaged across the three categories.
 MAIN_EFFECTS = {
-    'CoT':   {'intuitive': 10.5, 'analytical': 34.2, 'conflict': 5.1,  'overall': 16.6},
-    'Model': {'intuitive': 5.2,  'analytical': 11.8, 'conflict': 5.9,  'overall': 7.6},
-    'Temp':  {'intuitive': 1.3,  'analytical': 1.8,  'conflict': -0.3, 'overall': 0.9},
+    'CoT':   {'intuitive': -11.1, 'analytical': 31.2, 'conflict': -0.2, 'overall':  6.6},
+    'Model': {'intuitive':   3.9, 'analytical': 12.7, 'conflict': 15.0, 'overall': 10.5},
+    'Temp':  {'intuitive':   3.1, 'analytical':  0.5, 'conflict':  0.5, 'overall':  1.4},
 }
 
+# S2 - S1 accuracy gap (%) by family and category. Conflict gaps recomputed
+# after stratified sampling (50 novel + 50 classic per system) and option
+# randomization; intuitive/analytical unchanged.
 MULTI_MODEL = {
-    'OpenAI':   {'intuitive': 26.0, 'analytical': 50.0, 'conflict': 4.0},
-    'DeepSeek': {'intuitive': -15.0, 'analytical': 11.0, 'conflict': -14.0},
-    'Qwen':     {'intuitive': 13.0, 'analytical': 51.0, 'conflict': 16.0},
-    'Llama':    {'intuitive': 17.0, 'analytical': 52.0, 'conflict': 31.0},
+    'OpenAI':   {'intuitive': -8.0, 'analytical': 46.0, 'conflict': 22.0},
+    'DeepSeek': {'intuitive':  8.0, 'analytical': 24.0, 'conflict':  6.0},
+    'Qwen':     {'intuitive': 10.0, 'analytical': 50.0, 'conflict':  9.0},
+    'Llama':    {'intuitive': -1.0, 'analytical': 53.0, 'conflict': 26.0},
 }
 
 CONFIDENCE = {
-    'C1': {'confidence': 0.881, 'accuracy': 0.625},
-    'C5': {'confidence': 0.928, 'accuracy': 0.747},
-    'C8': {'confidence': 0.888, 'accuracy': 0.873},
+    'C1': {'confidence': 0.886, 'accuracy': 0.562},
+    'C5': {'confidence': 0.926, 'accuracy': 0.660},
+    'C8': {'confidence': 0.891, 'accuracy': 0.738},
 }
 
 
@@ -392,22 +399,7 @@ def plot_fig4_multi_model(output_path: Path):
         ax.text(2.12, vals[2] + y_offset, family, fontsize=6.5, va='center',
                 color=color, fontweight='bold')
 
-    ds_intuitive = MULTI_MODEL['DeepSeek']['intuitive']
-    ds_conflict = MULTI_MODEL['DeepSeek']['conflict']
-    ax.annotate(f'{ds_intuitive:+.0f}', xy=(0, ds_intuitive),
-                xytext=(-0.25, ds_intuitive - 5),
-                fontsize=5.5, color=family_colors['DeepSeek'],
-                ha='center', va='top',
-                arrowprops=dict(arrowstyle='->', color=family_colors['DeepSeek'],
-                                lw=0.6))
-    ax.annotate(f'{ds_conflict:+.0f}', xy=(2, ds_conflict),
-                xytext=(1.75, ds_conflict - 5),
-                fontsize=5.5, color=family_colors['DeepSeek'],
-                ha='center', va='top',
-                arrowprops=dict(arrowstyle='->', color=family_colors['DeepSeek'],
-                                lw=0.6))
-
-    ax.annotate('all families\npeak here', xy=(1, 52), xytext=(1, 60),
+    ax.annotate('all families\npeak here', xy=(1, 53), xytext=(1, 61),
                 ha='center', va='bottom', fontsize=5.5, fontstyle='italic',
                 color=COLORS['dark'],
                 arrowprops=dict(arrowstyle='->', color=COLORS['dark'], lw=0.6))
@@ -416,7 +408,7 @@ def plot_fig4_multi_model(output_path: Path):
     ax.set_xticklabels(cat_labels, fontsize=8)
     ax.set_ylabel('S2 - S1 accuracy gap (pp)', fontsize=8)
     ax.set_xlim(-0.35, 2.7)
-    ax.set_ylim(-25, 68)
+    ax.set_ylim(-10, 68)
 
     ax.yaxis.grid(True, linewidth=0.3, alpha=0.4, color=COLORS['grid'])
     ax.set_axisbelow(True)
@@ -442,15 +434,15 @@ def plot_fig5_confidence_calibration(output_path: Path):
 
     fig, ax = plt.subplots(figsize=(IEEE_SINGLE, 2.8))
 
-    lo, hi = 0.58, 0.96
+    lo, hi = 0.45, 0.98
 
     xs = np.linspace(lo, hi, 100)
     ax.fill_between(xs, xs, hi, color=COLORS['system1'], alpha=0.05, zorder=0)
     ax.fill_between(xs, lo, xs, color=COLORS['system2'], alpha=0.05, zorder=0)
 
-    ax.text(0.62, 0.93, 'Overconfident', fontsize=6, fontstyle='italic',
+    ax.text(0.50, 0.92, 'Overconfident', fontsize=6, fontstyle='italic',
             color=COLORS['system1'], alpha=0.6, rotation=0)
-    ax.text(0.85, 0.62, 'Underconfident', fontsize=6, fontstyle='italic',
+    ax.text(0.88, 0.50, 'Underconfident', fontsize=6, fontstyle='italic',
             color=COLORS['system2'], alpha=0.6, rotation=0)
 
     ax.plot([lo, hi], [lo, hi], color=COLORS['text'], linewidth=0.8,
@@ -494,8 +486,9 @@ def plot_fig5_confidence_calibration(output_path: Path):
                     arrowprops=dict(arrowstyle='-', color=cfg['color'],
                                     lw=0.4, alpha=0.5))
 
-    ax.annotate('S2 nearly\ncalibrated', xy=(0.875, 0.885),
-                xytext=(0.78, 0.78), fontsize=6, fontstyle='italic',
+    ax.annotate('S2 better\ncalibrated\nthan S1',
+                xy=(0.70, 0.89),
+                xytext=(0.85, 0.70), fontsize=6, fontstyle='italic',
                 color=COLORS['dark'],
                 arrowprops=dict(arrowstyle='->', color=COLORS['dark'],
                                 lw=0.6, connectionstyle='arc3,rad=-0.15'))
@@ -561,7 +554,7 @@ def plot_fig6_cot_interaction(output_path: Path):
             markeredgecolor='white', markeredgewidth=1.0,
             zorder=3, label='Chain-of-Thought')
 
-    sig_labels = ['*', '***', 'n.s.']
+    sig_labels = ['***', '***', 'n.s.']  # intuitive p<.001, analytical p<.001, conflict p=.446
     for i, (zs, cot, delta, sig) in enumerate(zip(zs_means, cot_means, deltas, sig_labels)):
         mid = (zs + cot) / 2
         ax.annotate('', xy=(i + 0.08, cot - 0.3), xytext=(i + 0.08, zs + 0.3),
@@ -570,7 +563,7 @@ def plot_fig6_cot_interaction(output_path: Path):
 
         fontsize = 8 if i == 1 else 7
         fontw = 'bold' if i == 1 else 'normal'
-        ax.text(i + 0.18, mid, f'+{delta:.1f}',
+        ax.text(i + 0.18, mid, f'{delta:+.1f}',
                 fontsize=fontsize, fontweight=fontw, color=COLORS['dark'],
                 ha='left', va='center',
                 bbox=dict(boxstyle='round,pad=0.12', facecolor='white',
@@ -589,7 +582,7 @@ def plot_fig6_cot_interaction(output_path: Path):
     ax.set_xticklabels(cat_labels, fontsize=9)
     ax.set_ylabel('Accuracy (%)', fontsize=8)
     ax.set_xlim(-0.3, 2.5)
-    ax.set_ylim(45, 100)
+    ax.set_ylim(40, 90)
 
     ax.yaxis.grid(True, linewidth=0.3, alpha=0.4, color=COLORS['grid'])
     ax.set_axisbelow(True)
@@ -738,10 +731,10 @@ def plot_fig7_trial_matrix(output_path: Path, results_path: str = None):
     """
     if results_path is None:
         results_path = str(PROJECT_ROOT / 'results' / 'bibm_2026' /
-                           'main_experiment_v2' / 'ablation_factorial_20260415_034946.json')
+                           'main_experiment_v2' / 'ablation_factorial_final.json')
 
     multi_model_path = str(PROJECT_ROOT / 'results' / 'bibm_2026' /
-                           'multi_model' / 'multi_model_20260415_072827.json')
+                           'multi_model' / 'multi_model_corrected.json')
 
     cmap = plt.cm.RdYlGn
 
@@ -862,8 +855,8 @@ def plot_fig7_trial_matrix(output_path: Path, results_path: str = None):
     # Create dual-panel figure
     # ══════════════════════════════════════════════════════════════════════════
     fig, (ax_a, ax_b) = plt.subplots(
-        2, 1, figsize=(IEEE_DOUBLE, 6.0), dpi=DPI,
-        gridspec_kw={'height_ratios': [1, 1], 'hspace': 0.45})
+        2, 1, figsize=(IEEE_DOUBLE, 5.6), dpi=DPI,
+        gridspec_kw={'height_ratios': [1, 1], 'hspace': 0.34})
 
     # Panel (a)
     im_a = _draw_source_heatmap(
@@ -914,7 +907,7 @@ def plot_fig8_example_cases(output_path: Path, results_path: str = None):
     """
     if results_path is None:
         results_path = str(PROJECT_ROOT / 'results' / 'bibm_2026' /
-                           'main_experiment_v2' / 'ablation_factorial_20260415_034946.json')
+                           'main_experiment_v2' / 'ablation_factorial_final.json')
 
     with open(results_path) as f:
         data = json.load(f)
@@ -1172,34 +1165,22 @@ def generate_all(output_dir: str = 'IEEE_manuscript/figures/'):
     output_path.mkdir(parents=True, exist_ok=True)
 
     results_path = str(PROJECT_ROOT / 'results' / 'bibm_2026' /
-                       'main_experiment_v2' / 'ablation_factorial_20260415_034946.json')
+                       'main_experiment_v2' / 'ablation_factorial_final.json')
 
     print(f'Generating publication figures at {DPI} DPI...')
     print()
 
-    print('[1/7] Fig 2 — Factorial Heatmap')
-    plot_fig2_factorial_heatmap(output_path)
-
-    print('[2/7] Fig 3 — Main Effects')
-    plot_fig3_main_effects(output_path)
-
-    print('[3/7] Fig 4 — Multi-Model Slope Chart')
+    print('[1/3] Fig 4 — Multi-Model Slope Chart')
     plot_fig4_multi_model(output_path)
 
-    print('[4/7] Fig 5 — Confidence Calibration')
-    plot_fig5_confidence_calibration(output_path)
-
-    print('[5/7] Fig 6 — CoT Interaction')
+    print('[2/3] Fig 6 — CoT Interaction')
     plot_fig6_cot_interaction(output_path)
 
-    print('[6/7] Fig 7 — Trial Matrix (4,800 trials)')
+    print('[3/3] Fig 7 — Trial Matrix (4,800 trials)')
     plot_fig7_trial_matrix(output_path, results_path)
 
-    print('[7/7] Fig 8 — Example Cases')
-    plot_fig8_example_cases(output_path, results_path)
-
     print()
-    print(f'All 7 figures saved to {output_path}/ at {DPI} DPI')
+    print(f'All 3 cited figures saved to {output_path}/ at {DPI} DPI')
 
 
 if __name__ == '__main__':
