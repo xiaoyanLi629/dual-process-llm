@@ -9,6 +9,8 @@
 \usepackage{multirow}
 \usepackage{array}
 \usepackage[compact]{titlesec}
+% Clickable URLs without colored link boxes (loaded last)
+\usepackage[hidelinks]{hyperref}
 % Tighten vertical space around section / subsection headings (no font changes)
 \titlespacing*{\section}{0pt}{6pt plus 1pt minus 1pt}{3pt plus 1pt}
 \titlespacing*{\subsection}{0pt}{5pt plus 1pt minus 1pt}{2pt plus 1pt}
@@ -36,14 +38,14 @@
 }
 \makeatother
 \author{%
-\IEEEauthorblockN{Xiaoyan Li\textsuperscript{*}}
+\IEEEauthorblockN{Xiaoyan Li}
 \IEEEauthorblockA{\textit{Dept. of Computational Mathematics,}\\
 \textit{Science and Engineering}\\
 \textit{Michigan State University}\\
 East Lansing, MI, USA\\
 lixiaoy5@msu.edu}
 \and
-\IEEEauthorblockN{Cuicui Jiang}
+\IEEEauthorblockN{Cuicui Jiang\textsuperscript{*}}
 \IEEEauthorblockA{\textit{College of Computer Science}\\
 \textit{Inner Mongolia University}\\
 Hohhot, China\\
@@ -70,7 +72,7 @@ saroyi@163.com}
 
 \maketitle
 % Corresponding-author footnote (unnumbered)
-\begingroup\renewcommand\thefootnote{}\footnotetext{\textsuperscript{*}Corresponding author: Xiaoyan Li (lixiaoy5@msu.edu).}\endgroup
+\begingroup\renewcommand\thefootnote{}\footnotetext{\textsuperscript{*}Corresponding author: Cuicui Jiang (jiangcuicui@mail.imu.edu.cn).}\endgroup
 
 \begin{abstract}
 Dual-process theory distinguishes fast, intuitive System~1 from slow, analytical System~2 processing, a distinction central to clinical decision-making. We ask whether LLMs exhibit analogous behavioral signatures under systematic parameter manipulation. Unlike prior work that confounds model capacity, temperature, and prompting, we run a $2 \times 2 \times 2$ factorial ablation that isolates each factor. The central finding is a strong Prompt $\times$ Task Category interaction ($F(2, 4794) = 89.2$, $p < .001$, $\eta^2_p = .036$): CoT yields a $+31.2$-point gain on analytical tasks and an $11.1$-point raw decrement on intuitive ones (half of which is a format artefact on one coreference benchmark; the interaction survives its exclusion, $F(2, 4570) = 71.7$, $p < .001$). We replicate across four LLM families and on 100 MedQA-USMLE vignettes, and stress-test conflict performance with 50 novel memorization-resistant items. These findings support configuring clinical decision-support LLMs with System~1-like settings for routine triage and System~2-like settings for complex diagnosis.
