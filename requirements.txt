@@ -2,13 +2,19 @@
 openai>=1.0.0
 httpx>=0.24.0
 
-# Scientific computing
+# Scientific computing and statistics
 numpy>=1.24.0
 scipy>=1.10.0
+pandas>=1.5.0
+statsmodels>=0.14.0
 
 # Data visualization
 matplotlib>=3.7.0
 seaborn>=0.12.0
+
+# Datasets (MedQA metadata) and token counting for the camera-ready statistics
+datasets>=2.14.0
+tiktoken>=0.7.0
 
 # Progress bars
 tqdm>=4.65.0

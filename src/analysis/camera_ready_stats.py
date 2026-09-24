@@ -75,13 +75,28 @@ def load_factorial() -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def interaction_F(df: pd.DataFrame, extra: str = "") -> dict:
-    fit = smf.ols(f"correct ~ C(cot) * C(category){extra}", data=df).fit()
-    tab = anova_lm(fit, typ=2)
-    row = tab.loc["C(cot):C(category)"]
-    ss_res = tab.loc["Residual", "sum_sq"]
-    return dict(F=float(row["F"]), df1=int(row["df"]), df2=int(tab.loc["Residual", "df"]),
-                p=float(row["PR(>F)"]), eta_p2=float(row["sum_sq"] / (row["sum_sq"] + ss_res)))
+def interaction_F(df: pd.DataFrame, block: str = "none") -> dict:
+    """F-test for Prompt x Category by nested-model comparison on explicit
+    full-rank designs. Benchmarks and items are nested in categories, so a
+    formula with both C(category) and C(source) is rank-deficient and gives
+    version-dependent type-II ANOVA results; this construction does not."""
+    y = df["correct"].to_numpy(float)
+    cols = [np.ones(len(df)), df["cot"].to_numpy(float)]
+    levels = {"none": ("category", ["analytical", "conflict"]),
+              "source": ("source", sorted(df["source"].unique())[1:]),
+              "item": ("item", sorted(df["item"].unique())[1:])}[block]
+    col, lv = levels
+    cols += [(df[col] == v).to_numpy(float) for v in lv]
+    X0 = np.column_stack(cols)
+    X1 = np.column_stack([X0] + [df["cot"].to_numpy(float) * (df["category"] == c).to_numpy(float)
+                                 for c in ("analytical", "conflict")])
+    ssr = lambda X: float(np.sum((y - X @ np.linalg.lstsq(X, y, rcond=None)[0]) ** 2))
+    r0, r1 = np.linalg.matrix_rank(X0), np.linalg.matrix_rank(X1)
+    s0, s1 = ssr(X0), ssr(X1)
+    q, dfr = int(r1 - r0), int(len(y) - r1)
+    F = ((s0 - s1) / q) / (s1 / dfr)
+    from scipy import stats as sps
+    return dict(F=F, df1=q, df2=dfr, p=float(sps.f.sf(F, q, dfr)), eta_p2=(s0 - s1) / (s0 - s1 + s1))
 
 
 def main_effect(df: pd.DataFrame, factor: str) -> float:
@@ -157,16 +172,16 @@ def main():
     # ---- R1-1: clustering / blocking sensitivity ---------------------------
     stats["interaction"] = dict(
         base=interaction_F(df),
-        benchmark_block=interaction_F(df, " + C(source)"),
-        item_block=interaction_F(df, " + C(item)"),
+        benchmark_block=interaction_F(df, "source"),
+        item_block=interaction_F(df, "item"),
         base_no_wg=interaction_F(df[df.source != "winogrande"]),
-        benchmark_block_no_wg=interaction_F(df[df.source != "winogrande"], " + C(source)"),
+        benchmark_block_no_wg=interaction_F(df[df.source != "winogrande"], "source"),
     )
     # per-benchmark CoT effect (leave-one-benchmark-out sign check)
     loo = {}
     for src in df.source.unique():
         sub = df[df.source != src]
-        loo[src] = interaction_F(sub, " + C(source)")
+        loo[src] = interaction_F(sub, "source")
     worst = min(loo, key=lambda k: loo[k]["F"])
     stats["interaction"]["leave_one_benchmark_out_min"] = dict(dropped=worst, **loo[worst])
     stats["interaction"]["leave_one_benchmark_out_F"] = loo
@@ -201,6 +216,11 @@ def main():
     # ---- R2-1 / R2-2: MedQA ------------------------------------------------
     stats["medqa"] = medqa_stats()
 
+    # Keep a previously computed token estimate if this run could not recompute it
+    if "skipped" in stats["tokens"]["completion_estimate"] and OUT.exists():
+        prev = json.loads(OUT.read_text()).get("tokens", {}).get("completion_estimate", {})
+        if "skipped" not in prev and prev:
+            stats["tokens"]["completion_estimate"] = prev
     OUT.write_text(json.dumps(stats, indent=2, default=float))
     print(json.dumps(stats, indent=2, default=lambda x: round(float(x), 4)))
 
@@ -224,6 +244,9 @@ def completion_tokens(df: pd.DataFrame) -> dict:
     loader.load()
     question = {t.id: t.question for cat in ("system1_tasks", "system2_tasks", "conflict_tasks")
                 for t in loader.get_tasks(cat)}
+    missing = set(df["item"]) - set(question)
+    if missing:  # task pool not rebuilt (data/processed is not distributed)
+        return {"skipped": f"{len(missing)} item texts missing; run data/prepare_bibm_dataset.py first"}
     out = {}
     for cid in sorted(df.cond.unique()):
         g = df[df.cond == cid]
