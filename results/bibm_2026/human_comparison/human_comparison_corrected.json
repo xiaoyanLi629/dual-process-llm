@@ -1,0 +1,107 @@
+{
+  "human_gaps": {
+    "intuitive": {
+      "mean_gap": 0.03,
+      "n_studies": 2,
+      "study_ids": [
+        "simple_pattern_recognition",
+        "semantic_association"
+      ]
+    },
+    "analytical": {
+      "mean_gap": 0.25,
+      "n_studies": 2,
+      "study_ids": [
+        "syllogistic_reasoning",
+        "arithmetic_word_problems"
+      ]
+    },
+    "conflict": {
+      "mean_gap": 0.39,
+      "n_studies": 4,
+      "study_ids": [
+        "crt_classic",
+        "base_rate_neglect",
+        "framing_effects",
+        "conjunction_fallacy"
+      ]
+    }
+  },
+  "llm_gaps_canonical": {
+    "intuitive": {
+      "s1_accuracy": 0.715,
+      "s2_accuracy": 0.685,
+      "s2_s1_gap": -0.029999999999999916
+    },
+    "analytical": {
+      "s1_accuracy": 0.39,
+      "s2_accuracy": 0.795,
+      "s2_s1_gap": 0.405
+    },
+    "conflict": {
+      "s1_accuracy": 0.675,
+      "s2_accuracy": 0.715,
+      "s2_s1_gap": 0.039999999999999925
+    }
+  },
+  "llm_gaps_multi_model": {
+    "intuitive": {
+      "mean_gap": 0.022500000000000003,
+      "per_family": {
+        "openai": -0.08,
+        "deepseek": 0.08,
+        "qwen": 0.1,
+        "llama": -0.01
+      }
+    },
+    "analytical": {
+      "mean_gap": 0.4325,
+      "per_family": {
+        "openai": 0.46,
+        "deepseek": 0.24,
+        "qwen": 0.5,
+        "llama": 0.53
+      }
+    },
+    "conflict": {
+      "mean_gap": 0.1625,
+      "per_family": {
+        "openai": 0.1,
+        "deepseek": 0.02,
+        "qwen": 0.21,
+        "llama": 0.32
+      }
+    }
+  },
+  "similarity": {
+    "spearman_rho": 0.5,
+    "ordering_match": false,
+    "human_ordering": [
+      "conflict",
+      "analytical",
+      "intuitive"
+    ],
+    "llm_ordering": [
+      "analytical",
+      "conflict",
+      "intuitive"
+    ],
+    "per_category": {
+      "intuitive": {
+        "human_gap": 0.03,
+        "llm_gap": -0.029999999999999916,
+        "pattern_match": "divergent"
+      },
+      "analytical": {
+        "human_gap": 0.25,
+        "llm_gap": 0.405,
+        "pattern_match": "partial"
+      },
+      "conflict": {
+        "human_gap": 0.39,
+        "llm_gap": 0.039999999999999925,
+        "pattern_match": "partial"
+      }
+    }
+  }
+}

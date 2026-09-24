@@ -1,0 +1,22 @@
+
+====================================================================================================================
+HUMAN vs LLM DUAL-PROCESS PATTERN COMPARISON (S2-S1 accuracy gap)
+====================================================================================================================
+  Category        Human S2-S1 Gap    LLM S2-S1 Gap           Pattern Match  Note                                    
+--------------+-------------------+-----------------+------------------------+------------------------------------------
+  Intuitive     +3.0% (2 studies)           +20.5%                 partial  LLM +17.5pp vs human                    
+  Analytical    +25.0% (2 studies)           +43.5%    yes (same magnitude)  both show large S2 advantage            
+  Conflict      +39.0% (4 studies)           +10.5%          NO (divergent)  LLM -28.5pp vs human                    
+--------------+-------------------+-----------------+------------------------+------------------------------------------
+
+  Spearman rank correlation (human vs LLM gaps): -0.5
+  Expected gap ordering (conflict>analytical>intuitive):
+    Human ordering : conflict > analytical > intuitive
+    LLM ordering   : analytical > intuitive > conflict
+  Ordering matches: False
+  DIVERGENT categories: conflict
+
+  Verdict: Pattern divergence detected in: conflict. Spearman rho = -0.5. LLMs and humans show qualitatively different dual-process effects in these categories. This should be reported transparently.
+
+  NOTE: Absolute accuracy values are NOT compared — human and LLM task content differs.
+  Only the cross-category pattern of S2-S1 gap magnitudes is compared.

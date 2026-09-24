@@ -1,0 +1,84 @@
+{
+  "human_gaps": {
+    "intuitive": {
+      "mean_gap": 0.03,
+      "n_studies": 2,
+      "study_ids": [
+        "simple_pattern_recognition",
+        "semantic_association"
+      ]
+    },
+    "analytical": {
+      "mean_gap": 0.25,
+      "n_studies": 2,
+      "study_ids": [
+        "syllogistic_reasoning",
+        "arithmetic_word_problems"
+      ]
+    },
+    "conflict": {
+      "mean_gap": 0.39,
+      "n_studies": 4,
+      "study_ids": [
+        "crt_classic",
+        "base_rate_neglect",
+        "framing_effects",
+        "conjunction_fallacy"
+      ]
+    }
+  },
+  "llm_result_source": "results/bibm_2026/main_experiment_v2",
+  "llm_result_format": "merged",
+  "llm_gaps": {
+    "intuitive": {
+      "s1_accuracy": 0.625,
+      "s2_accuracy": 0.83,
+      "s2_s1_gap": 0.205
+    },
+    "analytical": {
+      "s1_accuracy": 0.42,
+      "s2_accuracy": 0.855,
+      "s2_s1_gap": 0.435
+    },
+    "conflict": {
+      "s1_accuracy": 0.83,
+      "s2_accuracy": 0.935,
+      "s2_s1_gap": 0.105
+    }
+  },
+  "similarity": {
+    "spearman_rho": -0.5,
+    "ordering_match": false,
+    "human_ordering": [
+      "conflict",
+      "analytical",
+      "intuitive"
+    ],
+    "llm_ordering": [
+      "analytical",
+      "intuitive",
+      "conflict"
+    ],
+    "per_category": {
+      "intuitive": {
+        "human_gap": 0.03,
+        "llm_gap": 0.205,
+        "pattern_match": "partial"
+      },
+      "analytical": {
+        "human_gap": 0.25,
+        "llm_gap": 0.435,
+        "pattern_match": "consistent"
+      },
+      "conflict": {
+        "human_gap": 0.39,
+        "llm_gap": 0.105,
+        "pattern_match": "divergent"
+      }
+    },
+    "divergences": [
+      "conflict"
+    ],
+    "summary_verdict": "Pattern divergence detected in: conflict. Spearman rho = -0.5. LLMs and humans show qualitatively different dual-process effects in these categories. This should be reported transparently."
+  }
+}

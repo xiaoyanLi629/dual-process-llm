@@ -1,0 +1,1739 @@
+{
+  "timestamp": "2026-04-17",
+  "note": "Corrected numbers after fixing (a) evaluator substring bug, (b) task_loader 1-indexed source dispatch bug, (c) figure rendering bugs.",
+  "per_condition": {
+    "C1": {
+      "by_category": {
+        "system1": {
+          "n": 200,
+          "accuracy": 0.715,
+          "avg_confidence": 0.8470000000000002,
+          "avg_tokens": 134.37
+        },
+        "system2": {
+          "n": 200,
+          "accuracy": 0.39,
+          "avg_confidence": 0.924,
+          "avg_tokens": 186.285
+        },
+        "conflict": {
+          "n": 200,
+          "accuracy": 0.675,
+          "avg_confidence": 0.8705000000000002,
+          "avg_tokens": 156.865
+        }
+      },
+      "overall": {
+        "n": 600,
+        "accuracy": 0.5933333333333334,
+        "avg_confidence": 0.8805000000000001,
+        "avg_tokens": 159.17333333333335
+      }
+    },
+    "C2": {
+      "by_category": {
+        "system1": {
+          "n": 200,
+          "accuracy": 0.59,
+          "avg_confidence": 0.8162500000000001,
+          "avg_tokens": 340.095
+        },
+        "system2": {
+          "n": 200,
+          "accuracy": 0.725,
+          "avg_confidence": 0.9530000000000001,
+          "avg_tokens": 428.095
+        },
+        "conflict": {
+          "n": 200,
+          "accuracy": 0.655,
+          "avg_confidence": 0.8910000000000001,
+          "avg_tokens": 345.225
+        }
+      },
+      "overall": {
+        "n": 600,
+        "accuracy": 0.6566666666666666,
+        "avg_confidence": 0.8867500000000001,
+        "avg_tokens": 371.1383333333333
+      }
+    },
+    "C3": {
+      "by_category": {
+        "system1": {
+          "n": 200,
+          "accuracy": 0.745,
+          "avg_confidence": 0.8422500000000003,
+          "avg_tokens": 134.22
+        },
+        "system2": {
+          "n": 200,
+          "accuracy": 0.375,
+          "avg_confidence": 0.9237500000000002,
+          "avg_tokens": 186.085
+        },
+        "conflict": {
+          "n": 200,
+          "accuracy": 0.68,
+          "avg_confidence": 0.86775,
+          "avg_tokens": 156.035
+        }
+      },
+      "overall": {
+        "n": 600,
+        "accuracy": 0.6,
+        "avg_confidence": 0.8779166666666667,
+        "avg_tokens": 158.78
+      }
+    },
+    "C4": {
+      "by_category": {
+        "system1": {
+          "n": 200,
+          "accuracy": 0.575,
+          "avg_confidence": 0.8142500000000001,
+          "avg_tokens": 334.42
+        },
+        "system2": {
+          "n": 200,
+          "accuracy": 0.76,
+          "avg_confidence": 0.9530000000000001,
+          "avg_tokens": 428.42
+        },
+        "conflict": {
+          "n": 200,
+          "accuracy": 0.66,
+          "avg_confidence": 0.8969999999999999,
+          "avg_tokens": 344.78
+        }
+      },
+      "overall": {
+        "n": 600,
+        "accuracy": 0.665,
+        "avg_confidence": 0.8880833333333336,
+        "avg_tokens": 369.20666666666665
+      }
+    },
+    "C5": {
+      "by_category": {
+        "system1": {
+          "n": 200,
+          "accuracy": 0.705,
+          "avg_confidence": 0.8941,
+          "avg_tokens": 137.93
+        },
+        "system2": {
+          "n": 200,
+          "accuracy": 0.53,
+          "avg_confidence": 0.95935,
+          "avg_tokens": 186.48
+        },
+        "conflict": {
+          "n": 200,
+          "accuracy": 0.735,
+          "avg_confidence": 0.9302000000000001,
+          "avg_tokens": 160.59
+        }
+      },
+      "overall": {
+        "n": 600,
+        "accuracy": 0.6566666666666666,
+        "avg_confidence": 0.9278833333333334,
+        "avg_tokens": 161.66666666666666
+      }
+    },
+    "C6": {
+      "by_category": {
+        "system1": {
+          "n": 200,
+          "accuracy": 0.63,
+          "avg_confidence": 0.7797499999999999,
+          "avg_tokens": 348.07
+        },
+        "system2": {
+          "n": 200,
+          "accuracy": 0.85,
+          "avg_confidence": 0.96095,
+          "avg_tokens": 420.535
+        },
+        "conflict": {
+          "n": 200,
+          "accuracy": 0.73,
+          "avg_confidence": 0.90225,
+          "avg_tokens": 384.84
+        }
+      },
+      "overall": {
+        "n": 600,
+        "accuracy": 0.7366666666666667,
+        "avg_confidence": 0.8809833333333333,
+        "avg_tokens": 384.4816666666667
+      }
+    },
+    "C7": {
+      "by_category": {
+        "system1": {
+          "n": 200,
+          "accuracy": 0.76,
+          "avg_confidence": 0.89075,
+          "avg_tokens": 138.15
+        },
+        "system2": {
+          "n": 200,
+          "accuracy": 0.585,
+          "avg_confidence": 0.9584999999999999,
+          "avg_tokens": 186.72
+        },
+        "conflict": {
+          "n": 200,
+          "accuracy": 0.74,
+          "avg_confidence": 0.925,
+          "avg_tokens": 160.79
+        }
+      },
+      "overall": {
+        "n": 600,
+        "accuracy": 0.695,
+        "avg_confidence": 0.9247500000000001,
+        "avg_tokens": 161.88666666666666
+      }
+    },
+    "C8": {
+      "by_category": {
+        "system1": {
+          "n": 200,
+          "accuracy": 0.685,
+          "avg_confidence": 0.7880000000000001,
+          "avg_tokens": 349.015
+        },
+        "system2": {
+          "n": 200,
+          "accuracy": 0.795,
+          "avg_confidence": 0.9667500000000001,
+          "avg_tokens": 411.075
+        },
+        "conflict": {
+          "n": 200,
+          "accuracy": 0.715,
+          "avg_confidence": 0.9092,
+          "avg_tokens": 381.655
+        }
+      },
+      "overall": {
+        "n": 600,
+        "accuracy": 0.7316666666666667,
+        "avg_confidence": 0.8879833333333332,
+        "avg_tokens": 380.58166666666665
+      }
+    }
+  },
+  "table_I_main_results": {
+    "N": 600,
+    "C5_accuracy": 0.6566666666666666,
+    "C8_accuracy": 0.7316666666666667,
+    "C5_tokens": 161.66666666666666,
+    "C8_tokens": 380.58166666666665,
+    "token_ratio": 2.3541134020618557,
+    "C5_confidence": 0.9278833333333334,
+    "C8_confidence": 0.8879833333333332,
+    "C5_overconfidence": 0.2712166666666668,
+    "C8_overconfidence": 0.15631666666666655,
+    "c5_vs_c8_overall": {
+      "mean_a": 0.6566666666666666,
+      "mean_b": 0.7316666666666667,
+      "delta_pp": 7.500000000000007,
+      "t": -2.826366892086727,
+      "df": 1198,
+      "p": 0.004786170024911585,
+      "cohens_d": 0.16318036859749177
+    },
+    "c5_vs_c8_by_category": {
+      "analytical": {
+        "mean_a": 0.53,
+        "mean_b": 0.795,
+        "delta_pp": 26.5,
+        "t": -5.823502664182681,
+        "df": 398,
+        "p": 1.188916474844597e-08,
+        "cohens_d": 0.582350266418268
+      },
+      "intuitive": {
+        "mean_a": 0.705,
+        "mean_b": 0.685,
+        "delta_pp": -1.9999999999999907,
+        "t": 0.4334127451628699,
+        "df": 398,
+        "p": 0.664949748767822,
+        "cohens_d": -0.043341274516286984
+      },
+      "conflict": {
+        "mean_a": 0.735,
+        "mean_b": 0.715,
+        "delta_pp": -2.0000000000000018,
+        "t": 0.44690491102490837,
+        "df": 398,
+        "p": 0.655186805291972,
+        "cohens_d": -0.044690491102490834
+      }
+    }
+  },
+  "table_II_factorial": {
+    "system1": {
+      "model": {
+        "lo_mean": 0.65625,
+        "hi_mean": 0.695,
+        "effect": 0.03874999999999995
+      },
+      "temperature": {
+        "lo_mean": 0.6599999999999999,
+        "hi_mean": 0.69125,
+        "effect": 0.03125000000000011
+      },
+      "prompt": {
+        "lo_mean": 0.73125,
+        "hi_mean": 0.62,
+        "effect": -0.11124999999999996
+      }
+    },
+    "system2": {
+      "model": {
+        "lo_mean": 0.5625,
+        "hi_mean": 0.69,
+        "effect": 0.12749999999999995
+      },
+      "temperature": {
+        "lo_mean": 0.62375,
+        "hi_mean": 0.62875,
+        "effect": 0.0050000000000000044
+      },
+      "prompt": {
+        "lo_mean": 0.47,
+        "hi_mean": 0.7825,
+        "effect": 0.3125
+      }
+    },
+    "conflict": {
+      "model": {
+        "lo_mean": 0.6675000000000001,
+        "hi_mean": 0.73,
+        "effect": 0.06249999999999989
+      },
+      "temperature": {
+        "lo_mean": 0.69875,
+        "hi_mean": 0.69875,
+        "effect": 0.0
+      },
+      "prompt": {
+        "lo_mean": 0.7075,
+        "hi_mean": 0.69,
+        "effect": -0.01750000000000007
+      }
+    },
+    "overall": {
+      "model": {
+        "effect": 0.07625000000000004
+      },
+      "temperature": {
+        "effect": 0.012083333333333224
+      },
+      "prompt": {
+        "effect": 0.06125000000000003
+      }
+    }
+  },
+  "anova": {
+    "overall": {
+      "model": {
+        "ss": 6.976874999999123,
+        "df": 1.0,
+        "F": 31.709408694356114,
+        "p": 1.8926768106238886e-08,
+        "partial_eta2": 0.0065736564970523305
+      },
+      "temp": {
+        "ss": 0.1752083333333537,
+        "df": 1.0,
+        "F": 0.7963096154546251,
+        "p": 0.372243836545171,
+        "partial_eta2": 0.0001661471850696105
+      },
+      "prompt": {
+        "ss": 4.5018750000003935,
+        "df": 1.0,
+        "F": 20.460706873196784,
+        "p": 6.233859783864367e-06,
+        "partial_eta2": 0.004251610167741138
+      },
+      "model_x_temp": {
+        "ss": 0.02520833333336967,
+        "df": 1.0,
+        "F": 0.11457011114166152,
+        "p": 0.7350147663787489,
+        "partial_eta2": 2.3908049247454515e-05
+      },
+      "model_x_prompt": {
+        "ss": 0.010208333333346534,
+        "df": 1.0,
+        "F": 0.04639616071025274,
+        "p": 0.8294664450768628,
+        "partial_eta2": 9.68190974683058e-06
+      },
+      "temp_x_prompt": {
+        "ss": 0.1302083333333006,
+        "df": 1.0,
+        "F": 0.5917877641604727,
+        "p": 0.4417665476290902,
+        "partial_eta2": 0.0001234796933198756
+      },
+      "model_x_temp_x_prompt": {
+        "ss": 0.15187499999995244,
+        "df": 1.0,
+        "F": 0.690261248116733,
+        "p": 0.4061169267118827,
+        "partial_eta2": 0.00014402375502917946
+      },
+      "residual_df": 4792.0
+    },
+    "prompt_x_category": {
+      "prompt": {
+        "ss": 4.501874999999898,
+        "df": 1.0,
+        "F": 21.20436550579802,
+        "p": 4.23505582548258e-06,
+        "partial_eta2": 0.004403627322175073
+      },
+      "category": {
+        "ss": 4.388750000000165,
+        "df": 2.0,
+        "F": 10.335766665397937,
+        "p": 3.318054613788399e-05,
+        "partial_eta2": 0.004293446227368138
+      },
+      "prompt_x_category": {
+        "ss": 39.63375000000054,
+        "df": 2.0,
+        "F": 93.33983299907848,
+        "p": 1.7075640230468984e-40,
+        "partial_eta2": 0.037480761365275485
+      },
+      "residual_df": 4794.0
+    }
+  },
+  "interactions": {
+    "model_x_prompt": {
+      "cot_effect_in_mini": 0.06416666666666665,
+      "cot_effect_in_4o": 0.058333333333333404,
+      "interaction": -0.005833333333333246,
+      "interpretation": "Positive = CoT helps more for gpt-4o than gpt-4o-mini"
+    },
+    "model_x_temperature": {
+      "lowT_effect_in_mini": 0.007500000000000007,
+      "lowT_effect_in_4o": 0.016666666666666663,
+      "interaction": 0.009166666666666656,
+      "interpretation": "Positive = low temperature helps more for gpt-4o than gpt-4o-mini"
+    },
+    "temperature_x_prompt": {
+      "cot_effect_at_highT": 0.07166666666666666,
+      "cot_effect_at_lowT": 0.0508333333333334,
+      "interaction": -0.02083333333333326,
+      "interpretation": "Positive = CoT helps more at low temperature than high temperature"
+    }
+  },
+  "variance_baseline": {
+    "condition_id": "C8",
+    "n_subset": 50,
+    "accuracy_run1": 0.62,
+    "accuracy_run2": 0.7,
+    "accuracy_difference": 0.07999999999999996,
+    "agreement_rate": 0.92,
+    "run1_trials": [
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_0245",
+        "task_category": "system1",
+        "answer": "C. continues, making faces as he goes.",
+        "correct_answer": "C",
+        "is_correct": true,
+        "confidence": 0.8,
+        "tokens_used": 352,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "winogrande_0573",
+        "task_category": "system1",
+        "answer": "Insufficient context to choose between 'burglary' and 'accident'.",
+        "correct_answer": "B",
+        "is_correct": false,
+        "confidence": 0.5,
+        "tokens_used": 300,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "siqa_0338",
+        "task_category": "system1",
+        "answer": "C. trying hard",
+        "correct_answer": "A",
+        "is_correct": false,
+        "confidence": 0.8,
+        "tokens_used": 358,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1259",
+        "task_category": "system1",
+        "answer": "D. is standing in a gym and suddenly he jumped on the warm up board.",
+        "correct_answer": "C",
+        "is_correct": false,
+        "confidence": 0.7,
+        "tokens_used": 375,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_0108",
+        "task_category": "system1",
+        "answer": "A. universe",
+        "correct_answer": "A",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 407,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_0088",
+        "task_category": "system1",
+        "answer": "E. african continent",
+        "correct_answer": "E",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 447,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "piqa_0290",
+        "task_category": "system1",
+        "answer": "A. Stick a bamboo skewer or toothpick into the broken off piece and then put hot glue on the broken off portion then push the toothpick into the sword making sure the glue sticks as well.",
+        "correct_answer": "A",
+        "is_correct": true,
+        "confidence": 0.95,
+        "tokens_used": 424,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_1011",
+        "task_category": "system1",
+        "answer": "A. confidence",
+        "correct_answer": "A",
+        "is_correct": true,
+        "confidence": 0.95,
+        "tokens_used": 321,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_0890",
+        "task_category": "system1",
+        "answer": "E. succeeding",
+        "correct_answer": "D",
+        "is_correct": false,
+        "confidence": 0.9,
+        "tokens_used": 318,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_0469",
+        "task_category": "system1",
+        "answer": "E. photograph",
+        "correct_answer": "E",
+        "is_correct": true,
+        "confidence": 0.95,
+        "tokens_used": 302,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "siqa_1297",
+        "task_category": "system1",
+        "answer": "B. Focus on writing lyrics",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 318,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "winogrande_0301",
+        "task_category": "system1",
+        "answer": "Insufficient information to choose between Erin and Maria.",
+        "correct_answer": "A",
+        "is_correct": false,
+        "confidence": 0.0,
+        "tokens_used": 238,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1099",
+        "task_category": "system1",
+        "answer": "D. plays a saxophone while a band play instruments behind him.",
+        "correct_answer": "B",
+        "is_correct": false,
+        "confidence": 0.6,
+        "tokens_used": 397,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "winogrande_1121",
+        "task_category": "system1",
+        "answer": "Without additional context or criteria, it is not possible to determine a correct choice between Patricia and Felicia.",
+        "correct_answer": "A",
+        "is_correct": false,
+        "confidence": 0.2,
+        "tokens_used": 236,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "piqa_0535",
+        "task_category": "system1",
+        "answer": "B. Use a half/half sand wood mixture in the hotel",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.8,
+        "tokens_used": 349,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "piqa_1043",
+        "task_category": "system1",
+        "answer": "B. It would be best to sew the lace on to the torn spot on the handbag.",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 339,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_0347",
+        "task_category": "system1",
+        "answer": "D. death and decay",
+        "correct_answer": "D",
+        "is_correct": true,
+        "confidence": 0.95,
+        "tokens_used": 250,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_0436",
+        "task_category": "system1",
+        "answer": "E. press coverage",
+        "correct_answer": "A",
+        "is_correct": false,
+        "confidence": 0.9,
+        "tokens_used": 342,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_0340",
+        "task_category": "system1",
+        "answer": "C. is playing on a rug after the bath is over with wet fur on his body.",
+        "correct_answer": "C",
+        "is_correct": true,
+        "confidence": 0.85,
+        "tokens_used": 417,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_0386",
+        "task_category": "system1",
+        "answer": "C. hungry",
+        "correct_answer": "C",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 355,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_0403",
+        "task_category": "system1",
+        "answer": "B. explains how you should cut the grass according to its color and how high or low you want it.",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 369,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "siqa_1158",
+        "task_category": "system1",
+        "answer": "B. help her pick a fish",
+        "correct_answer": "C",
+        "is_correct": false,
+        "confidence": 0.9,
+        "tokens_used": 357,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "piqa_1258",
+        "task_category": "system1",
+        "answer": "A. Using the other end of a hammer, pry apart the log from the pallet to get nails out.",
+        "correct_answer": "A",
+        "is_correct": true,
+        "confidence": 0.95,
+        "tokens_used": 379,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1229",
+        "task_category": "system1",
+        "answer": "B. bends down and tries to start a fire, but it doesn't light.",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 328,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "siqa_1533",
+        "task_category": "system1",
+        "answer": "C. see a psychologist",
+        "correct_answer": "A",
+        "is_correct": false,
+        "confidence": 0.9,
+        "tokens_used": 299,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "winogrande_1234",
+        "task_category": "system1",
+        "answer": "Insufficient information to choose between Leslie and Kenneth.",
+        "correct_answer": "A",
+        "is_correct": false,
+        "confidence": 0.2,
+        "tokens_used": 252,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "siqa_0853",
+        "task_category": "system1",
+        "answer": "B. worried about the consequences to Addison",
+        "correct_answer": "C",
+        "is_correct": false,
+        "confidence": 0.7,
+        "tokens_used": 388,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "piqa_0336",
+        "task_category": "system1",
+        "answer": "B. Paint outside of empty glass bottle.",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.85,
+        "tokens_used": 369,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "piqa_1331",
+        "task_category": "system1",
+        "answer": "Insufficient context to choose between options A and B.",
+        "correct_answer": "B",
+        "is_correct": false,
+        "confidence": 0.5,
+        "tokens_used": 283,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1966",
+        "task_category": "system1",
+        "answer": "D. then brushes off the mans neck.",
+        "correct_answer": "D",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 339,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1375",
+        "task_category": "system1",
+        "answer": "D. tries to eat the boys own grab ice cream as well as the kids sitting around them.",
+        "correct_answer": "C",
+        "is_correct": false,
+        "confidence": 0.8,
+        "tokens_used": 409,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "winogrande_0800",
+        "task_category": "system1",
+        "answer": "Without additional context or criteria, it's not possible to determine the correct option between Tanya and Elena.",
+        "correct_answer": "A",
+        "is_correct": false,
+        "confidence": 0.2,
+        "tokens_used": 224,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_0990",
+        "task_category": "system1",
+        "answer": "B. lift weights",
+        "correct_answer": "E",
+        "is_correct": false,
+        "confidence": 0.9,
+        "tokens_used": 330,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1079",
+        "task_category": "system1",
+        "answer": "C. cleans the face with the liquid soap in circular motions.",
+        "correct_answer": "C",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 393,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "siqa_1520",
+        "task_category": "system1",
+        "answer": "A. rude",
+        "correct_answer": "A",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 305,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1669",
+        "task_category": "system1",
+        "answer": "D. then catches a few more fish afterwards.",
+        "correct_answer": "D",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 451,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1356",
+        "task_category": "system1",
+        "answer": "B. makes a face and stare at the camera as she eats.",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.8,
+        "tokens_used": 350,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_0163",
+        "task_category": "system1",
+        "answer": "B. ring",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 431,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "winogrande_0018",
+        "task_category": "system1",
+        "answer": "Insufficient information to choose between Leslie and Neil.",
+        "correct_answer": "A",
+        "is_correct": false,
+        "confidence": 0.2,
+        "tokens_used": 242,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_0176",
+        "task_category": "system1",
+        "answer": "D. don't have any cars but people are riding bikes or skateboarding.",
+        "correct_answer": "D",
+        "is_correct": true,
+        "confidence": 0.8,
+        "tokens_used": 402,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1041",
+        "task_category": "system1",
+        "answer": "C. takes a bite out of his popsicle.",
+        "correct_answer": "C",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 379,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1723",
+        "task_category": "system1",
+        "answer": "A. cuts a piece of wood, and shows how to use equipment on it.",
+        "correct_answer": "A",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 393,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "piqa_1313",
+        "task_category": "system1",
+        "answer": "B. When you add the blueberries, make sure that they are frozen.",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 308,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "piqa_1077",
+        "task_category": "system1",
+        "answer": "B. make sure the inside isn't pink.",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.95,
+        "tokens_used": 241,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1807",
+        "task_category": "system1",
+        "answer": "D. completes the game, stands up and claps and the crowd cheers.",
+        "correct_answer": "C",
+        "is_correct": false,
+        "confidence": 0.9,
+        "tokens_used": 424,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_0749",
+        "task_category": "system1",
+        "answer": "C. adjusts the handle bars again and makes sure they are firmly in place.",
+        "correct_answer": "C",
+        "is_correct": true,
+        "confidence": 0.8,
+        "tokens_used": 408,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "piqa_0220",
+        "task_category": "system1",
+        "answer": "Option A",
+        "correct_answer": "A",
+        "is_correct": true,
+        "confidence": 0.95,
+        "tokens_used": 492,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "siqa_1576",
+        "task_category": "system1",
+        "answer": "B. plan a vacation before this",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 301,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1811",
+        "task_category": "system1",
+        "answer": "D. picks up a sharpener and sharpens the blade of the knife on the sharpener.",
+        "correct_answer": "D",
+        "is_correct": true,
+        "confidence": 0.6,
+        "tokens_used": 372,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "winogrande_0554",
+        "task_category": "system1",
+        "answer": "Without additional context or criteria, it's impossible to determine the correct option between Megan and Tanya.",
+        "correct_answer": "A",
+        "is_correct": false,
+        "confidence": 0.2,
+        "tokens_used": 230,
+        "parse_error": false
+      }
+    ],
+    "run2_trials": [
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_0245",
+        "task_category": "system1",
+        "answer": "C. continues, making faces as he goes.",
+        "correct_answer": "C",
+        "is_correct": true,
+        "confidence": 0.8,
+        "tokens_used": 316,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "winogrande_0573",
+        "task_category": "system1",
+        "answer": "Insufficient information to determine the correct option.",
+        "correct_answer": "B",
+        "is_correct": false,
+        "confidence": 0.2,
+        "tokens_used": 303,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "siqa_0338",
+        "task_category": "system1",
+        "answer": "A. disappointed",
+        "correct_answer": "A",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 342,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1259",
+        "task_category": "system1",
+        "answer": "C. stares and speaks to the camera as he sits on his chair.",
+        "correct_answer": "C",
+        "is_correct": true,
+        "confidence": 0.6,
+        "tokens_used": 405,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_0108",
+        "task_category": "system1",
+        "answer": "A. universe",
+        "correct_answer": "A",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 437,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_0088",
+        "task_category": "system1",
+        "answer": "E. african continent",
+        "correct_answer": "E",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 388,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "piqa_0290",
+        "task_category": "system1",
+        "answer": "A. Stick a bamboo skewer or toothpick into the broken off piece and then put hot glue on the broken off portion then push the toothpick into the sword making sure the glue sticks as well.",
+        "correct_answer": "A",
+        "is_correct": true,
+        "confidence": 0.95,
+        "tokens_used": 448,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_1011",
+        "task_category": "system1",
+        "answer": "A. confidence",
+        "correct_answer": "A",
+        "is_correct": true,
+        "confidence": 0.95,
+        "tokens_used": 396,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_0890",
+        "task_category": "system1",
+        "answer": "E. succeeding",
+        "correct_answer": "D",
+        "is_correct": false,
+        "confidence": 0.9,
+        "tokens_used": 330,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_0469",
+        "task_category": "system1",
+        "answer": "E. photograph",
+        "correct_answer": "E",
+        "is_correct": true,
+        "confidence": 0.95,
+        "tokens_used": 343,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "siqa_1297",
+        "task_category": "system1",
+        "answer": "B. Focus on writing lyrics",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 345,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "winogrande_0301",
+        "task_category": "system1",
+        "answer": "Without additional context or information, it is not possible to determine whether the answer is Erin or Maria.",
+        "correct_answer": "A",
+        "is_correct": false,
+        "confidence": 0.2,
+        "tokens_used": 236,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1099",
+        "task_category": "system1",
+        "answer": "D. plays a saxophone while a band play instruments behind him.",
+        "correct_answer": "B",
+        "is_correct": false,
+        "confidence": 0.8,
+        "tokens_used": 393,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "winogrande_1121",
+        "task_category": "system1",
+        "answer": "A. Patricia",
+        "correct_answer": "A",
+        "is_correct": true,
+        "confidence": 0.5,
+        "tokens_used": 229,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "piqa_0535",
+        "task_category": "system1",
+        "answer": "B. Use a half/half sand wood mixture in the hotel",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.7,
+        "tokens_used": 391,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "piqa_1043",
+        "task_category": "system1",
+        "answer": "B. It would be best to sew the lace on to the torn of spot on the handbag.",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.95,
+        "tokens_used": 347,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_0347",
+        "task_category": "system1",
+        "answer": "D. death and decay",
+        "correct_answer": "D",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 363,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_0436",
+        "task_category": "system1",
+        "answer": "E. press coverage",
+        "correct_answer": "A",
+        "is_correct": false,
+        "confidence": 0.9,
+        "tokens_used": 450,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_0340",
+        "task_category": "system1",
+        "answer": "C. is playing on a rug after the bath is over with wet fur on his body.",
+        "correct_answer": "C",
+        "is_correct": true,
+        "confidence": 0.8,
+        "tokens_used": 419,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_0386",
+        "task_category": "system1",
+        "answer": "C. hungry",
+        "correct_answer": "C",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 428,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_0403",
+        "task_category": "system1",
+        "answer": "B. explains how you should cut the grass according to its color and how high or low you want it.",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 384,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "siqa_1158",
+        "task_category": "system1",
+        "answer": "B. help her pick a fish",
+        "correct_answer": "C",
+        "is_correct": false,
+        "confidence": 0.9,
+        "tokens_used": 344,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "piqa_1258",
+        "task_category": "system1",
+        "answer": "A. Using the other end of a hammer, pry apart the log from the pallet to get nails out.",
+        "correct_answer": "A",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 374,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1229",
+        "task_category": "system1",
+        "answer": "B. bends down and tries to start a fire, but it doesn't light.",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 397,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "siqa_1533",
+        "task_category": "system1",
+        "answer": "A. seek therapy",
+        "correct_answer": "A",
+        "is_correct": true,
+        "confidence": 0.8,
+        "tokens_used": 305,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "winogrande_1234",
+        "task_category": "system1",
+        "answer": "Without additional context or criteria, it is not possible to determine the correct option between A. Leslie and B. Kenneth.",
+        "correct_answer": "A",
+        "is_correct": false,
+        "confidence": 0.2,
+        "tokens_used": 227,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "siqa_0853",
+        "task_category": "system1",
+        "answer": "B. worried about the consequences to Addison",
+        "correct_answer": "C",
+        "is_correct": false,
+        "confidence": 0.6,
+        "tokens_used": 420,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "piqa_0336",
+        "task_category": "system1",
+        "answer": "B. Paint outside of empty glass bottle.",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.85,
+        "tokens_used": 354,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "piqa_1331",
+        "task_category": "system1",
+        "answer": "A. has a blade",
+        "correct_answer": "B",
+        "is_correct": false,
+        "confidence": 0.7,
+        "tokens_used": 355,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1966",
+        "task_category": "system1",
+        "answer": "D. then brushes off the mans neck.",
+        "correct_answer": "D",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 360,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1375",
+        "task_category": "system1",
+        "answer": "D. tries to eat the boys own grab ice cream as well as the kids sitting around them.",
+        "correct_answer": "C",
+        "is_correct": false,
+        "confidence": 0.8,
+        "tokens_used": 382,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "winogrande_0800",
+        "task_category": "system1",
+        "answer": "Without additional context or criteria, it is not possible to make a decision between Tanya and Elena.",
+        "correct_answer": "A",
+        "is_correct": false,
+        "confidence": 0.2,
+        "tokens_used": 233,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_0990",
+        "task_category": "system1",
+        "answer": "B. lift weights",
+        "correct_answer": "E",
+        "is_correct": false,
+        "confidence": 0.95,
+        "tokens_used": 332,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1079",
+        "task_category": "system1",
+        "answer": "C. cleans the face with the liquid soap in circular motions.",
+        "correct_answer": "C",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 346,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "siqa_1520",
+        "task_category": "system1",
+        "answer": "A. rude",
+        "correct_answer": "A",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 334,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1669",
+        "task_category": "system1",
+        "answer": "D. then catches a few more fish afterwards.",
+        "correct_answer": "D",
+        "is_correct": true,
+        "confidence": 0.7,
+        "tokens_used": 383,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1356",
+        "task_category": "system1",
+        "answer": "B. makes a face and stare at the camera as she eats.",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.8,
+        "tokens_used": 392,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "csqa_0163",
+        "task_category": "system1",
+        "answer": "B. ring",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 382,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "winogrande_0018",
+        "task_category": "system1",
+        "answer": "Insufficient information to choose between Leslie and Neil.",
+        "correct_answer": "A",
+        "is_correct": false,
+        "confidence": 0.2,
+        "tokens_used": 234,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_0176",
+        "task_category": "system1",
+        "answer": "D. don't have any cars but people are riding bikes or skateboarding.",
+        "correct_answer": "D",
+        "is_correct": true,
+        "confidence": 0.8,
+        "tokens_used": 366,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1041",
+        "task_category": "system1",
+        "answer": "C. takes a bite out of his popsicle.",
+        "correct_answer": "C",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 375,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1723",
+        "task_category": "system1",
+        "answer": "A. cuts a piece of wood, and shows how to use equipment on it.",
+        "correct_answer": "A",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 380,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "piqa_1313",
+        "task_category": "system1",
+        "answer": "B. When you add the blueberries, make sure that they are frozen.",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 350,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "piqa_1077",
+        "task_category": "system1",
+        "answer": "B. make sure the inside isn't pink.",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 253,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1807",
+        "task_category": "system1",
+        "answer": "D. completes the game, stands up and claps and the crowd cheers.",
+        "correct_answer": "C",
+        "is_correct": false,
+        "confidence": 0.9,
+        "tokens_used": 431,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_0749",
+        "task_category": "system1",
+        "answer": "C. adjusts the handle bars again and makes sure they are firmly in place.",
+        "correct_answer": "C",
+        "is_correct": true,
+        "confidence": 0.8,
+        "tokens_used": 384,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "piqa_0220",
+        "task_category": "system1",
+        "answer": "A",
+        "correct_answer": "A",
+        "is_correct": true,
+        "confidence": 0.95,
+        "tokens_used": 445,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "siqa_1576",
+        "task_category": "system1",
+        "answer": "B. plan a vacation before this",
+        "correct_answer": "B",
+        "is_correct": true,
+        "confidence": 0.9,
+        "tokens_used": 277,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "hellaswag_1811",
+        "task_category": "system1",
+        "answer": "D. picks up a sharpener and sharpens the blade of the knife on the sharpener.",
+        "correct_answer": "D",
+        "is_correct": true,
+        "confidence": 0.8,
+        "tokens_used": 365,
+        "parse_error": false
+      },
+      {
+        "condition_id": "C8",
+        "task_id": "winogrande_0554",
+        "task_category": "system1",
+        "answer": "Without additional context or criteria, a decision cannot be made between Megan and Tanya.",
+        "correct_answer": "A",
+        "is_correct": false,
+        "confidence": 0.5,
+        "tokens_used": 245,
+        "parse_error": false
+      }
+    ]
+  },
+  "key_comparisons": {
+    "primary": {
+      "label": "C5 vs C8 (same-model: gpt-4o, isolates temperature + prompting)",
+      "C5": 0.6566666666666666,
+      "C8": 0.7316666666666667,
+      "delta_C8_minus_C5": 0.07500000000000007
+    },
+    "secondary": {
+      "label": "C1 vs C8 (canonical S1 vs S2, all three factors vary)",
+      "C1": 0.5933333333333334,
+      "C8": 0.7316666666666667,
+      "delta_C8_minus_C1": 0.1383333333333333
+    }
+  },
+  "table_conflict": {
+    "C1_vs_C8": {
+      "mean_a": 0.675,
+      "mean_b": 0.715,
+      "delta_pp": 3.9999999999999925,
+      "t": -0.8674398245561705,
+      "df": 398,
+      "p": 0.3862237594161819,
+      "cohens_d": 0.08674398245561706
+    },
+    "C5_vs_C8": {
+      "mean_a": 0.735,
+      "mean_b": 0.715,
+      "delta_pp": -2.0000000000000018,
+      "t": 0.44690491102490837,
+      "df": 398,
+      "p": 0.655186805291972,
+      "cohens_d": -0.044690491102490834
+    }
+  },
+  "token_efficiency": {
+    "analytical": {
+      "accuracy_gain_pp": 26.5,
+      "delta_tokens": 224.595,
+      "TER": 0.1179901600658964
+    },
+    "intuitive": {
+      "accuracy_gain_pp": -1.9999999999999907,
+      "delta_tokens": 211.08499999999998,
+      "TER": -0.009474856100622929
+    },
+    "conflict": {
+      "accuracy_gain_pp": -2.0000000000000018,
+      "delta_tokens": 221.06499999999997,
+      "TER": -0.009047112840114908
+    }
+  },
+  "multi_model_gaps": {
+    "openai": {
+      "intuitive": -0.08,
+      "analytical": 0.46,
+      "conflict": 0.1
+    },
+    "deepseek": {
+      "intuitive": 0.08,
+      "analytical": 0.24,
+      "conflict": 0.02
+    },
+    "qwen": {
+      "intuitive": 0.1,
+      "analytical": 0.5,
+      "conflict": 0.21
+    },
+    "llama": {
+      "intuitive": -0.01,
+      "analytical": 0.53,
+      "conflict": 0.32
+    }
+  },
+  "multi_model_means": {
+    "intuitive": 0.022500000000000003,
+    "analytical": 0.4325,
+    "conflict": 0.1625
+  },
+  "human_comparison": {
+    "human_gaps": {
+      "intuitive": {
+        "mean_gap": 0.03,
+        "n_studies": 2,
+        "study_ids": [
+          "simple_pattern_recognition",
+          "semantic_association"
+        ]
+      },
+      "analytical": {
+        "mean_gap": 0.25,
+        "n_studies": 2,
+        "study_ids": [
+          "syllogistic_reasoning",
+          "arithmetic_word_problems"
+        ]
+      },
+      "conflict": {
+        "mean_gap": 0.39,
+        "n_studies": 4,
+        "study_ids": [
+          "crt_classic",
+          "base_rate_neglect",
+          "framing_effects",
+          "conjunction_fallacy"
+        ]
+      }
+    },
+    "llm_gaps_canonical": {
+      "intuitive": {
+        "s1_accuracy": 0.715,
+        "s2_accuracy": 0.685,
+        "s2_s1_gap": -0.029999999999999916
+      },
+      "analytical": {
+        "s1_accuracy": 0.39,
+        "s2_accuracy": 0.795,
+        "s2_s1_gap": 0.405
+      },
+      "conflict": {
+        "s1_accuracy": 0.675,
+        "s2_accuracy": 0.715,
+        "s2_s1_gap": 0.039999999999999925
+      }
+    },
+    "llm_gaps_multi_model": {
+      "intuitive": {
+        "mean_gap": 0.022500000000000003,
+        "per_family": {
+          "openai": -0.08,
+          "deepseek": 0.08,
+          "qwen": 0.1,
+          "llama": -0.01
+        }
+      },
+      "analytical": {
+        "mean_gap": 0.4325,
+        "per_family": {
+          "openai": 0.46,
+          "deepseek": 0.24,
+          "qwen": 0.5,
+          "llama": 0.53
+        }
+      },
+      "conflict": {
+        "mean_gap": 0.1625,
+        "per_family": {
+          "openai": 0.1,
+          "deepseek": 0.02,
+          "qwen": 0.21,
+          "llama": 0.32
+        }
+      }
+    },
+    "similarity": {
+      "spearman_rho": 0.5,
+      "ordering_match": false,
+      "human_ordering": [
+        "conflict",
+        "analytical",
+        "intuitive"
+      ],
+      "llm_ordering": [
+        "analytical",
+        "conflict",
+        "intuitive"
+      ],
+      "per_category": {
+        "intuitive": {
+          "human_gap": 0.03,
+          "llm_gap": -0.029999999999999916,
+          "pattern_match": "divergent"
+        },
+        "analytical": {
+          "human_gap": 0.25,
+          "llm_gap": 0.405,
+          "pattern_match": "partial"
+        },
+        "conflict": {
+          "human_gap": 0.39,
+          "llm_gap": 0.039999999999999925,
+          "pattern_match": "partial"
+        }
+      }
+    }
+  }
+}

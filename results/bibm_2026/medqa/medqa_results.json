@@ -1,0 +1,2741 @@
+{
+ "C1": {
+  "condition": {
+   "id": "C1",
+   "model": "openai/gpt-4o-mini",
+   "temperature": 0.9,
+   "prompt": "zs",
+   "system": "You are a fast, intuitive thinker. Answer immediately with your first instinct.\nGive a brief, direct answer. Trust your gut feeling.\n\nRespond in JSON format: {\"answer\": \"your answer\", \"confidence\": 0.0-1.0}",
+   "max_tokens": 150
+  },
+  "trials": [
+   {
+    "task_id": "medqa_228",
+    "answer": "B. Dengue fever",
+    "correct_answer": "A",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 478,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_51",
+    "answer": "A. Aldosterone excess",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 306,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_563",
+    "answer": "A. Clear cell adenocarcinoma",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 267,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_501",
+    "answer": "B",
+    "correct_answer": "D",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 256,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_457",
+    "answer": "C. It only occurs in patients with cirrhosis",
+    "correct_answer": "B",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 347,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_285",
+    "answer": "D. Order an ACTH stimulation test",
+    "correct_answer": "C",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 294,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_209",
+    "answer": "A. Squamous cell carcinoma",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.85,
+    "tokens_used": 210,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1116",
+    "answer": "C. Amitriptyline",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.85,
+    "tokens_used": 364,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_178",
+    "answer": "A. Spastic paralysis at the level of lesion",
+    "correct_answer": "D",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 250,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1209",
+    "answer": "A. Affective symptoms",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 287,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_864",
+    "answer": "D. Exploratory laparotomy",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 287,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_65",
+    "answer": "B. Lytic lesions of the lumbar spine",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 253,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_61",
+    "answer": "A. Acetaldehyde",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 191,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_191",
+    "answer": "B. Intrauterine alcohol exposure",
+    "correct_answer": "C",
+    "is_correct": false,
+    "confidence": 0.85,
+    "tokens_used": 199,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_447",
+    "answer": "C. Carotid baroreceptor firing activity",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 268,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_476",
+    "answer": "C. Spherocytes",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 248,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1034",
+    "answer": "B. A septal hematoma causing a perforation",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.85,
+    "tokens_used": 204,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1232",
+    "answer": "A. A type 1 error occurs when the null hypothesis is true but is rejected in error.",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 1.0,
+    "tokens_used": 717,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_54",
+    "answer": "A. Tardive dyskinesia",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 219,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1149",
+    "answer": "C. X-ray of the lower extremities",
+    "correct_answer": "B",
+    "is_correct": false,
+    "confidence": 0.85,
+    "tokens_used": 310,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_407",
+    "answer": "B. Release of prostaglandins",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 185,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_859",
+    "answer": "D. Decreased pulmonary capillary wedge pressure",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 249,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_451",
+    "answer": "D. Phosphodiesterase inhibitor",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 224,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_919",
+    "answer": "B. Straight leg raise",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 262,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1206",
+    "answer": "D",
+    "correct_answer": "A",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 175,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_569",
+    "answer": "B. Dantrolene",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 361,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_13",
+    "answer": "D. A reduction in diastolic filling time",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.85,
+    "tokens_used": 242,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_326",
+    "answer": "A. MRI of the hip",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 268,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_865",
+    "answer": "C. Reintubate",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 430,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_696",
+    "answer": "D. Peroxisome proliferator-activated receptor gamma",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 253,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_318",
+    "answer": "C. Somatization disorder",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.85,
+    "tokens_used": 235,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_440",
+    "answer": "D. Squeezing the nostrils manually for 10 minutes with the head elevated",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 290,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_689",
+    "answer": "B. Treat with three weekly injections of penicillin, obtain titers in 3 months",
+    "correct_answer": "C",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 316,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_189",
+    "answer": "C. Erosion of tooth enamel",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 238,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_778",
+    "answer": "A. He is already overcommitting and must reduce the number of hours",
+    "correct_answer": "C",
+    "is_correct": false,
+    "confidence": 0.85,
+    "tokens_used": 258,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_198",
+    "answer": "C. Polycystic ovarian syndrome",
+    "correct_answer": "D",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 240,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_735",
+    "answer": "A. Alendronate",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.85,
+    "tokens_used": 335,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_704",
+    "answer": "D. Continue normal breast feeding",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 192,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1236",
+    "answer": "B. Multiple endocrine neoplasia (MEN) 2A",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 406,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_541",
+    "answer": "A. The association is not statistically significant, and low education is not a risk factor.",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 332,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_88",
+    "answer": "C. Thoracic aortic rupture",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 331,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_940",
+    "answer": "A. Increase in capillary pressure",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 187,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1098",
+    "answer": "A. 69XXY",
+    "correct_answer": "D",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 244,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_255",
+    "answer": "C. Microcytic red blood cells",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 177,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_775",
+    "answer": "A",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 147,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_161",
+    "answer": "B. Non-Hodgkin lymphoma",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 293,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1130",
+    "answer": "A. Propranolol",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 268,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_600",
+    "answer": "D. Conjugation with a protein carrier provides effective protection to infants",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 257,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1266",
+    "answer": "C. Nifedipine",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 246,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_740",
+    "answer": "D. Reducing daily insulin dose",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 199,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1182",
+    "answer": "A. Hyperplasia of juxtaglomerular cells",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 280,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_393",
+    "answer": "D. Transfer the newborn for immediate surgery",
+    "correct_answer": "A",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 261,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_142",
+    "answer": "A. Inhibition of beta-tubulin polymerization",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 226,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_93",
+    "answer": "C. Down syndrome",
+    "correct_answer": "D",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 329,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_466",
+    "answer": "B. Excess weight",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 316,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_592",
+    "answer": "A. Inosine monophosphate dehydrogenase",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 213,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_163",
+    "answer": "A. Positive latex agglutination test",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.8,
+    "tokens_used": 284,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_206",
+    "answer": "C. LOD Score > 3",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 203,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_928",
+    "answer": "D. Administer norepinephrine",
+    "correct_answer": "B",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 326,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_747",
+    "answer": "B. Methylprednisolone and cyclophosphamide",
+    "correct_answer": "C",
+    "is_correct": false,
+    "confidence": 0.85,
+    "tokens_used": 368,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_333",
+    "answer": "D. Intubation and mechanical ventilation",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.85,
+    "tokens_used": 399,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_758",
+    "answer": "B. Malignant colonic neoplasm",
+    "correct_answer": "D",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 469,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_727",
+    "answer": "A",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 277,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_429",
+    "answer": "D. Surgical gastropexy",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 248,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_546",
+    "answer": "C. Pulmonary embolism",
+    "correct_answer": "D",
+    "is_correct": false,
+    "confidence": 0.8,
+    "tokens_used": 338,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_146",
+    "answer": "C. Tumor arising from cutaneous T cells",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 261,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1247",
+    "answer": "D. 1200 mL",
+    "correct_answer": "A",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 341,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_350",
+    "answer": "B. Incision and drainage with intravenous ampicillin-sulbactam therapy",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 416,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1093",
+    "answer": "B. Dual-energy x-ray bone absorptiometry",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 330,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_334",
+    "answer": "B. Comprehensive foot exam every year",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 168,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_946",
+    "answer": "D. Wernicke's encephalopathy",
+    "correct_answer": "C",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 314,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_777",
+    "answer": "C. Paroxetine",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 271,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_552",
+    "answer": "A. Endoscopic retrograde cholangiopancreatography (ERCP)",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 501,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1140",
+    "answer": "A. Delayed separation of the umbilical cord",
+    "correct_answer": "B",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 301,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_449",
+    "answer": "B. Recurrent laryngeal nerve injury",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 205,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_664",
+    "answer": "D. Hemophilia A",
+    "correct_answer": "C",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 237,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_114",
+    "answer": "B. Diarrhea",
+    "correct_answer": "C",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 300,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_469",
+    "answer": "D. Histoplasmosis",
+    "correct_answer": "A",
+    "is_correct": false,
+    "confidence": 0.85,
+    "tokens_used": 326,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_646",
+    "answer": "B. Tumor stage",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 222,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_821",
+    "answer": "C. Hyperphosphorylated tau",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 239,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_548",
+    "answer": "D. Continue antitubercular therapy and antiretroviral therapy without any change",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 523,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_135",
+    "answer": "C. Binds endogenous peptides that have been transported by the TAP channel",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 259,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_432",
+    "answer": "A. Intravenous thiamine",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 323,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1161",
+    "answer": "A. Required for collagen hydroxylation",
+    "correct_answer": "B",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 258,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_644",
+    "answer": "A. Increased vagal stimulation",
+    "correct_answer": "B",
+    "is_correct": false,
+    "confidence": 0.8,
+    "tokens_used": 192,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_435",
+    "answer": "D. Inhaled albuterol and oxygen",
+    "correct_answer": "C",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 256,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1022",
+    "answer": "A. Oral morphine therapy",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.85,
+    "tokens_used": 328,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_810",
+    "answer": "B. Flow cytometry for CD55/CD59",
+    "correct_answer": "A",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 279,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_939",
+    "answer": "D. Decreased gamma globulin",
+    "correct_answer": "A",
+    "is_correct": false,
+    "confidence": 0.8,
+    "tokens_used": 184,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_292",
+    "answer": "B. Sudden cardiac death",
+    "correct_answer": "C",
+    "is_correct": false,
+    "confidence": 0.85,
+    "tokens_used": 219,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_542",
+    "answer": "B. Neural tube defect",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 242,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_505",
+    "answer": "B. Citrate",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.8,
+    "tokens_used": 394,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1103",
+    "answer": "C",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 218,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_538",
+    "answer": "A. Inhibits cell wall synthesis",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.85,
+    "tokens_used": 259,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1197",
+    "answer": "C. Acute inferior myocardial infarction",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 222,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_877",
+    "answer": "B. 32 breaths per minute",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 249,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1195",
+    "answer": "A. Radiograph of the wrist",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 288,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_817",
+    "answer": "C",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 178,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_741",
+    "answer": "A. Chlorine dioxide",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 173,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_283",
+    "answer": "A. Streptococcus pneumoniae",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 342,
+    "parse_error": false
+   }
+  ],
+  "accuracy": 0.7
+ },
+ "C5": {
+  "condition": {
+   "id": "C5",
+   "model": "openai/gpt-4o",
+   "temperature": 0.9,
+   "prompt": "zs",
+   "system": "You are a fast, intuitive thinker. Answer immediately with your first instinct.\nGive a brief, direct answer. Trust your gut feeling.\n\nRespond in JSON format: {\"answer\": \"your answer\", \"confidence\": 0.0-1.0}",
+   "max_tokens": 150
+  },
+  "trials": [
+   {
+    "task_id": "medqa_228",
+    "answer": "A. Chikungunya",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 478,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_51",
+    "answer": "A. Aldosterone excess",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 306,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_563",
+    "answer": "A. Clear cell adenocarcinoma",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 268,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_501",
+    "answer": "B. Ability to cleave \u03b2-lactam rings",
+    "correct_answer": "D",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 266,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_457",
+    "answer": "B. It is a diagnosis of exclusion",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 344,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_285",
+    "answer": "D. Order an ACTH stimulation test",
+    "correct_answer": "C",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 293,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_209",
+    "answer": "A. Squamous cell carcinoma",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 209,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1116",
+    "answer": "C. Amitriptyline",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 365,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_178",
+    "answer": "D. Right-sided analgesia",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 247,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1209",
+    "answer": "A. Affective symptoms",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 288,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_864",
+    "answer": "D. Exploratory laparotomy",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 287,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_65",
+    "answer": "B. Lytic lesions of the lumbar spine",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 253,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_61",
+    "answer": "A. Acetaldehyde",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 1.0,
+    "tokens_used": 190,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_191",
+    "answer": "C. Maternal diabetes",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 196,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_447",
+    "answer": "C. Carotid baroreceptor firing activity",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 268,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_476",
+    "answer": "C. Spherocytes",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 1.0,
+    "tokens_used": 248,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1034",
+    "answer": "B. A septal hematoma causing a perforation",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 204,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1232",
+    "answer": "A. A type 1 error occurs when the null hypothesis is true but is rejected in error.",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 717,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_54",
+    "answer": "A. Tardive dyskinesia",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 220,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1149",
+    "answer": "B. Reassurance and follow-up",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 310,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_407",
+    "answer": "B. Release of prostaglandins",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 1.0,
+    "tokens_used": 186,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_859",
+    "answer": "D. Decreased pulmonary capillary wedge pressure",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 249,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_451",
+    "answer": "D. Phosphodiesterase inhibitor",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 1.0,
+    "tokens_used": 223,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_919",
+    "answer": "B. Straight leg raise",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 261,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1206",
+    "answer": "D. 50%",
+    "correct_answer": "A",
+    "is_correct": false,
+    "confidence": 0.95,
+    "tokens_used": 178,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_569",
+    "answer": "B. Dantrolene",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 361,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_13",
+    "answer": "D. A reduction in diastolic filling time",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 241,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_326",
+    "answer": "A. MRI of the hip",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 268,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_865",
+    "answer": "C. Reintubate",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 430,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_696",
+    "answer": "D. Peroxisome proliferator-activated receptor gamma",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 1.0,
+    "tokens_used": 253,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_318",
+    "answer": "C. Somatization disorder",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 236,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_440",
+    "answer": "D. Squeezing the nostrils manually for 10 minutes with the head elevated",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 291,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_689",
+    "answer": "A. Perform lumbar puncture, treat based on presence or absence of CNS disease",
+    "correct_answer": "C",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 314,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_189",
+    "answer": "C. Erosion of tooth enamel",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 238,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_778",
+    "answer": "A. He is already overcommitting and must reduce the number of hours",
+    "correct_answer": "C",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 259,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_198",
+    "answer": "D. Prostate cancer",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 237,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_735",
+    "answer": "A. Alendronate",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 336,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_704",
+    "answer": "D. Continue normal breast feeding",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 191,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1236",
+    "answer": "B. Multiple endocrine neoplasia (MEN) 2A",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 405,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_541",
+    "answer": "A. The association is not statistically significant, and low education is not a risk factor.",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 333,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_88",
+    "answer": "C. Thoracic aortic rupture",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 331,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_940",
+    "answer": "A. Increase in capillary pressure",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 186,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1098",
+    "answer": "D. 46XX",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 242,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_255",
+    "answer": "C. Microcytic red blood cells",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 178,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_775",
+    "answer": "A. Inferior vena cava",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 152,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_161",
+    "answer": "B. Non-Hodgkin lymphoma",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 292,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1130",
+    "answer": "A. Propranolol",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 269,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_600",
+    "answer": "D. Conjugation with a protein carrier provides effective protection to infants",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 257,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1266",
+    "answer": "C. Nifedipine",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 246,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_740",
+    "answer": "D. Reducing daily insulin dose",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 199,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1182",
+    "answer": "A. Hyperplasia of juxtaglomerular cells",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 279,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_393",
+    "answer": "A. Wrap the intestines in a sterile bowel bag",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 263,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_142",
+    "answer": "A. Inhibition of beta-tubulin polymerization",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 225,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_93",
+    "answer": "C. Down syndrome",
+    "correct_answer": "D",
+    "is_correct": false,
+    "confidence": 0.95,
+    "tokens_used": 328,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_466",
+    "answer": "B. Excess weight",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 315,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_592",
+    "answer": "A. Inosine monophosphate dehydrogenase",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 212,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_163",
+    "answer": "A. Positive latex agglutination test",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 284,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_206",
+    "answer": "C. LOD Score > 3",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 1.0,
+    "tokens_used": 203,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_928",
+    "answer": "B. Administer glucagon",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 325,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_747",
+    "answer": "C. Methylprednisolone, plasmapheresis, and cyclophosphamide",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 374,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_333",
+    "answer": "D. Intubation and mechanical ventilation",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 399,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_758",
+    "answer": "D. Group D streptococci",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 469,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_727",
+    "answer": "A. Cells staining positive for CD15 and CD30",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 286,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_429",
+    "answer": "D. Surgical gastropexy",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 248,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_546",
+    "answer": "D. Atelectasis",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 336,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_146",
+    "answer": "C. Tumor arising from cutaneous T cells",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 261,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1247",
+    "answer": "C. 800 mL",
+    "correct_answer": "A",
+    "is_correct": false,
+    "confidence": 0.95,
+    "tokens_used": 340,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_350",
+    "answer": "B. Incision and drainage with intravenous ampicillin-sulbactam therapy",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 417,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1093",
+    "answer": "B. Dual-energy x-ray bone absorptiometry",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 330,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_334",
+    "answer": "B. Comprehensive foot exam every year",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 167,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_946",
+    "answer": "C. Cerebellar degeneration",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 311,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_777",
+    "answer": "C. Paroxetine",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 270,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_552",
+    "answer": "A. Endoscopic retrograde cholangiopancreatography (ERCP)",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 501,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1140",
+    "answer": "B. Hypoparathyroidism",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 297,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_449",
+    "answer": "B. Recurrent laryngeal nerve injury",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 206,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_664",
+    "answer": "C. Von Willebrand disease",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 1.0,
+    "tokens_used": 237,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_114",
+    "answer": "C. Metformin",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 299,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_469",
+    "answer": "A. Sarcoidosis",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 326,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_646",
+    "answer": "B. Tumor stage",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 1.0,
+    "tokens_used": 221,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_821",
+    "answer": "C. Hyperphosphorylated tau",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 1.0,
+    "tokens_used": 240,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_548",
+    "answer": "D. Continue antitubercular therapy and antiretroviral therapy without any change",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 523,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_135",
+    "answer": "C. Binds endogenous peptides that have been transported by the TAP channel",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 258,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_432",
+    "answer": "A. Intravenous thiamine",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 324,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1161",
+    "answer": "C. Required for methionine processing",
+    "correct_answer": "B",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 258,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_644",
+    "answer": "B. Increased activity of D cells",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 193,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_435",
+    "answer": "C. Atropine and pralidoxime",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 257,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1022",
+    "answer": "A. Oral morphine therapy",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 328,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_810",
+    "answer": "A. Eosin-5-maleimide binding test",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 281,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_939",
+    "answer": "A. Decreased lymphocyte count",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 183,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_292",
+    "answer": "C. Acute arterial occlusion",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 220,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_542",
+    "answer": "B. Neural tube defect",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 241,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_505",
+    "answer": "B. Citrate",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 394,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1103",
+    "answer": "C. Increased capillary hydrostatic pressure",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 225,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_538",
+    "answer": "A. Inhibits cell wall synthesis",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 258,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1197",
+    "answer": "C. Acute inferior myocardial infarction",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 222,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_877",
+    "answer": "B. 32 breaths per minute",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 1.0,
+    "tokens_used": 249,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1195",
+    "answer": "A. Radiograph of the wrist",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 289,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_817",
+    "answer": "C. Fee-for-service may incentivize physicians to increase healthcare utilization irrespective of quality",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 194,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_741",
+    "answer": "A. Chlorine dioxide",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 172,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_283",
+    "answer": "A. Streptococcus pneumoniae",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 341,
+    "parse_error": false
+   }
+  ],
+  "accuracy": 0.92
+ },
+ "C8": {
+  "condition": {
+   "id": "C8",
+   "model": "openai/gpt-4o",
+   "temperature": 0.2,
+   "prompt": "cot",
+   "system": "You are a careful, analytical thinker. Think step by step.\nBreak down the problem systematically before reaching a conclusion.\n\nRespond in JSON format:\n{\n    \"reasoning_steps\": [\"step 1\", \"step 2\", ...],\n    \"answer\": \"your final answer\",\n    \"confidence\": 0.0-1.0\n}",
+   "max_tokens": 1000
+  },
+  "trials": [
+   {
+    "task_id": "medqa_228",
+    "answer": "A. Chikungunya",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 772,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_51",
+    "answer": "A. Aldosterone excess",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 632,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_563",
+    "answer": "A. Clear cell adenocarcinoma",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 499,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_501",
+    "answer": "D. Adaptation in binding proteins",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 600,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_457",
+    "answer": "B. It is a diagnosis of exclusion",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.8,
+    "tokens_used": 624,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_285",
+    "answer": "D. Order an ACTH stimulation test",
+    "correct_answer": "C",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 522,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_209",
+    "answer": "A. Squamous cell carcinoma",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 455,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1116",
+    "answer": "C. Amitriptyline",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 601,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_178",
+    "answer": "D. Right-sided analgesia",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 498,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1209",
+    "answer": "A. Affective symptoms",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 530,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_864",
+    "answer": "D. Exploratory laparotomy",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 614,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_65",
+    "answer": "B. Lytic lesions of the lumbar spine",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 531,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_61",
+    "answer": "A. Acetaldehyde",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 386,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_191",
+    "answer": "C. Maternal diabetes",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 454,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_447",
+    "answer": "C. Carotid baroreceptor firing activity",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 536,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_476",
+    "answer": "C. Spherocytes",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 587,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1034",
+    "answer": "B. A septal hematoma causing a perforation",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 471,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1232",
+    "answer": "A. A type 1 error occurs when the null hypothesis is true but is rejected in error.",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 1.0,
+    "tokens_used": 1027,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_54",
+    "answer": "A. Tardive dyskinesia",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 500,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1149",
+    "answer": "B. Reassurance and follow-up",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 539,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_407",
+    "answer": "B. Release of prostaglandins",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 396,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_859",
+    "answer": "{\n    \"reasoning_steps\": [\n        \"The patient is experiencing a hypertensive emergency, which is characterized by severely elevated blood pressure with evidence of acute end-organ damage.\",\n        \"The symptoms and physical findings (headache, chest pain, vomiting, papilledema, depressed consciousness) suggest significant end-organ involvement, likely affecting the brain and possibly the heart.\",\n        \"The medication described is an intravenous agent that releases nitric oxide (NO), which activates guanylate cyclase, increasing cGMP in vascular smooth muscle. This mechanism is characteristic of nitroprusside, a potent vasodilator used in hypertensive emergencies.\",\n        \"Nitroprusside causes both arterial and venous dilation, leading to a reduction in systemic vascular resistance and venous return.\",\n        \"Decreased systemic vascular resistance reduces afterload, while venous dilation reduces preload.\",\n        \"Pulmonary capillary wedge pressure (PCWP) is an indirect measure of left atrial pressure and reflects left ventricular end-diastolic pressure (preload).\",\n        \"By decreasing preload through venous dilation, nitroprusside would decrease PCWP.\",\n        \"The options provided relate to cardiac function and hemodynamics. Option D, 'Decreased pulmonary capillary wedge pressure,' aligns with the expected effect of nitroprusside's ven",
+    "correct_answer": "D",
+    "is_correct": false,
+    "confidence": 0.5,
+    "tokens_used": 637,
+    "parse_error": true
+   },
+   {
+    "task_id": "medqa_451",
+    "answer": "D. Phosphodiesterase inhibitor",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 1.0,
+    "tokens_used": 489,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_919",
+    "answer": "B. Straight leg raise",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 507,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1206",
+    "answer": "50%",
+    "correct_answer": "A",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 427,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_569",
+    "answer": "B. Dantrolene",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 722,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_13",
+    "answer": "D. A reduction in diastolic filling time",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 472,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_326",
+    "answer": "A. MRI of the hip",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 472,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_865",
+    "answer": "C. Reintubate",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 759,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_696",
+    "answer": "D. Peroxisome proliferator-activated receptor gamma",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 573,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_318",
+    "answer": "C. Somatization disorder",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 573,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_440",
+    "answer": "D. Squeezing the nostrils manually for 10 minutes with the head elevated",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 644,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_689",
+    "answer": "A. Perform lumbar puncture, treat based on presence or absence of CNS disease",
+    "correct_answer": "C",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 573,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_189",
+    "answer": "C. Erosion of tooth enamel",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 457,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_778",
+    "answer": "A. He is already overcommitting and must reduce the number of hours",
+    "correct_answer": "C",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 526,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_198",
+    "answer": "D. Prostate cancer",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 504,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_735",
+    "answer": "A. Alendronate",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 625,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_704",
+    "answer": "D. Continue normal breast feeding",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 499,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1236",
+    "answer": "B. Multiple endocrine neoplasia (MEN) 2A",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 630,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_541",
+    "answer": "A. The association is not statistically significant, and low education is not a risk factor.",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 652,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_88",
+    "answer": "C. Thoracic aortic rupture",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 615,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_940",
+    "answer": "A. Increase in capillary pressure",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 506,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1098",
+    "answer": "46XX",
+    "correct_answer": "D",
+    "is_correct": false,
+    "confidence": 0.95,
+    "tokens_used": 445,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_255",
+    "answer": "C. Microcytic red blood cells",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 384,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_775",
+    "answer": "A. Inferior vena cava",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 409,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_161",
+    "answer": "B. Non-Hodgkin lymphoma",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 538,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1130",
+    "answer": "A. Propranolol",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 598,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_600",
+    "answer": "D. Conjugation with a protein carrier provides effective protection to infants",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 464,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1266",
+    "answer": "C. Nifedipine",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 567,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_740",
+    "answer": "D. Reducing daily insulin dose",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 418,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1182",
+    "answer": "A. Hyperplasia of juxtaglomerular cells",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 484,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_393",
+    "answer": "A. Wrap the intestines in a sterile bowel bag",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 449,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_142",
+    "answer": "A. Inhibition of beta-tubulin polymerization",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 390,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_93",
+    "answer": "C. Down syndrome",
+    "correct_answer": "D",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 577,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_466",
+    "answer": "B. Excess weight",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 614,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_592",
+    "answer": "A. Inosine monophosphate dehydrogenase",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 432,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_163",
+    "answer": "A. Positive latex agglutination test",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 593,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_206",
+    "answer": "C. LOD Score > 3",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 423,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_928",
+    "answer": "B. Administer glucagon",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 589,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_747",
+    "answer": "C. Methylprednisolone, plasmapheresis, and cyclophosphamide",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 690,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_333",
+    "answer": "D. Intubation and mechanical ventilation",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 685,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_758",
+    "answer": "D. Group D streptococci",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 766,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_727",
+    "answer": "A. Cells staining positive for CD15 and CD30",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 519,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_429",
+    "answer": "D. Surgical gastropexy",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 474,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_546",
+    "answer": "D. Atelectasis",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 679,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_146",
+    "answer": "C. Tumor arising from cutaneous T cells",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 584,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1247",
+    "answer": "A. 480 mL",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.7,
+    "tokens_used": 765,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_350",
+    "answer": "B. Incision and drainage with intravenous ampicillin-sulbactam therapy",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 726,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1093",
+    "answer": "B. Dual-energy x-ray bone absorptiometry",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 567,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_334",
+    "answer": "B. Comprehensive foot exam every year",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 351,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_946",
+    "answer": "C. Cerebellar degeneration",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 662,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_777",
+    "answer": "C. Paroxetine",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 519,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_552",
+    "answer": "A. Endoscopic retrograde cholangiopancreatography (ERCP)",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 837,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1140",
+    "answer": "B. Hypoparathyroidism",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 664,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_449",
+    "answer": "B. Recurrent laryngeal nerve injury",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 447,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_664",
+    "answer": "D. Hemophilia A",
+    "correct_answer": "C",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 585,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_114",
+    "answer": "B. Diarrhea",
+    "correct_answer": "C",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 592,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_469",
+    "answer": "A. Sarcoidosis",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 665,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_646",
+    "answer": "B. Tumor stage",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 425,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_821",
+    "answer": "C. Hyperphosphorylated tau",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 521,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_548",
+    "answer": "D. Continue antitubercular therapy and antiretroviral therapy without any change",
+    "correct_answer": "D",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 773,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_135",
+    "answer": "C. Binds endogenous peptides that have been transported by the TAP channel",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 439,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_432",
+    "answer": "A. Intravenous thiamine",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 585,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1161",
+    "answer": "C. Required for methionine processing",
+    "correct_answer": "B",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 445,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_644",
+    "answer": "C. Increased activity of enterochromaffin-like cells",
+    "correct_answer": "B",
+    "is_correct": false,
+    "confidence": 0.9,
+    "tokens_used": 544,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_435",
+    "answer": "C. Atropine and pralidoxime",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 495,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1022",
+    "answer": "A. Oral morphine therapy",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 524,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_810",
+    "answer": "A. Eosin-5-maleimide binding test",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 472,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_939",
+    "answer": "A. Decreased lymphocyte count",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 450,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_292",
+    "answer": "C. Acute arterial occlusion",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 447,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_542",
+    "answer": "B. Neural tube defect",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 591,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_505",
+    "answer": "B. Citrate",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 0.95,
+    "tokens_used": 567,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1103",
+    "answer": "C. Increased capillary hydrostatic pressure",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 493,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_538",
+    "answer": "A. Inhibits cell wall synthesis",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 580,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1197",
+    "answer": "C. Acute inferior myocardial infarction",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 606,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_877",
+    "answer": "B. 32 breaths per minute",
+    "correct_answer": "B",
+    "is_correct": true,
+    "confidence": 1.0,
+    "tokens_used": 403,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_1195",
+    "answer": "A. Radiograph of the wrist",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 540,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_817",
+    "answer": "C. Fee-for-service may incentivize physicians to increase healthcare utilization irrespective of quality",
+    "correct_answer": "C",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 438,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_741",
+    "answer": "A. Chlorine dioxide",
+    "correct_answer": "A",
+    "is_correct": true,
+    "confidence": 0.9,
+    "tokens_used": 382,
+    "parse_error": false
+   },
+   {
+    "task_id": "medqa_283",
+    "answer": "B. Mycoplasma pneumoniae",
+    "correct_answer": "A",
+    "is_correct": false,
+    "confidence": 0.8,
+    "tokens_used": 672,
+    "parse_error": false
+   }
+  ],
+  "accuracy": 0.88
+ }
+}

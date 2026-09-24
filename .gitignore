@@ -62,8 +62,10 @@ Thumbs.db
 logs/
 
 # Results and outputs (keep structure, ignore large files)
-results/
+results/*
 !results/.gitkeep
+# Trial-level results reported in the BIBM 2026 paper
+!results/bibm_2026/
 
 # LaTeX auxiliary files
 *.aux
@@ -84,6 +86,10 @@ results/
 !src/tasks/*.json
 !data/novel_conflict_tasks.json
 !data/human_benchmarks.json
+!results/bibm_2026/**/*.json
+# superseded / dry runs (contain API error messages)
+results/bibm_2026/main_experiment/
+results/bibm_2026/dry_run_test/
 
 # Model checkpoints
 *.pt
@@ -131,3 +137,7 @@ Reviews*.pdf
 # Plan docs (internal)
 docs/
 graphify-out/
+
+# Local assistant / editor state
+.claude/
+.cursor/

@@ -155,6 +155,9 @@ def setup_style():
         'savefig.dpi':       DPI,
         'savefig.bbox':      'tight',
         'savefig.pad_inches': 0.03,
+        # TrueType (Type 42) instead of Type 3 fonts, as required by IEEE PDF eXpress
+        'pdf.fonttype':      42,
+        'ps.fonttype':       42,
         'axes.linewidth':    0.6,
         'lines.linewidth':   1.2,
         'grid.linewidth':    0.3,
@@ -752,7 +755,7 @@ def plot_fig7_trial_matrix(output_path: Path, results_path: str = None):
     for cid in conditions:
         d = DATA[cid]
         prompt_str = d['prompt']
-        temp_str = 't=' + ('1.0' if d['temp'] == 'high' else '0.2')
+        temp_str = 't=' + ('0.9' if d['temp'] == 'high' else '0.2')
         abl_col_labels.append(f'{cid}\n{prompt_str},{temp_str}')
 
     # Category boundaries (row index ranges for horizontal separators)

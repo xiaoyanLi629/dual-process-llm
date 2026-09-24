@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-04-14T23:22:51.756714",
+  "args": {
+    "all": false,
+    "experiment": "main",
+    "analyze_only": false,
+    "n_samples": 100,
+    "families": "openai,deepseek,qwen,llama",
+    "output": "results/bibm_2026",
+    "input": null,
+    "dry_run": true
+  }
+}

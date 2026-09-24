@@ -1,0 +1,990 @@
+{
+  "metadata": {
+    "timestamp": "20260417_165416",
+    "n_samples": 100,
+    "dry_run": false,
+    "families_requested": [
+      "openai",
+      "deepseek",
+      "qwen",
+      "llama"
+    ],
+    "families_run": [
+      "openai",
+      "deepseek",
+      "qwen",
+      "llama"
+    ]
+  },
+  "families": {
+    "openai": {
+      "system1": {
+        "model": "openai/gpt-4o-mini",
+        "temperature": 0.9,
+        "prompt_mode": "zero_shot",
+        "results_by_category": {
+          "intuitive": {
+            "n": 0,
+            "correct": 0,
+            "accuracy": NaN,
+            "avg_confidence": NaN,
+            "avg_tokens": NaN,
+            "parse_errors": 0,
+            "trials": []
+          },
+          "analytical": {
+            "n": 0,
+            "correct": 0,
+            "accuracy": NaN,
+            "avg_confidence": NaN,
+            "avg_tokens": NaN,
+            "parse_errors": 0,
+            "trials": []
+          },
+          "conflict": {
+            "n": 9,
+            "correct": 0,
+            "accuracy": 0.0,
+            "avg_confidence": 0.5,
+            "avg_tokens": 0.0,
+            "parse_errors": 9,
+            "trials": [
+              {
+                "task_id": "novel_crt_01",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$5",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_02",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$25",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_03",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$10",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_04",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "Day 29",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_05",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "17 months",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_06",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "8 minutes",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_07",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "12 hours",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_08",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$5",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_09",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "39 seconds",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              }
+            ]
+          }
+        }
+      },
+      "system2": {
+        "model": "openai/gpt-4o",
+        "temperature": 0.2,
+        "prompt_mode": "cot",
+        "results_by_category": {
+          "intuitive": {
+            "n": 0,
+            "correct": 0,
+            "accuracy": NaN,
+            "avg_confidence": NaN,
+            "avg_tokens": NaN,
+            "parse_errors": 0,
+            "trials": []
+          },
+          "analytical": {
+            "n": 0,
+            "correct": 0,
+            "accuracy": NaN,
+            "avg_confidence": NaN,
+            "avg_tokens": NaN,
+            "parse_errors": 0,
+            "trials": []
+          },
+          "conflict": {
+            "n": 9,
+            "correct": 0,
+            "accuracy": 0.0,
+            "avg_confidence": 0.5,
+            "avg_tokens": 0.0,
+            "parse_errors": 9,
+            "trials": [
+              {
+                "task_id": "novel_crt_01",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$5",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_02",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$25",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_03",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$10",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_04",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "Day 29",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_05",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "17 months",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_06",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "8 minutes",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_07",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "12 hours",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_08",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$5",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_09",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "39 seconds",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              }
+            ]
+          }
+        }
+      },
+      "s2_s1_gap": {
+        "intuitive": NaN,
+        "analytical": NaN,
+        "conflict": 0.0
+      }
+    },
+    "deepseek": {
+      "system1": {
+        "model": "deepseek/deepseek-chat",
+        "temperature": 0.9,
+        "prompt_mode": "zero_shot",
+        "results_by_category": {
+          "intuitive": {
+            "n": 0,
+            "correct": 0,
+            "accuracy": NaN,
+            "avg_confidence": NaN,
+            "avg_tokens": NaN,
+            "parse_errors": 0,
+            "trials": []
+          },
+          "analytical": {
+            "n": 0,
+            "correct": 0,
+            "accuracy": NaN,
+            "avg_confidence": NaN,
+            "avg_tokens": NaN,
+            "parse_errors": 0,
+            "trials": []
+          },
+          "conflict": {
+            "n": 9,
+            "correct": 0,
+            "accuracy": 0.0,
+            "avg_confidence": 0.5,
+            "avg_tokens": 0.0,
+            "parse_errors": 9,
+            "trials": [
+              {
+                "task_id": "novel_crt_01",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$5",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_02",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$25",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_03",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$10",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_04",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "Day 29",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_05",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "17 months",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_06",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "8 minutes",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_07",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "12 hours",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_08",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$5",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_09",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "39 seconds",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              }
+            ]
+          }
+        }
+      },
+      "system2": {
+        "model": "deepseek/deepseek-r1",
+        "temperature": null,
+        "prompt_mode": "cot",
+        "results_by_category": {
+          "intuitive": {
+            "n": 0,
+            "correct": 0,
+            "accuracy": NaN,
+            "avg_confidence": NaN,
+            "avg_tokens": NaN,
+            "parse_errors": 0,
+            "trials": []
+          },
+          "analytical": {
+            "n": 0,
+            "correct": 0,
+            "accuracy": NaN,
+            "avg_confidence": NaN,
+            "avg_tokens": NaN,
+            "parse_errors": 0,
+            "trials": []
+          },
+          "conflict": {
+            "n": 9,
+            "correct": 0,
+            "accuracy": 0.0,
+            "avg_confidence": 0.5,
+            "avg_tokens": 0.0,
+            "parse_errors": 9,
+            "trials": [
+              {
+                "task_id": "novel_crt_01",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$5",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_02",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$25",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_03",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$10",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_04",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "Day 29",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_05",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "17 months",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_06",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "8 minutes",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_07",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "12 hours",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_08",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$5",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_09",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "39 seconds",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              }
+            ]
+          }
+        }
+      },
+      "s2_s1_gap": {
+        "intuitive": NaN,
+        "analytical": NaN,
+        "conflict": 0.0
+      }
+    },
+    "qwen": {
+      "system1": {
+        "model": "qwen/qwen-2.5-7b-instruct",
+        "temperature": 0.9,
+        "prompt_mode": "zero_shot",
+        "results_by_category": {
+          "intuitive": {
+            "n": 0,
+            "correct": 0,
+            "accuracy": NaN,
+            "avg_confidence": NaN,
+            "avg_tokens": NaN,
+            "parse_errors": 0,
+            "trials": []
+          },
+          "analytical": {
+            "n": 0,
+            "correct": 0,
+            "accuracy": NaN,
+            "avg_confidence": NaN,
+            "avg_tokens": NaN,
+            "parse_errors": 0,
+            "trials": []
+          },
+          "conflict": {
+            "n": 9,
+            "correct": 0,
+            "accuracy": 0.0,
+            "avg_confidence": 0.5,
+            "avg_tokens": 0.0,
+            "parse_errors": 9,
+            "trials": [
+              {
+                "task_id": "novel_crt_01",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$5",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_02",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$25",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_03",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$10",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_04",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "Day 29",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_05",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "17 months",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_06",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "8 minutes",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_07",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "12 hours",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_08",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$5",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_09",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "39 seconds",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              }
+            ]
+          }
+        }
+      },
+      "system2": {
+        "model": "qwen/qwen-2.5-72b-instruct",
+        "temperature": 0.2,
+        "prompt_mode": "cot",
+        "results_by_category": {
+          "intuitive": {
+            "n": 0,
+            "correct": 0,
+            "accuracy": NaN,
+            "avg_confidence": NaN,
+            "avg_tokens": NaN,
+            "parse_errors": 0,
+            "trials": []
+          },
+          "analytical": {
+            "n": 0,
+            "correct": 0,
+            "accuracy": NaN,
+            "avg_confidence": NaN,
+            "avg_tokens": NaN,
+            "parse_errors": 0,
+            "trials": []
+          },
+          "conflict": {
+            "n": 9,
+            "correct": 0,
+            "accuracy": 0.0,
+            "avg_confidence": 0.5,
+            "avg_tokens": 0.0,
+            "parse_errors": 9,
+            "trials": [
+              {
+                "task_id": "novel_crt_01",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$5",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_02",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$25",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_03",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$10",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_04",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "Day 29",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_05",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "17 months",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_06",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "8 minutes",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_07",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "12 hours",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_08",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$5",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_09",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "39 seconds",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              }
+            ]
+          }
+        }
+      },
+      "s2_s1_gap": {
+        "intuitive": NaN,
+        "analytical": NaN,
+        "conflict": 0.0
+      }
+    },
+    "llama": {
+      "system1": {
+        "model": "meta-llama/llama-3.1-8b-instruct",
+        "temperature": 0.9,
+        "prompt_mode": "zero_shot",
+        "results_by_category": {
+          "intuitive": {
+            "n": 0,
+            "correct": 0,
+            "accuracy": NaN,
+            "avg_confidence": NaN,
+            "avg_tokens": NaN,
+            "parse_errors": 0,
+            "trials": []
+          },
+          "analytical": {
+            "n": 0,
+            "correct": 0,
+            "accuracy": NaN,
+            "avg_confidence": NaN,
+            "avg_tokens": NaN,
+            "parse_errors": 0,
+            "trials": []
+          },
+          "conflict": {
+            "n": 9,
+            "correct": 0,
+            "accuracy": 0.0,
+            "avg_confidence": 0.5,
+            "avg_tokens": 0.0,
+            "parse_errors": 9,
+            "trials": [
+              {
+                "task_id": "novel_crt_01",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$5",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_02",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$25",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_03",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$10",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_04",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "Day 29",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_05",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "17 months",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_06",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "8 minutes",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_07",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "12 hours",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_08",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$5",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_09",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "39 seconds",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              }
+            ]
+          }
+        }
+      },
+      "system2": {
+        "model": "meta-llama/llama-3.3-70b-instruct",
+        "temperature": 0.2,
+        "prompt_mode": "cot",
+        "results_by_category": {
+          "intuitive": {
+            "n": 0,
+            "correct": 0,
+            "accuracy": NaN,
+            "avg_confidence": NaN,
+            "avg_tokens": NaN,
+            "parse_errors": 0,
+            "trials": []
+          },
+          "analytical": {
+            "n": 0,
+            "correct": 0,
+            "accuracy": NaN,
+            "avg_confidence": NaN,
+            "avg_tokens": NaN,
+            "parse_errors": 0,
+            "trials": []
+          },
+          "conflict": {
+            "n": 9,
+            "correct": 0,
+            "accuracy": 0.0,
+            "avg_confidence": 0.5,
+            "avg_tokens": 0.0,
+            "parse_errors": 9,
+            "trials": [
+              {
+                "task_id": "novel_crt_01",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$5",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_02",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$25",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_03",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$10",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_04",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "Day 29",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_05",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "17 months",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_06",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "8 minutes",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_07",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "12 hours",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_08",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "$5",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              },
+              {
+                "task_id": "novel_crt_09",
+                "answer": "ERROR: Error code: 401 - {'error': {'message': 'Missing Authentication header', 'code': 401}}",
+                "correct_answer": "39 seconds",
+                "is_correct": false,
+                "confidence": 0.5,
+                "tokens_used": 0,
+                "parse_error": true
+              }
+            ]
+          }
+        }
+      },
+      "s2_s1_gap": {
+        "intuitive": NaN,
+        "analytical": NaN,
+        "conflict": 0.0
+      }
+    }
+  },
+  "cross_model_consistency": {
+    "pattern_holds": false,
+    "families_showing_pattern": 0,
+    "total_valid_families": 0,
+    "analytical_gap_range": null,
+    "intuitive_gap_range": null,
+    "conflict_gap_range": [
+      0.0,
+      0.0
+    ],
+    "mean_analytical_gap": NaN,
+    "mean_intuitive_gap": NaN
+  }
+}
