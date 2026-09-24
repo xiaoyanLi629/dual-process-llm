@@ -36,7 +36,7 @@
 }
 \makeatother
 \author{%
-\IEEEauthorblockN{Xiaoyan Li}
+\IEEEauthorblockN{Xiaoyan Li\textsuperscript{*}}
 \IEEEauthorblockA{\textit{Dept. of Computational Mathematics,}\\
 \textit{Science and Engineering}\\
 \textit{Michigan State University}\\
@@ -69,6 +69,8 @@ saroyi@163.com}
 }
 
 \maketitle
+% Corresponding-author footnote (unnumbered)
+\begingroup\renewcommand\thefootnote{}\footnotetext{\textsuperscript{*}Corresponding author: Xiaoyan Li (lixiaoy5@msu.edu).}\endgroup
 
 \begin{abstract}
 Dual-process theory distinguishes fast, intuitive System~1 from slow, analytical System~2 processing, a distinction central to clinical decision-making. We ask whether LLMs exhibit analogous behavioral signatures under systematic parameter manipulation. Unlike prior work that confounds model capacity, temperature, and prompting, we run a $2 \times 2 \times 2$ factorial ablation that isolates each factor. The central finding is a strong Prompt $\times$ Task Category interaction ($F(2, 4794) = 89.2$, $p < .001$, $\eta^2_p = .036$): CoT yields a $+31.2$-point gain on analytical tasks and an $11.1$-point raw decrement on intuitive ones (half of which is a format artefact on one coreference benchmark; the interaction survives its exclusion, $F(2, 4570) = 71.7$, $p < .001$). We replicate across four LLM families and on 100 MedQA-USMLE vignettes, and stress-test conflict performance with 50 novel memorization-resistant items. These findings support configuring clinical decision-support LLMs with System~1-like settings for routine triage and System~2-like settings for complex diagnosis.
@@ -354,14 +356,14 @@ The model-capacity effect is $+22.0$ ($t(198) = -4.11$, $p < .001$, $d = 0.581$)
 \subsection{Qualitative Comparison with Human Cognition}
 \label{sec:human-comparison}
 
-We offer a \textit{qualitative} comparison against published human effects. Human S2--S1 gaps are approximate ranges drawn from cognitive-psychology studies on intuitive pattern tasks ($\sim$$+3\%$), syllogistic and arithmetic reasoning ($\sim$$+25\%$), and CRT / base-rate / framing / conjunction items ($\sim$$+39\%$)~\cite{Frederick2005, Stanovich2000, Pennycook2015}, typically operationalised as time-pressure vs.\ untimed conditions. These are not matched experiments, we do not claim equivalence of constructs, and \textit{no statistical test is performed in this section}: the numbers below are descriptive and should not be read as a matched LLM--human comparison.
+We offer a \textit{qualitative} comparison against published human effects. Human S2--S1 gaps are approximate ranges drawn from cognitive-psychology studies on intuitive pattern tasks ($\sim$$+3\%$), syllogistic and arithmetic reasoning ($\sim$$+25\%$), and CRT / base-rate / framing / conjunction items ($\sim$$+39\%$)~\cite{Frederick2005, Stanovich2000, Pennycook2015}, typically operationalised as time-pressure vs.\ untimed conditions. These are not matched experiments and \textit{no statistical test is performed in this section}; the numbers are descriptive only.
 
-Averaged across the four model families, the raw LLM gaps are intuitive $+2.3\%$, analytical $+43.2\%$, and conflict $+15.8\%$, sharing the sign of each human gap. The near-match on intuitive tasks is misleading: without WinoGrande hedging the LLM intuitive gap is $+8.8\%$, about $3\times$ the human value. The rank order also differs: humans show their largest gap on conflict tasks, LLMs on analytical tasks, plausibly because pre-training exposure to classic conflict items weakens the intuitive lure, as the ${\sim}35$-point novel-vs.-classic gap on C1 suggests (Section~\ref{sec:novel-conflict-results}). A rigorous comparison would require matched human and LLM testing, which we leave to future work.
+Averaged across the four model families, the raw LLM gaps are intuitive $+2.3\%$, analytical $+43.2\%$, and conflict $+15.8\%$, sharing the sign of each human gap. The near-match on intuitive tasks is misleading: without WinoGrande hedging the LLM intuitive gap is $+8.8\%$, about $3\times$ the human value. The rank order also differs: humans show their largest gap on conflict tasks, LLMs on analytical tasks, plausibly because pre-training exposure to classic conflict items weakens the intuitive lure, as the ${\sim}35$-point novel-vs.-classic gap on C1 suggests (Section~\ref{sec:novel-conflict-results}). Matched human--LLM testing is left to future work.
 
 \subsection{Token Efficiency}
 \label{sec:token-efficiency}
 
-Token efficiency analysis reveals task-type-dependent returns on computational investment (Fig.~\ref{fig:cot-interaction}). All TER numbers below are computed on the primary C5 vs.\ C8 contrast (same GPT-4o model; Table~\ref{tab:main-results}).
+TER is computed on the primary C5 vs.\ C8 contrast (Table~\ref{tab:main-results}; Fig.~\ref{fig:cot-interaction}).
 
 \begin{figure}[t]
 \centerline{\includegraphics[width=0.82\columnwidth]{figures/fig6_cot_interaction.pdf}}
@@ -434,6 +436,9 @@ A $2 \times 2 \times 2$ factorial ablation reveals a strong Prompt $\times$ Task
 
 \paragraph*{Code and data availability}
 Prompts, the 50 novel conflict items, trial-level outputs of all runs, and analysis and figure code are at \url{https://github.com/xiaoyanLi629/dual-process-llm}; MedQA-USMLE is public~\cite{Jin2021}.
+
+\section*{Acknowledgment}
+The authors used Claude (Anthropic) to assist with analysis scripts, table preparation, and language editing. All results were verified by the authors, who take full responsibility for the content.
 
 \bibliographystyle{IEEEtran}
 % Tighten inter-item spacing in bibliography (line spacing only; font size unchanged)
