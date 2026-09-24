@@ -20,6 +20,9 @@
 % Smaller CI line under each estimate in the main-effects table
 \newcommand{\ci}[1]{{\scriptsize[#1]}}
 
+% Leave any slack at the page bottom instead of stretching gaps between paragraphs
+\raggedbottom
+
 \begin{document}
 
 \title{Do Large Language Models Think Fast and Slow?\\Eliciting Dual-Process Behavioral Signatures with\\Implications for Biomedical AI}
@@ -32,31 +35,36 @@
   \mbox{}\hfill\begin{@IEEEauthorhalign}
 }
 \makeatother
-% TODO(camera-ready): confirm affiliations of co-authors 2-5 (inferred from e-mail domains)
 \author{%
 \IEEEauthorblockN{Xiaoyan Li}
-\IEEEauthorblockA{\textit{Michigan State University}\\
+\IEEEauthorblockA{\textit{Dept. of Computational Mathematics,}\\
+\textit{Science and Engineering}\\
+\textit{Michigan State University}\\
 East Lansing, MI, USA\\
 lixiaoy5@msu.edu}
 \and
 \IEEEauthorblockN{Cuicui Jiang}
-\IEEEauthorblockA{\textit{Inner Mongolia University}\\
+\IEEEauthorblockA{\textit{College of Computer Science}\\
+\textit{Inner Mongolia University}\\
 Hohhot, China\\
 jiangcuicui@mail.imu.edu.cn}
 \and
 \IEEEauthorblockN{Jiaoping Chen}
-\IEEEauthorblockA{\textit{University of Baltimore}\\
+\IEEEauthorblockA{\textit{Merrick School of Business}\\
+\textit{University of Baltimore}\\
 Baltimore, MD, USA\\
 jchen@ubalt.edu}
 \linebreakand
 \IEEEauthorblockN{Rumei Yang}
-\IEEEauthorblockA{\textit{Nanjing Medical University}\\
+\IEEEauthorblockA{\textit{School of Nursing}\\
+\textit{Nanjing Medical University}\\
 Nanjing, China\\
 rumeiyang@njmu.edu.cn}
 \and
 \IEEEauthorblockN{Yujia Du}
-\IEEEauthorblockA{\textit{\textcolor{red}{[Affiliation TBD]}}\\
-\textcolor{red}{[City, Country]}\\
+\IEEEauthorblockA{\textit{Suzhou MetaCortex Intelligence}\\
+\textit{Technology Co., Ltd.}\\
+Suzhou, China\\
 saroyi@163.com}
 }
 
@@ -425,7 +433,7 @@ Any use of model confidence & Coarse relative signal only; calibrate externally 
 A $2 \times 2 \times 2$ factorial ablation reveals a strong Prompt $\times$ Task Category interaction: CoT helps analytical tasks ($+31.2$ points) and slightly hurts intuitive ones (raw $-11.1$, about half of it WinoGrande hedging). This asymmetry is predicted by dual-process theory but not guaranteed by the design, and it generalises across four LLM families. A 100-item MedQA-USMLE validation shows $+22$ points from model scaling and no CoT benefit within GPT-4o, indicating that USMLE vignettes behave as pattern-retrieval. For biomedical informatics, these findings support configuring LLM-based decision support with efficient System~1-like settings for routine pattern-retrieval and thorough System~2-like settings for complex diagnostic reasoning where accuracy and calibrated confidence both matter.
 
 \paragraph*{Code and data availability}
-All task datasets (including the 50 novel conflict items), model prompts, trial-level JSON outputs for the 4{,}800-trial factorial, the multi-model and the MedQA runs, statistical analysis scripts, and figure-generation code are available at \url{https://github.com/xiaoyanLi629/dual-process-llm}. The MedQA-USMLE evaluation uses the publicly available 4-option test split~\cite{Jin2021}.
+Prompts, the 50 novel conflict items, trial-level outputs of all runs, and analysis and figure code are at \url{https://github.com/xiaoyanLi629/dual-process-llm}; MedQA-USMLE is public~\cite{Jin2021}.
 
 \bibliographystyle{IEEEtran}
 % Tighten inter-item spacing in bibliography (line spacing only; font size unchanged)
