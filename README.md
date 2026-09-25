@@ -11,9 +11,9 @@
 </p>
 
 <p align="center">
-  Xiaoyan Li · <b>Cuicui Jiang</b><sup>*</sup> · Jiaoping Chen · Rumei Yang · Yujia Du<br>
+  Xiaoyan Li · Cuicui Jiang · <b>Jiaoping Chen</b><sup>*</sup> · Rumei Yang · Yujia Du<br>
   <sub>Michigan State University · Inner Mongolia University · University of Baltimore · Nanjing Medical University · Suzhou MetaCortex Intelligence Technology</sub><br>
-  <sub><sup>*</sup>Corresponding author: jiangcuicui@mail.imu.edu.cn</sub>
+  <sub><sup>*</sup>Corresponding author: Jiaoping Chen (jchen@ubalt.edu)</sub>
 </p>
 
 ---
